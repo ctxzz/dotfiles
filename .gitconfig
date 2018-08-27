@@ -1,0 +1,10 @@
+[user]
+	name = ctxzz
+	email = ctxz19@gmail.com
+[color]
+	diff = auto
+	ui = true
+	status = auto
+	branch = auto
+[core]
+	editor = vim
