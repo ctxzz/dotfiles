@@ -35,7 +35,6 @@ if g:plug.ready() && g:env.vimrc.plugin_on
     "Plug 'zaiste/tmux.vim', { 'for': 'tmux' }
     Plug 'keith/tmux.vim', { 'for': 'tmux' }
     Plug 'zplug/vim-zplug', { 'for': 'zplug' }
-    Plug 'evanmiller/nginx-vim-syntax', { 'for': 'nginx' }
     Plug 'elzr/vim-json', { 'for': 'json' }
     Plug 'jelera/vim-javascript-syntax', { 'for': 'javascript' }
     Plug 'maksimr/vim-jsbeautify', { 'for': 'javascript' }
