@@ -26,14 +26,12 @@ if g:plug.ready() && g:env.vimrc.plugin_on
     Plug 'tpope/vim-surround'
     Plug 'Shougo/vimproc.vim',  { 'do': 'make' }
     Plug 'vim-jp/vimdoc-ja'
-    Plug 'osyo-manga/vim-anzu'
-    Plug 'thinca/vim-quickrun'
+    Plug 'christoomey/vim-tmux-navigator'
 
     " syntax? language support
+    Plug 'sheerun/vim-polyglot'
     Plug 'fatih/vim-go', { 'for': 'go' }
     Plug 'jnwhiteh/vim-golang', { 'for': 'go' }
-    "Plug 'zaiste/tmux.vim', { 'for': 'tmux' }
-    Plug 'keith/tmux.vim', { 'for': 'tmux' }
     Plug 'zplug/vim-zplug', { 'for': 'zplug' }
     Plug 'elzr/vim-json', { 'for': 'json' }
     Plug 'jelera/vim-javascript-syntax', { 'for': 'javascript' }
@@ -45,6 +43,12 @@ if g:plug.ready() && g:env.vimrc.plugin_on
     Plug 'junegunn/seoul256.vim'
     Plug 'nanotech/jellybeans.vim'
     Plug 'whatyouhide/vim-gotham'
+
+    " view
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 
     Plug 'plasticboy/vim-markdown',      { 'for': 'markdown' }
 
