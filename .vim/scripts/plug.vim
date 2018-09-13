@@ -51,6 +51,7 @@ if g:plug.ready() && g:env.vimrc.plugin_on
     Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 
     Plug 'plasticboy/vim-markdown',      { 'for': 'markdown' }
+    Plug 'kana/vim-submode'
 
     " Add plugins to &runtimepath
     call plug#end()
