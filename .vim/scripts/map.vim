@@ -14,17 +14,11 @@ let maplocalleader = "\<Space>"
 
 " Windows
 nnoremap s <Nop>
-nnoremap sp :<C-u>split<CR>
-nnoremap vs :<C-u>vsplit<CR>
+nnoremap ss :<C-u>split<CR>
+nnoremap sv :<C-u>vsplit<CR>
+nnoremap sq :<C-u>q<CR>
 
-function! s:vsplit_or_wincmdw()
-    if winnr('$') == 1
-        return ":vsplit\<CR>"
-    else
-        return ":wincmd w\<CR>"
-    endif
-endfunction
-nnoremap <expr><silent> ss <SID>vsplit_or_wincmdw()
+" move window
 nnoremap sj <C-w>j
 nnoremap sk <C-w>k
 nnoremap sl <C-w>l
@@ -34,8 +28,22 @@ nnoremap t <Nop>
 nnoremap <silent> [Space]t :<C-u>tabclose<CR>:<C-u>tabnew<CR>
 nnoremap <silent> tt :<C-u>tabnew<CR>
 nnoremap <silent> tT :<C-u>tabnew<CR>:<C-u>tabprev<CR>
-nnoremap <silent> tc :<C-u>tabclose<CR>
+nnoremap <silent> tq :<C-u>tabclose<CR>
 nnoremap <silent> to :<C-u>tabonly<CR>
+
+" move tab
+nnoremap tn gt
+nnoremap tp gT
+
+" setting tab width, height
+call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
+call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
+call submode#enter_with('bufmove', 'n', '', 's+', '<C-w>+')
+call submode#enter_with('bufmove', 'n', '', 's-', '<C-w>-')
+call submode#map('bufmove', 'n', '', '>', '<C-w>>')
+call submode#map('bufmove', 'n', '', '<', '<C-w><')
+call submode#map('bufmove', 'n', '', '+', '<C-w>+')
+call submode#map('bufmove', 'n', '', '-', '<C-w>-')
 
 
 if g:plug.is_installed('fzf.vim') " {{{1
