@@ -61,6 +61,13 @@ if g:plug.is_installed('vim-airline') " {{{1
 
 endif
 
+if g:plug.is_installed('wmgraphviz.vim') " {{{1
+    let g:WMGraphviz_dot = "dot"
+    let g:wmgraphviz_output = "pdf"
+    let g:WMGraphviz_viewer = "open"
+    let g:WMGraphviz_shelloptions = ""
+
+endif
 
 " __END__ {{{1
 " vim:fdm=marker expandtab fdc=3:

@@ -52,6 +52,7 @@ if g:plug.ready() && g:env.vimrc.plugin_on
 
     Plug 'plasticboy/vim-markdown',      { 'for': 'markdown' }
     Plug 'kana/vim-submode'
+    Plug 'wannesm/wmgraphviz.vim'
 
     " Add plugins to &runtimepath
     call plug#end()
