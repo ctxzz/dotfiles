@@ -14,7 +14,7 @@ export ERR
 unit1() {
     e_arrow "test bundle.sh..."
 
-    if [ -f $DOTPATH/etc/init/osx/bundle.sh ]; then
+    if [ -f $DOTPATH/etc/init/osx/20_bundle.sh ]; then
         e_success "check if init script exists" | e_indent
     else
         e_failure "$0: $LINENO: $FUNCNAME"
