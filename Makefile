@@ -9,6 +9,7 @@ help:
 	@echo "make list		#=> Show dot files in this repo"
 	@echo "make deploy		#=> Create symlink to home directory"
 	@echo "make init		#=> Setup environment settings"
+	@echo "make test		#=> Test dotfils and init scripts"
 	@echo "make update		#=> Fetch changes for this repo"
 	@echo "make install		#=> Run make update, deploy, init"
 	@echo "make clean		#=> Remove the dot files and this repo"
@@ -23,6 +24,9 @@ deploy:
 
 init:
 	@DOTPATH=$(DOTPATH) bash $(DOTPATH)/etc/init/init.sh
+
+test:
+	@DOTPATH=$(DOTPATH) bash $(DOTPATH)/etc/test/test.sh
 
 update:
 	git pull origin master
