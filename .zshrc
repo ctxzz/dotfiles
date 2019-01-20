@@ -13,6 +13,12 @@ if [[ -x ~/bin/tmuxx ]]; then
     ~/bin/tmuxx
 fi
 
+if [[ -d ~/.zplug ]]; then
+	git clone https://github.com/zplug/zplug ~/.zplug
+    source ~/.zplug/zplug
+    zplug update --self
+fi
+
 if [[ -f ~/.zplug/init.zsh ]]; then
     export ZPLUG_LOADFILE=~/.zsh/zplug.zsh
     source ~/.zplug/init.zsh
@@ -30,3 +36,15 @@ fi
 if [[ -f ~/.zshrc.local ]]; then
     source ~/.zshrc.local
 fi
+
+local f
+local -a lpath
+[[ -d ~/.zsh ]]     && lpath=(~/.zsh/[0-9]*.(sh|zsh)   $lpath)
+
+for f in $lpath[@]
+do
+	# not execute files
+    if [[ ! -x $f ]]; then
+      	source "$f" && echo "loading $f" | e_indent 2
+    fi
+done
