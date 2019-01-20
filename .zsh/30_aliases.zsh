@@ -65,6 +65,8 @@ alias vi="vim"
 # Use plain vim.
 alias nvim='vim -N -u NONE -i NONE'
 
+alias gcd='cd $(ghq root)/$(ghq list | peco)'
+
 # The first word of each simple command, if unquoted, is checked to see 
 # if it has an alias. [...] If the last character of the alias value is 
 # a space or tab character, then the next command word following the 
