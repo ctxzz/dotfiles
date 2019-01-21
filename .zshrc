@@ -37,14 +37,29 @@ if [[ -f ~/.zshrc.local ]]; then
     source ~/.zshrc.local
 fi
 
-local f
-local -a lpath
-[[ -d ~/.zsh ]]     && lpath=(~/.zsh/[0-9]*.(sh|zsh)   $lpath)
 
-for f in $lpath[@]
-do
-	# not execute files
-    if [[ ! -x $f ]]; then
-      	source "$f" && echo "loading $f"
-    fi
-done
+if [[ -d ~/.zsh ]]; then
+    for f in ~/.zsh/[0-9]*.(sh|zsh)
+    do
+        # not excute files
+        if [[ ! -x $f ]]; then
+            source "$f" && echo "loading $f"
+        fi
+    done
+
+	printf "\n"
+	printf "$fg_bold[cyan] This is ZSH $fg_bold[red]$ZSH_VERSION"
+	printf "$fg_bold[cyan] - DISPLAY on $fg_bold[red]$DISPLAY$reset_color\n\n"
+fi
+
+#local f
+#local -a lpath
+#[[ -d ~/.zsh ]]     && lpath=(~/.zsh/[0-9]*.(sh|zsh)   $lpath)
+#
+#for f in $lpath[@]
+#do
+#	# not execute files
+#   if [[ ! -x $f ]]; then
+#      	source "$f" && echo "loading $f"
+#    fi
+#done
