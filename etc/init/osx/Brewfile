@@ -38,6 +38,7 @@ brew 'wget'
 brew 'yarn'
 brew 'z'
 brew 'zsh'
+brew 'zsh-completions'
 
 cask 'alfred'
 cask 'caffeine'
