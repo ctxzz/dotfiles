@@ -35,17 +35,6 @@ nnoremap <silent> to :<C-u>tabonly<CR>
 nnoremap tn gt
 nnoremap tp gT
 
-" setting tab width, height
-call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
-call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
-call submode#enter_with('bufmove', 'n', '', 's+', '<C-w>+')
-call submode#enter_with('bufmove', 'n', '', 's-', '<C-w>-')
-call submode#map('bufmove', 'n', '', '>', '<C-w>>')
-call submode#map('bufmove', 'n', '', '<', '<C-w><')
-call submode#map('bufmove', 'n', '', '+', '<C-w>+')
-call submode#map('bufmove', 'n', '', '-', '<C-w>-')
-
-
 if g:plug.is_installed('fzf.vim') " {{{1
     " Mapping selecting mappings
     nmap <leader><tab> <plug>(fzf-maps-n)
