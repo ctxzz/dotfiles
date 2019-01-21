@@ -2,6 +2,11 @@
 
 
 ## Installation 
+### Quick installation
+To quickly install:
+```console
+$ curl -sL dot.omata.me | sh
+```
 
 ## Credits
 
