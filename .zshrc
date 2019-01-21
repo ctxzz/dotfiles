@@ -9,9 +9,8 @@ fi
 
 # tmux_automatically_attach attachs tmux session
 # automatically when your are in zsh
-echo "weiweiwei"
+
 if [[ -x ~/bin/tmuxx ]]; then
-    echo "gogogog ogo"
     ~/bin/tmuxx
 fi
 
