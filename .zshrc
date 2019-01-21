@@ -13,7 +13,7 @@ if [[ -x ~/bin/tmuxx ]]; then
     ~/bin/tmuxx
 fi
 
-if [[ -d ~/.zplug ]]; then
+if [[ ! -d ~/.zplug ]]; then
 	git clone https://github.com/zplug/zplug ~/.zplug
     source ~/.zplug/zplug
     zplug update --self
@@ -45,6 +45,6 @@ for f in $lpath[@]
 do
 	# not execute files
     if [[ ! -x $f ]]; then
-      	source "$f" && echo "loading $f" | e_indent 2
+      	source "$f" && echo "loading $f"
     fi
 done
