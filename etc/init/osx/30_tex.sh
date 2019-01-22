@@ -27,14 +27,16 @@ if ! has "perl"; then
 fi
 
 sudo tlmgr update --self --all
-sudo tlmgr repository add http://contrib.texlive.info/current tlcontrib
-sudo tlmgr pinning add tlcontrib '*'
-sudo tlmgr install uplatex latexmk japanese-otf-nonfree japanese-otf-uptex-nonfree ptex-fontmaps-macos cjk-gs-integrate-macos
-sudo cjk-gs-integrate --link-texmf --cleanup
-sudo perl ~/.dotfiles/etc/init/osx/tmp_tex_patch.pl --link-texmf
-sudo mktexlsr
-sudo kanji-config-updmap-sys --jis2004 hiragino-highsierra-pron
 
+if ! has "latexmk"; then
+    sudo tlmgr repository add http://contrib.texlive.info/current tlcontrib
+    sudo tlmgr pinning add tlcontrib '*'
+    sudo tlmgr install uplatex latexmk japanese-otf-nonfree japanese-otf-uptex-nonfree ptex-fontmaps-macos cjk-gs-integrate-macos
+    sudo cjk-gs-integrate --link-texmf --cleanup
+    sudo perl ~/.dotfiles/etc/init/osx/tmp_tex_patch.pl --link-texmf
+    sudo mktexlsr
+    sudo kanji-config-updmap-sys --jis2004 hiragino-highsierra-pron
+fi
 
 #if [[ -d /usr/local/texlive/2018/texmf-dist/scripts/cjk-gs-integrate ]]; then
 #    cd /usr/local/texlive/2018/texmf-dist/scripts/cjk-gs-integrate
