@@ -21,7 +21,26 @@ if ! has "tlmgr"; then
     exit 1
 fi
 
+if ! has "perl"; then
+    log_fail "error: require: perl"
+    exit 1
+fi
+
 sudo tlmgr update --self --all
-sudo tlmgr install uplatex latexmk collection-langjapanese
+sudo tlmgr repository add http://contrib.texlive.info/current tlcontrib
+sudo tlmgr pinning add tlcontrib '*'
+sudo tlmgr install uplatex latexmk japanese-otf-nonfree japanese-otf-uptex-nonfree ptex-fontmaps-macos cjk-gs-integrate-macos
+sudo cjk-gs-integrate --link-texmf --cleanup
+sudo perl ~/.dotfiles/etc/init/osx/tmp_tex_patch.pl --link-texmf
+sudo mktexlsr
+sudo kanji-config-updmap-sys --jis2004 hiragino-highsierra-pron
+
+
+#if [[ -d /usr/local/texlive/2018/texmf-dist/scripts/cjk-gs-integrate ]]; then
+#    cd /usr/local/texlive/2018/texmf-dist/scripts/cjk-gs-integrate
+#    sudo perl cjk-gs-integrate.pl --link-texmf --force
+#    sudo mktexlsr
+#    sudo kanji-config-updmap-sys hiragino-highsierra-pron
+#fi
 
 log_pass "tex: installed successfully"

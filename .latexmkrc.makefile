@@ -1,13 +1,15 @@
-INPUT=thesis.tex
+IN=thesis.tex
 
 all:
-    latexmk -pvc $(INPUT)
+	latexmk -pvc $(IN)
 
 clean:
-    latexmk -CA $(INPUT)
-    find . -name *.aux -delete
-    find . -name *.log -delete
-    rm *.bbl
+	latexmk -CA $(IN)
+	find . -name *.aux -delete
+	find . -name *.log -delete
+	rm *.bbl
 
 view:
-    latexmk -pv $(INPUT)
+	latexmk -pv $(IN)
+
+
