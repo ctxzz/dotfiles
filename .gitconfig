@@ -1,10 +1,33 @@
 [user]
 	name = ctxzz
 	email = ctxzz19@gmail.com
+
+[core]
+    editor = vim
+
 [color]
-	diff = auto
-	ui = true
+	ui = auto
 	status = auto
 	branch = auto
-[core]
-	editor = vim
+
+[color "diff"]
+	meta = 242 238
+	frag = 239 236
+	old = 167 normal
+	new = 030 normal
+	context = 240
+	commit = 246 024
+
+[diff]
+	tool      = vimdiff
+	algorithm = histogram
+	compactionHeuristic = true
+
+[merge]
+	tool = vimdiff
+
+[ghq]
+	root = ~/src
+
+[github]
+	user = ctxzz
