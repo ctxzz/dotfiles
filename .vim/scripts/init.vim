@@ -108,7 +108,7 @@ call s:load('option.vim')
 " call s:load('func.vim')
 " call s:load('command.vim')
 " call s:load('utils.vim')
-" call s:load('gui.vim', g:env.is_gui)
+call s:load('gui.vim', g:env.is_gui)
 
 " Must be written at the last.  see :help 'secure'.
 set secure
