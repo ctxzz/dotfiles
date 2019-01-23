@@ -27,6 +27,7 @@ if g:plug.ready() && g:env.vimrc.plugin_on
     Plug 'Shougo/vimproc.vim',  { 'do': 'make' }
     Plug 'vim-jp/vimdoc-ja'
     Plug 'christoomey/vim-tmux-navigator'
+    Plug 'itchyny/lightline.vim'
 
     " syntax? language support
     Plug 'sheerun/vim-polyglot'
