@@ -35,23 +35,12 @@ bindkey -M vicmd '?'   vi-history-search-backward
 bindkey -M vicmd 'gg' beginning-of-line
 bindkey -M vicmd 'G'  end-of-line
 
-if is-at-least 5.0.8; then
-    autoload -Uz surround
-    zle -N delete-surround surround
-    zle -N change-surround surround
-    zle -N add-surround surround
-    bindkey -a cs change-surround
-    bindkey -a ds delete-surround
-    bindkey -a ys add-surround
-    bindkey -a S add-surround
-fi
-
 if false; then
 # bind P and N for EMACS mode
-has 'history-substring-search-up' &&
-    bindkey -M emacs '^P' history-substring-search-up
-has 'history-substring-search-down' &&
-    bindkey -M emacs '^N' history-substring-search-down
+#has 'history-substring-search-up' &&
+#    bindkey -M emacs '^P' history-substring-search-up
+#has 'history-substring-search-down' &&
+#    bindkey -M emacs '^N' history-substring-search-down
 
 # bind k and j for VI mode
 has 'history-substring-search-up' &&
@@ -76,6 +65,7 @@ quote-previous-word-in-single() {
     modify-current-argument '${(qq)${(Q)ARG}}'
     zle vi-forward-blank-word
 }
+
 zle -N quote-previous-word-in-single
 bindkey -M viins '^Q' quote-previous-word-in-single
 
