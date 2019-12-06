@@ -69,5 +69,9 @@ if g:plug.is_installed('wmgraphviz.vim') " {{{1
 
 endif
 
+if g:plug.is_installed('vim-markdown.vim') " {{{1
+    let g:vim_markdown_new_list_item_indent = 2
+endif
+
 " __END__ {{{1
 " vim:fdm=marker expandtab fdc=3:
