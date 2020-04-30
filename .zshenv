@@ -5,6 +5,7 @@ path=( \
     /sbin(N-/) \
     ~/.zplug/bin(N-/) \
     ~/.tmux/bin(N-/) \
+    ~/opt/anaconda3/bin(N-/) \
     "$path[@]" \
     )
 
@@ -36,6 +37,8 @@ export EDITOR=vim
 export CVSEDITOR="${EDITOR}"
 export SVN_EDITOR="${EDITOR}"
 export GIT_EDITOR="${EDITOR}"
+
+eval "$(direnv hook zsh)"
 
 # Pager
 export PAGER=less
