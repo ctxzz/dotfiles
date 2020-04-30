@@ -29,10 +29,13 @@ fi
 sudo tlmgr update --self --all
 
 if ! has "latexmk"; then
-    sudo tlmgr repository add http://contrib.texlive.info/current tlcontrib
-    sudo tlmgr pinning add tlcontrib '*'
+    sudo tlmgr repository add http://contrib.texlive.info/current tlcontrib # comment out if error
+    sudo tlmgr pinning add tlcontrib '*'  # comment out if error
     sudo tlmgr install uplatex latexmk japanese-otf-nonfree japanese-otf-uptex-nonfree ptex-fontmaps-macos cjk-gs-integrate-macos
+    sudo tlmgr install cjk-gs-integrate adobemapping
+    sudo tlmgr path add
     sudo cjk-gs-integrate --link-texmf --cleanup
+    sudo cjk-gs-integrate-macos --link-texmf
     sudo perl ~/.dotfiles/etc/init/osx/tmp_tex_patch.pl --link-texmf
     sudo mktexlsr
     sudo kanji-config-updmap-sys --jis2004 hiragino-highsierra-pron
