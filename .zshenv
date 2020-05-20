@@ -1,6 +1,10 @@
 typeset -gx -U path
 path=( \
     /usr/local/bin(N-/) \
+    /usr/local/sbin(N-/) \
+    /usr/bin(N-/) \
+    /bin(N-/) \
+    /usr/sbin(N-/) \
     ~/bin(N-/) \
     /sbin(N-/) \
     ~/.zplug/bin(N-/) \
