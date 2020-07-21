@@ -32,11 +32,6 @@ zplug "peco/peco", \
     from:gh-r, \
     frozen:1
 
-zplug "motemen/ghq", \
-    as:command, \
-    from:gh-r, \
-    rename-to:ghq
-
 zplug 'tcnksm/ghr',   as:command, hook-build:'go get -d && go build'
 zplug 'knqyf263/pet', as:command, hook-build:'go get -d && go build'
 
