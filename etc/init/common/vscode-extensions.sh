@@ -18,4 +18,5 @@ code --install-extension PKief.material-icon-theme &&
 code --install-extension ritwickdey.LiveServer &&
 code --install-extension shd101wyy.markdown-preview-enhanced &&
 code --install-extension streetsidesoftware.code-spell-checker &&
+code --install-extension taichi.vscode-textlint &&
 code --install-extension yzhang.markdown-all-in-one 
