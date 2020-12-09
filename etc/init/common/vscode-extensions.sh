@@ -1,3 +1,5 @@
+
+code --install-extension aaron-bond.better-comments &&
 code --install-extension alefragnani.Bookmarks &&
 code --install-extension chrmarti.regex &&
 code --install-extension CoenraadS.bracket-pair-colorizer &&
