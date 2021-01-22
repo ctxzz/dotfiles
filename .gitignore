@@ -1,3 +1,6 @@
 .DS_Store
+.gitconfig
 *~
 .zsh/history/
+.vim/autoload/
+.vim/pack/

@@ -1,3 +1,5 @@
+
+code --install-extension aaron-bond.better-comments &&
 code --install-extension alefragnani.Bookmarks &&
 code --install-extension chrmarti.regex &&
 code --install-extension CoenraadS.bracket-pair-colorizer &&
@@ -18,4 +20,5 @@ code --install-extension PKief.material-icon-theme &&
 code --install-extension ritwickdey.LiveServer &&
 code --install-extension shd101wyy.markdown-preview-enhanced &&
 code --install-extension streetsidesoftware.code-spell-checker &&
+code --install-extension taichi.vscode-textlint &&
 code --install-extension yzhang.markdown-all-in-one 
