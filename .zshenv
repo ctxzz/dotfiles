@@ -67,6 +67,7 @@ setopt no_global_rcs
 # Add ~/bin to PATH
 export PATH=~/bin:"$PATH"
 export PATH=/sbin:"$PATH"
+export PATH="/usr/local/opt/curl/bin:$PATH"
 
 # Settings for golang
 export GOPATH="$HOME/golang"
