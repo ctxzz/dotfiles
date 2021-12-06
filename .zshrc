@@ -64,4 +64,6 @@ fi
 #      	source "$f" && echo "loading $f"
 #    fi
 #done
-export PATH="/usr/local/opt/curl/bin:$PATH"
+
+if [ -f "/usr/local/etc/profile.d/z.sh" ]; then
+    . "/usr/local/etc/profile.d/z.sh"
