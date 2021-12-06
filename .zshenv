@@ -69,7 +69,7 @@ export PATH=~/bin:"$PATH"
 export PATH=/sbin:"$PATH"
 
 # Settings for golang
-export GOPATH="$HOME"
+export GOPATH="$HOME/golang"
 export GOBIN="$GOPATH/bin"
 export PATH="$GOBIN:$PATH"
 
@@ -110,3 +110,5 @@ fi
 export INTERACTIVE_FILTER="fzf:peco:percol:gof:pick"
 
 export DOTPATH=${0:A:h}
+
+export LD_LIBRARY_PATH=/usr/local/lib
