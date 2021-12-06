@@ -15,7 +15,7 @@ if [[ -x ~/bin/tmuxx ]]; then
 fi
 
 if [[ ! -d ~/.zplug ]]; then
-	git clone https://github.com/zplug/zplug ~/.zplug
+    git clone https://github.com/zplug/zplug ~/.zplug
     source ~/.zplug/zplug
     zplug update --self
 fi
