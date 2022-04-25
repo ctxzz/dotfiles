@@ -4,3 +4,4 @@
 .zsh/history/
 .vim/autoload/
 .vim/pack/
+.tmux/plugins/
