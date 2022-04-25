@@ -110,3 +110,7 @@ fi
 export INTERACTIVE_FILTER="fzf:peco:percol:gof:pick"
 
 export DOTPATH=${0:A:h}
+
+
+# CRF++
+export LD_LIBRARY_PATH=/usr/local/lib
