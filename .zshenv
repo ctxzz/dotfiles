@@ -67,9 +67,10 @@ setopt no_global_rcs
 # Add ~/bin to PATH
 export PATH=~/bin:"$PATH"
 export PATH=/sbin:"$PATH"
+export PATH="/usr/local/opt/curl/bin:$PATH"
 
 # Settings for golang
-export GOPATH="$HOME"
+export GOPATH="$HOME/golang"
 export GOBIN="$GOPATH/bin"
 export PATH="$GOBIN:$PATH"
 
@@ -110,7 +111,6 @@ fi
 export INTERACTIVE_FILTER="fzf:peco:percol:gof:pick"
 
 export DOTPATH=${0:A:h}
-
 
 # CRF++
 export LD_LIBRARY_PATH=/usr/local/lib

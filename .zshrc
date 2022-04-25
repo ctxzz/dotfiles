@@ -15,7 +15,7 @@ if [[ -x ~/bin/tmuxx ]]; then
 fi
 
 if [[ ! -d ~/.zplug ]]; then
-	git clone https://github.com/zplug/zplug ~/.zplug
+    git clone https://github.com/zplug/zplug ~/.zplug
     source ~/.zplug/zplug
     zplug update --self
 fi
@@ -64,4 +64,7 @@ fi
 #      	source "$f" && echo "loading $f"
 #    fi
 #done
-export PATH="/usr/local/opt/curl/bin:$PATH"
+
+if [ -f "/usr/local/etc/profile.d/z.sh" ]; then
+    . "/usr/local/etc/profile.d/z.sh"
+fi

@@ -15,6 +15,9 @@ if zplug check "b4b4r07/enhancd"; then
 fi
 zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-autosuggestions"
+
+zplug "chrissicool/zsh-256color"
 
 zplug "stedolan/jq", \
     as:command, \
@@ -49,5 +52,4 @@ zplug 'andialbrecht/sqlparse', \
 
 zplug mafredri/zsh-async, from:github
 zplug sindresorhus/pure, use:pure.zsh, from:github, as:theme
-
 

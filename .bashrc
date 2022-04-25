@@ -129,7 +129,7 @@ trap _exit EXIT
 [ -z "$TMPDIR" ] && TMPDIR=/tmp
 
 ### Global
-export GOPATH=~/src
+export GOPATH=~/golang
 mkdir -p $GOPATH 2>/dev/null
 export EDITOR=vim
 export LANG=en_US.UTF-8
