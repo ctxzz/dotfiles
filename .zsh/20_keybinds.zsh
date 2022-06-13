@@ -77,7 +77,7 @@ quote-previous-word-in-double() {
 zle -N quote-previous-word-in-double
 bindkey -M viins '^Xq' quote-previous-word-in-double
 
-bindkey -M viins "$terminfo[kcbt]" reverse-menu-complete
+bindkey -M viins "\e[Z" reverse-menu-complete
 
 #bindkey -s 'vv' "!vi\n"
 #bindkey -s ':q' "^A^Kexit\n"
