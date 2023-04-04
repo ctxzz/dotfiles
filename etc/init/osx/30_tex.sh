@@ -17,7 +17,7 @@ fi
 
 if ! has "tlmgr"; then
     log_fail "error: require: add path to tlmgr"
-	echo "hint: sudo /usr/local/texlive/2021basic/bin/universal-darwin/tlmgr path add"
+	echo "hint: sudo /usr/local/texlive/2023/bin/universal-darwin/tlmgr path add"
     exit 1
 fi
 
