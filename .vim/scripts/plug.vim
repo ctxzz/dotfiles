@@ -25,7 +25,6 @@ if g:plug.ready() && g:env.vimrc.plugin_on
     Plug 'benmills/vimux'
     Plug 'tpope/vim-surround'
     Plug 'Shougo/vimproc.vim',  { 'do': 'make' }
-    Plug 'vim-jp/vimdoc-ja'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'itchyny/lightline.vim'
 
