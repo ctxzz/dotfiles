@@ -74,6 +74,12 @@ export GOPATH="$HOME/golang"
 export GOBIN="$GOPATH/bin"
 export PATH="$GOBIN:$PATH"
 
+# Settings for node
+export PATH="$HOME/.nodebrew/current/bin:$PATH"
+
+# Settings for pipx
+export PATH="$PATH:$HOME/.local/bin"
+
 # declare the environment variables
 export CORRECT_IGNORE='_*'
 export CORRECT_IGNORE_FILE='.*'
