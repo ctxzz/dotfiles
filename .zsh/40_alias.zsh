@@ -1,23 +1,4 @@
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
-
-# Skip if running from Vim
-[ -n "$VIMRUNTIME" ] && return
-
-# Basic settings
-export EDITOR=vim
-export LANG=en_US.UTF-8
-export PAGER=less
-export LESS='-i -N -w -z-4 -g -e -M -X -F -R -P%t?f%f :stdin .?pb%pb\%:?lbLine %lb:?bbByte %bb:-...'
-export LESSCHARSET='utf-8'
-
-# History settings
-export HISTCONTROL=ignoreboth:erasedups
-export HISTTIMEFORMAT="%Y/%m/%d %H:%M:%S:   "
-export HISTSIZE=50000
-export HISTFILESIZE=50000
-
-# Basic aliases
+# 基本コマンドのエイリアス
 alias ls='ls -G'
 alias ll='ls -l'
 alias la='ls -A'
@@ -29,11 +10,33 @@ alias mv='mv -i'
 alias mkdir='mkdir -p'
 alias df='df -h'
 alias du='du -h'
+alias free='free -m'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias diff='diff -u'
-alias vi='vim'
+
+# Git関連のエイリアス
+alias git='git'
+alias ga='git add'
+alias gd='git diff'
+alias gs='git status'
+alias gp='git push'
+alias gb='git branch'
+alias gst='git status'
+alias gco='git checkout'
+alias gf='git fetch'
+alias gc='git commit'
+alias gcm='git commit -m'
+alias gpl='git pull'
+alias gcl='git clone'
+alias gl='git log'
+alias glo='git log --oneline'
+alias glg='git log --graph'
+alias gst='git stash'
+alias gstp='git stash pop'
+
+# ディレクトリ移動のエイリアス
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -41,56 +44,39 @@ alias .....='cd ../../../..'
 alias ~='cd ~'
 alias -- -='cd -'
 
-# Git aliases
-alias g='git'
-alias gst='git status'
-alias gd='git diff'
-alias gc='git commit'
-alias gco='git checkout'
-alias gp='git push'
-alias gpl='git pull'
-alias gl='git log'
-alias glo='git log --oneline'
-alias glg='git log --graph'
+# プロセスのエイリアス
+alias ps='ps aux'
+alias psg='ps aux | grep'
 
-# Quick directory navigation
-alias c='clear'
-alias h='history'
-alias j='jobs -l'
-alias path='echo -e ${PATH//:/\\n}'
-alias now='date +"%T"'
-alias nowtime=now
-alias nowdate='date +"%d-%m-%Y"'
-
-# System aliases
+# システム関連のエイリアス
 alias sudo='sudo '
 alias su='su -'
 alias reboot='sudo reboot'
 alias shutdown='sudo shutdown -h now'
 alias poweroff='sudo poweroff'
 
-# Network aliases
+# ネットワーク関連のエイリアス
 alias ip='ip -color'
 alias ipconfig='ifconfig'
 alias netstat='netstat -tulanp'
 alias ports='netstat -tulanp'
 alias listen='lsof -i'
 
-# Development aliases
+# 開発関連のエイリアス
 alias py='python'
 alias py3='python3'
 alias pip='pip3'
 alias venv='python3 -m venv'
 alias activate='source venv/bin/activate'
 
-# Docker aliases
+# Docker関連のエイリアス
 alias d='docker'
 alias dc='docker-compose'
 alias dps='docker ps'
 alias di='docker images'
 alias dex='docker exec -it'
 
-# Kubernetes aliases
+# Kubernetes関連のエイリアス
 alias k='kubectl'
 alias kg='kubectl get'
 alias kd='kubectl describe'
@@ -98,11 +84,22 @@ alias kl='kubectl logs'
 alias ka='kubectl apply -f'
 alias kx='kubectl exec -it'
 
-# Exit aliases
+# その他の便利なエイリアス
+alias c='clear'
+alias h='history'
+alias j='jobs -l'
+alias path='echo -e ${PATH//:/\\n}'
+alias now='date +"%T"'
+alias nowtime=now
+alias nowdate='date +"%d-%m-%Y"'
+alias vi='vim'
+alias v='vim'
+alias s='source'
+alias zshrc='vim ~/.zshrc'
+alias reload='source ~/.zshrc'
+alias cls='clear'
 alias q='exit'
 alias :q='exit'
 alias bye='exit'
 alias quit='exit'
-alias x='exit'
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+alias x='exit' 

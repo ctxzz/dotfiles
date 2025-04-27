@@ -9,32 +9,87 @@ set -eu
 # For more information, see etc/README.md
 . "$DOTPATH"/etc/lib/vital.sh
 
+# OS detection function
+is_osx() {
+    [ "$(get_os)" = "osx" ]
+}
+
 # This script is only supported with OS X
 if ! is_osx; then
-    log_fail "error: this script is only supported with osx"
+    e_failure "error: this script is only supported with macOS"
     exit 1
 fi
 
+# Check if Homebrew is already installed
 if has "brew"; then
-    log_pass "brew: already installed"
-    exit
+    e_success "Homebrew: already installed"
+    
+    # Update Homebrew
+    e_header "Updating Homebrew..."
+    brew update || e_failure "Failed to update Homebrew"
+    
+    # Upgrade all packages
+    e_header "Upgrading packages..."
+    brew upgrade || e_warning "Some packages failed to upgrade"
+    
+    # Doctor check
+    e_header "Running brew doctor..."
+    brew doctor || e_warning "Some issues were found by brew doctor"
+    
+    exit 0
 fi
 
-# The script is dependent on ruby
-if ! has "ruby"; then
-    log_fail "error: require: ruby"
+# Check for required dependencies
+if ! has "curl"; then
+    e_failure "error: curl is required for Homebrew installation"
     exit 1
 fi
 
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# Install Homebrew
+e_header "Installing Homebrew..."
+NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || {
+    e_failure "Failed to install Homebrew"
+    exit 1
+}
 
-if has "brew"; then
-    brew doctor
+# Set Homebrew environment variables based on architecture
+if [ "$(uname -m)" = "arm64" ]; then
+    # For Apple Silicon
+    BREW_PATH="/opt/homebrew"
 else
-    log_fail "error: brew: failed to install"
-    exit 1
+    # For Intel
+    BREW_PATH="/usr/local"
 fi
 
-log_pass "brew: installed successfully"
+# Add Homebrew to PATH
+if [ -f "$HOME/.zprofile" ]; then
+    if ! grep -q "eval \"\$(${BREW_PATH}/bin/brew shellenv)\"" "$HOME/.zprofile"; then
+        echo "eval \"\$(${BREW_PATH}/bin/brew shellenv)\"" >> "$HOME/.zprofile"
+        e_header "Added Homebrew to .zprofile"
+    fi
+fi
+
+if [ -f "$HOME/.zshrc" ]; then
+    if ! grep -q "eval \"\$(${BREW_PATH}/bin/brew shellenv)\"" "$HOME/.zshrc"; then
+        echo "eval \"\$(${BREW_PATH}/bin/brew shellenv)\"" >> "$HOME/.zshrc"
+        e_header "Added Homebrew to .zshrc"
+    fi
+fi
+
+# Initialize Homebrew environment
+eval "$("$BREW_PATH/bin/brew" shellenv)"
+
+# Verify installation
+if has "brew"; then
+    e_header "Running brew doctor for initial check..."
+    brew doctor || e_warning "Some issues were found by brew doctor"
+    
+    # Install essential formulae
+    e_header "Installing essential formulae..."
+    brew install git || e_warning "Failed to install git"
+    
+    e_success "Homebrew installation completed successfully"
+else
+    e_failure "error: Homebrew installation failed"
+    exit 1
+fi

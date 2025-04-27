@@ -2,29 +2,7 @@ if !exists('g:env')
     finish
 endif
 
-function! s:echomsg(hl, msg) "{{{1
-    execute 'echohl' a:hl
-    try
-        echomsg a:msg
-    finally
-        echohl None
-    endtry
-endfunction
-
-function! Error(msg) abort "{{{1
-    echohl ErrorMsg
-    echo 'ERROR: ' . a:msg
-    echohl None
-    return g:false
-endfunction
-
-function! Warn(msg) abort "{{{1
-    echohl WarningMsg
-    echo 'WARNING: ' . a:msg
-    echohl None
-    return g:true
-endfunction
-
+" File operations
 function! s:rm(...) "{{{1
     let files = []
     for file in a:0 ? map(copy(a:000), 'expand(v:val)') : split(simplify(expand('%:p')))
@@ -53,83 +31,7 @@ function! s:rm(...) "{{{1
     echo len(files) ? "Removed " . string(files) . "!" : "Removed nothing"
 endfunction
 
-function! s:rand(n) "{{{1
-    let match_end = matchend(reltimestr(reltime()), '\d\+\.') + 1
-    return reltimestr(reltime())[match_end : ] % (a:n + 1)
-endfunction
-
-function! s:random_string(n)
-    let n = a:n ==# '' ? 8 : a:n
-    let s = []
-    let chars = split('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', '\ze')
-    let max = len(chars) - 1
-    for x in range(n)
-        call add(s, (chars[s:rand(max)]))
-    endfor
-    let @+ = join(s, '')
-    return join(s, '')
-endfunction
-
-function! Random(n) abort
-    return s:random_string(a:n)
-endfunction
-
-function! s:mkdir(dir) "{{{1
-    if !exists("*mkdir")
-        return g:false
-    endif
-
-    let dir = expand(a:dir)
-    if isdirectory(dir)
-        return g:true
-    endif
-
-    return mkdir(dir, "p")
-endfunction
-
-function! Mkdir(dir) abort
-    return s:mkdir(a:dir)
-endfunction
-
-function! s:has_plugin(name) "{{{1
-    " Check {name} plugin whether there is in the runtime path
-    let nosuffix = a:name =~? '\.vim$' ? a:name[:-5] : a:name
-    let suffix   = a:name =~? '\.vim$' ? a:name      : a:name . '.vim'
-    return &rtp =~# '\c\<' . nosuffix . '\>'
-                \   || globpath(&rtp, suffix, 1) != ''
-                \   || globpath(&rtp, nosuffix, 1) != ''
-                \   || globpath(&rtp, 'autoload/' . suffix, 1) != ''
-                \   || globpath(&rtp, 'autoload/' . tolower(suffix), 1) != ''
-endfunction
-
-function! GetBufname(bufnr, ...) "{{{1
-    let bufname = bufname(a:bufnr)
-    if bufname =~# '^[[:alnum:].+-]\+:\\\\'
-        let bufname = substitute(bufname, '\\', '/', 'g')
-    endif
-    let buftype = getbufvar(a:bufnr, '&buftype')
-    if bufname ==# ''
-        if buftype ==# ''
-            return '[No Name]'
-        elseif buftype ==# 'quickfix'
-            return '[Quickfix List]'
-        elseif buftype ==# 'nofile' || buftype ==# 'acwrite'
-            return '[Scratch]'
-        endif
-    endif
-    if buftype ==# 'nofile' || buftype ==# 'acwrite'
-        return bufname
-    endif
-    if a:0 && a:1 ==# 't'
-        return fnamemodify(bufname, ':t')
-    elseif a:0 && a:1 ==# 'f'
-        return (fnamemodify(bufname, ':~:p'))
-    elseif a:0 && a:1 ==# 's'
-        return pathshorten(fnamemodify(bufname, ':~:h')).'/'.fnamemodify(bufname, ':t')
-    endif
-    return bufname
-endfunction
-
+" File listing
 command! -nargs=? -complete=file -bang Ls2 call s:ls('<args>', '<bang>')
 function! s:ls(path, bang)
     let path = empty(a:path) ? getcwd() : expand(a:path)
@@ -204,4 +106,4 @@ function! s:ls(path, bang)
 endfunction
 
 " __END__ {{{1
-" vim:fdm=marker expandtab fdc=3:
+" vim:fdm=marker expandtab fdc=3: 

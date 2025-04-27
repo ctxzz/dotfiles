@@ -1,19 +1,25 @@
+# 基本設定
 umask 022
 limit coredumpsize 0
-bindkey -d
 
-# Return if zsh is called from Vim
+# プロンプト設定
+if [[ -n "$TMUX" ]]; then
+    PROMPT='%n$ '
+else
+    PROMPT='%n$ '
+fi
+
+# Vimから呼び出された場合は設定をスキップ
 if [[ -n $VIMRUNTIME ]]; then
     return 0
 fi
 
-# tmux_automatically_attach attachs tmux session
-# automatically when your are in zsh
+# tmuxの自動アタッチ（無効化）
+# if [[ -x ~/bin/tmuxx ]]; then
+#     ~/bin/tmuxx
+# fi
 
-if [[ -x ~/bin/tmuxx ]]; then
-    ~/bin/tmuxx
-fi
-
+# zplugの初期化
 if [[ ! -d ~/.zplug ]]; then
     export ZPLUG_HOME=~/.zplug
     git clone https://github.com/zplug/zplug $ZPLUG_HOME
@@ -34,39 +40,31 @@ if [[ -f ~/.zplug/init.zsh ]]; then
     zplug load
 fi
 
+# ローカル設定の読み込み
 if [[ -f ~/.zshrc.local ]]; then
     source ~/.zshrc.local
 fi
 
-
+# zsh設定ファイルの読み込み
 if [[ -d ~/.zsh ]]; then
     for f in ~/.zsh/[0-9]*.(sh|zsh)
     do
-        # not excute files
         if [[ ! -x $f ]]; then
             source "$f" && echo "loading $f"
         fi
     done
 
-	printf "\n"
-	printf "$fg_bold[cyan] This is ZSH $fg_bold[red]$ZSH_VERSION"
-	printf "$fg_bold[cyan] - DISPLAY on $fg_bold[red]$DISPLAY$reset_color\n\n"
+    printf "\n"
+    printf "$fg_bold[cyan] This is ZSH $fg_bold[red]$ZSH_VERSION"
+    printf "$fg_bold[cyan] - DISPLAY on $fg_bold[red]$DISPLAY$reset_color\n\n"
 fi
 
-#local f
-#local -a lpath
-#[[ -d ~/.zsh ]]     && lpath=(~/.zsh/[0-9]*.(sh|zsh)   $lpath)
-#
-#for f in $lpath[@]
-#do
-#	# not execute files
-#   if [[ ! -x $f ]]; then
-#      	source "$f" && echo "loading $f"
-#    fi
-#done
-
+# z（ディレクトリジャンプ）の設定
 if [ -f "/usr/local/etc/profile.d/z.sh" ]; then
     . "/usr/local/etc/profile.d/z.sh"
 fi
 
+# Homebrewの設定
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

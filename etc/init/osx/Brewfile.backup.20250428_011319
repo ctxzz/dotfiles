@@ -24,7 +24,7 @@ brew "tree"
 brew "bat"  # Better cat
 brew "z"    # Directory jumper
 brew "ripgrep"  # Better grep
-brew "eza"  # Better ls (replacement for exa)
+brew "exa"  # Better ls
 brew "delta"  # Better git diff
 brew "tldr"  # Simplified man pages
 brew "jq"  # JSON processor

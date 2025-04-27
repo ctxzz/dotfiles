@@ -8,6 +8,13 @@ _SPACE_=' '
 _BLANK_="${_SPACE_}${_TAB_}"
 _IFS_="$IFS"
 
+# 色の定義
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
 vitalize() {
     return 0
 }
@@ -66,8 +73,7 @@ is_at_least() {
 
 # ostype returns the lowercase OS name
 ostype() {
-    # shellcheck disable=SC2119
-    uname | lower
+    uname | tr '[:upper:]' '[:lower:]'
 }
 
 # os_detect export the PLATFORM variable as you see fit
@@ -77,6 +83,9 @@ os_detect() {
         *'linux'*)  PLATFORM='linux'   ;;
         *'darwin'*) PLATFORM='osx'     ;;
         *'bsd'*)    PLATFORM='bsd'     ;;
+        *'msys'*)   PLATFORM='win'     ;;
+        *'cygwin'*) PLATFORM='win'     ;;
+        *'mingw'*)  PLATFORM='win'     ;;
         *)          PLATFORM='unknown' ;;
     esac
 }
@@ -112,14 +121,26 @@ is_bsd() {
     fi
 }
 
+# is_win returns true if running OS is Windows
+is_win() {
+    os_detect
+    if [ "$PLATFORM" = "win" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # get_os returns OS name of the platform that is running
 get_os() {
     local os
     for os in osx linux bsd; do
-        if is_$os; then
-            echo $os
+        if [ "$(ostype)" = "$os" ]; then
+            echo "$os"
+            return 0
         fi
     done
+    return 1
 }
 
 e_newline() {
@@ -127,7 +148,7 @@ e_newline() {
 }
 
 e_header() {
-    printf " \033[37;1m%s\033[m\n" "$*"
+    printf "\n${BLUE}==>${NC} %s\n" "$1"
 }
 
 e_error() {
@@ -135,7 +156,7 @@ e_error() {
 }
 
 e_warning() {
-    printf " \033[31m%s\033[m\n" "$*"
+    printf "${YELLOW}!${NC} %s\n" "$*"
 }
 
 e_done() {
@@ -158,11 +179,11 @@ e_indent() {
 }
 
 e_success() {
-    printf " \033[37;1m%s\033[m%s...\033[32mOK\033[m\n" "✔ " "$*"
+    printf "${GREEN}✓${NC} %s\n" "$1"
 }
 
 e_failure() {
-    die "${1:-$FUNCNAME}"
+    printf "${RED}✗${NC} %s\n" "$1"
 }
 
 ink() {
@@ -612,3 +633,140 @@ fi
 
 # __END__ {{{1
 # vim:fdm=marker
+
+# 共通のユーティリティ関数を読み込む
+. "$DOTPATH"/etc/lib/vital.sh
+
+# インストールオプション
+INSTALL_OPTIONS=(
+    "all"           # すべての設定をインストール
+    "zsh"           # Zsh設定のみ
+    "vim"           # Vim設定のみ
+    "git"           # Git設定のみ
+    "osx"           # macOS固有の設定
+    "linux"         # Linux固有の設定
+)
+
+# インストール対象の選択
+select_install_options() {
+    echo "インストールする設定を選択してください:"
+    select opt in "${INSTALL_OPTIONS[@]}"; do
+        case $opt in
+            "all")
+                INSTALL_TARGETS=("${INSTALL_OPTIONS[@]:1}")
+                break
+                ;;
+            "zsh"|"vim"|"git"|"osx"|"linux")
+                INSTALL_TARGETS=("$opt")
+                break
+                ;;
+            *)
+                echo "無効な選択です。再度選択してください。"
+                ;;
+        esac
+    done
+}
+
+# インストール前の確認
+confirm_installation() {
+    echo "以下の設定をインストールします:"
+    for target in "${INSTALL_TARGETS[@]}"; do
+        echo "  - $target"
+    done
+    read -p "続行しますか？ (y/N): " answer
+    [[ "$answer" =~ ^[Yy]$ ]] || exit 1
+}
+
+# バックアップの作成
+create_backup() {
+    local target="$1"
+    local backup_dir="$HOME/.dotfiles_backup/$(date +%Y%m%d_%H%M%S)"
+    
+    mkdir -p "$backup_dir"
+    
+    case "$target" in
+        "zsh")
+            [ -f "$HOME/.zshrc" ] && cp "$HOME/.zshrc" "$backup_dir/"
+            [ -d "$HOME/.zsh" ] && cp -r "$HOME/.zsh" "$backup_dir/"
+            ;;
+        "vim")
+            [ -f "$HOME/.vimrc" ] && cp "$HOME/.vimrc" "$backup_dir/"
+            [ -d "$HOME/.vim" ] && cp -r "$HOME/.vim" "$backup_dir/"
+            ;;
+        "git")
+            [ -f "$HOME/.gitconfig" ] && cp "$HOME/.gitconfig" "$backup_dir/"
+            [ -f "$HOME/.gitignore" ] && cp "$HOME/.gitignore" "$backup_dir/"
+            ;;
+    esac
+    
+    echo "バックアップを作成しました: $backup_dir"
+}
+
+# インストール処理
+install_target() {
+    local target="$1"
+    
+    case "$target" in
+        "zsh")
+            e_header "Zsh設定をインストール中..."
+            create_backup "zsh"
+            ln -sf "$DOTPATH/.zshrc" "$HOME/.zshrc"
+            ln -sf "$DOTPATH/.zsh" "$HOME/.zsh"
+            e_done "Zsh設定"
+            ;;
+        "vim")
+            e_header "Vim設定をインストール中..."
+            create_backup "vim"
+            ln -sf "$DOTPATH/.vimrc" "$HOME/.vimrc"
+            ln -sf "$DOTPATH/.vim" "$HOME/.vim"
+            e_done "Vim設定"
+            ;;
+        "git")
+            e_header "Git設定をインストール中..."
+            create_backup "git"
+            ln -sf "$DOTPATH/.gitconfig" "$HOME/.gitconfig"
+            ln -sf "$DOTPATH/.gitignore" "$HOME/.gitignore"
+            e_done "Git設定"
+            ;;
+        "osx")
+            if is_osx; then
+                e_header "macOS固有の設定をインストール中..."
+                source "$DOTPATH/etc/init/osx/init.sh"
+                e_done "macOS設定"
+            else
+                e_warning "macOS以外の環境ではスキップされます"
+            fi
+            ;;
+        "linux")
+            if is_linux; then
+                e_header "Linux固有の設定をインストール中..."
+                source "$DOTPATH/etc/init/linux/init.sh"
+                e_done "Linux設定"
+            else
+                e_warning "Linux以外の環境ではスキップされます"
+            fi
+            ;;
+    esac
+}
+
+# メイン処理
+main() {
+    # オプションの選択
+    select_install_options
+    
+    # インストールの確認
+    confirm_installation
+    
+    # 各ターゲットのインストール
+    for target in "${INSTALL_TARGETS[@]}"; do
+        install_target "$target"
+    done
+    
+    e_success "インストールが完了しました"
+}
+
+# エラーハンドリング
+trap 'e_error "インストールが中断されました"; exit 1' INT TERM
+
+# メイン処理の実行
+main

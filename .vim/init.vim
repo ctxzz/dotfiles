@@ -15,6 +15,15 @@ endif
 let g:false = 0
 let g:true = 1
 
+" Environment variables
+let g:env = {}
+let g:env.is_starting = v:true
+let g:env.vimrc = {
+    \ 'plugin_on': v:true,
+    \ 'manage_rtp_manually': v:false,
+    \ 'check_plug_update': v:false,
+\ }
+
 augroup MyAutoCmd
   autocmd!
 augroup END
@@ -36,7 +45,7 @@ function! s:source(from, ...)
 endfunction
 
 function! s:load(...) abort
-  let base = expand($HOME.'/.vim/scripts')
+  let base = expand($HOME.'/.vim')
   let found = g:true
 
   if len(a:000) > 0
@@ -58,18 +67,21 @@ function! s:load(...) abort
 endfunction
 "}}}
 
-" Init
-if !s:load('env.vim')
-  " Finish if loading env.vim is failed
-  finish
+" Load plugins first
+source ~/.vim/plugins/init.vim
+
+" Load settings
+for s:file in split(glob('~/.vim/settings/*.vim'), '\n')
+    execute 'source' s:file
+endfor
+
+" Load local config if exists
+if filereadable(expand('~/.vim/local.vim'))
+    source ~/.vim/local.vim
 endif
 
-let g:env.vimrc.plugin_on = g:true
-let g:env.vimrc.manage_rtp_manually = g:false
-let g:env.vimrc.plugin_on =
-      \ g:env.vimrc.manage_rtp_manually == g:true
-      \ ? g:false
-      \ : g:env.vimrc.plugin_on
+" Reset is_starting flag
+let g:env.is_starting = v:false
 
 if g:env.is_starting
   " Necesary for lots of cool vim things
@@ -97,18 +109,15 @@ if g:env.is_starting
   endif
 endif
 
-if s:load('plug.vim')
-  call s:load('custom.vim')
+" Load settings
+call s:load('settings/file.vim')
+call s:load('settings/keymap.vim')
+call s:load('settings/ui.vim')
+
+" Load plugins
+if g:env.vimrc.plugin_on
+  call s:load('plugins/init.vim')
 endif
-call s:load('base.vim')
-call s:load('map.vim')
-call s:load('view.vim')
-call s:load('option.vim')
-" call s:load('dein.vim', g:false)
-" call s:load('func.vim')
-" call s:load('command.vim')
-" call s:load('utils.vim')
-call s:load('gui.vim', g:env.is_gui)
 
 " Must be written at the last.  see :help 'secure'.
 set secure

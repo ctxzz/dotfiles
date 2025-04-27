@@ -1,42 +1,6 @@
-# PATHの設定
-typeset -gx -U path
-path=( \
-    /opt/homebrew/bin(N-/) \
-    /usr/local/bin(N-/) \
-    /usr/local/sbin(N-/) \
-    /usr/bin(N-/) \
-    /bin(N-/) \
-    /usr/sbin(N-/) \
-    ~/bin(N-/) \
-    /sbin(N-/) \
-    ~/.zinit/bin(N-/) \
-    ~/.tmux/bin(N-/) \
-    ~/.local/bin(N-/) \
-    ~/.nodebrew/current/bin(N-/) \
-    "$path[@]" \
-    )
-
-# zinitの設定
-export ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-typeset -gA ZINIT
-ZINIT[ZCOMPDUMP_PATH]="${XDG_CACHE_HOME:-${HOME}/.cache}/zcompdump"
-
-# 補完関数のパス設定
-typeset -gx -U fpath
-fpath=( \
-    ~/.zsh/Completion(N-/) \
-    ~/.zsh/functions(N-/) \
-    ~/.zsh/plugins/zsh-completions(N-/) \
-    /usr/local/share/zsh/site-functions(N-/) \
-    $fpath \
-    )
-
-# 基本的な自動読み込み
-autoload -Uz run-help
-autoload -Uz add-zsh-hook
-autoload -Uz colors && colors
-autoload -Uz compinit && compinit -u
-autoload -Uz is-at-least
+# 基本設定
+umask 022
+limit coredumpsize 0
 
 # 言語設定
 export LANGUAGE="en_US.UTF-8"
@@ -49,11 +13,6 @@ export EDITOR=vim
 export CVSEDITOR="${EDITOR}"
 export SVN_EDITOR="${EDITOR}"
 export GIT_EDITOR="${EDITOR}"
-
-# direnvの初期化
-if (( $+commands[direnv] )); then
-    eval "$(direnv hook zsh)"
-fi
 
 # ページャー設定
 export PAGER=less
@@ -72,11 +31,6 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 # ls コマンドの色設定
 export LSCOLORS=exfxcxdxbxegedabagacad
 export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
-
-# Go言語の設定
-export GOPATH="$HOME/golang"
-export GOBIN="$GOPATH/bin"
-export PATH="$GOBIN:$PATH"
 
 # スペル訂正の除外パターン
 export CORRECT_IGNORE='_*'
@@ -100,5 +54,8 @@ fi
 # fzfの設定
 export FZF_DEFAULT_OPTS="--extended --ansi --multi"
 
-# dotfilesのパス
-export DOTPATH=${0:A:h}
+# direnv設定
+eval "$(direnv hook zsh)"
+
+# Homebrewの設定
+eval "$(/opt/homebrew/bin/brew shellenv)" 

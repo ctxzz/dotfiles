@@ -15,29 +15,58 @@ if [ -z "$DOTPATH" ]; then
     exit 1
 fi
 
+# Get OS type
+OS="$(get_os)"
+if [ "$OS" = "unknown" ]; then
+    e_failure "Unknown OS type: $(uname)"
+    exit 1
+fi
+e_header "Detected OS: $OS"
+
 # Ask for the administrator password upfront
-sudo -v
+if [ "$OS" = "osx" ]; then
+    # macOSの場合のみsudoを使用
+    sudo -v || true
+    # Keep-alive: update existing `sudo` time stamp until the script has finished
+    (while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null) &
+fi
 
-# Keep-alive: update existing `sudo` time stamp
-#             until this script has finished
-while true
-do
-    sudo -n true
-    sleep 60;
-    kill -0 "$$" || exit
-done 2>/dev/null &
-
-# shellcheck disable=SC2102
-for i in "$DOTPATH"/etc/init/"$(get_os)"/*.sh
-do
-    if [ -f "$i" ]; then
-        log_info "$(e_arrow "$(basename "$i")")"
+# Define script execution function
+run_script() {
+    local script="$1"
+    if [ -f "$script" ]; then
+        e_header "$(basename "$script")"
         if [ "${DEBUG:-}" != 1 ]; then
-            bash "$i"
+            bash "$script" || {
+                e_failure "Failed to execute: $script"
+                return 1
+            }
         fi
-    else
-        continue
     fi
-done
+}
 
-log_pass "$0: Finish!!" | sed "s $DOTPATH \$DOTPATH g"
+# Run OS-specific scripts
+case "$OS" in
+    "osx")
+        # macOS scripts
+        for i in "$DOTPATH"/etc/init/osx/*.sh; do
+            if [ -f "$i" ]; then
+                run_script "$i"
+            fi
+        done
+        ;;
+    "linux")
+        # Linux scripts
+        for i in "$DOTPATH"/etc/init/linux/*.sh; do
+            if [ -f "$i" ]; then
+                run_script "$i"
+            fi
+        done
+        ;;
+    *)
+        e_failure "Unsupported OS: $OS"
+        exit 1
+        ;;
+esac
+
+e_success "$0: Finish!!" | sed "s $DOTPATH \$DOTPATH g"
