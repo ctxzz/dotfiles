@@ -15,6 +15,19 @@ zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 # ディレクトリ補完の設定
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:cd:*' menu select=2
+zstyle ':completion:*' menu select=2
+zstyle ':completion:*' list-colors 'di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
+
+# cdコマンドの補完設定
+zstyle ':completion:*:cd:*' tag-order local-directories path-directories
+zstyle ':completion:*:cd:*' group-order local-directories path-directories
+zstyle ':completion:*:cd:*' menu yes select
+zstyle ':completion:*:cd:*' force-list always
+zstyle ':completion:*:cd:*' completer _cd
+zstyle ':completion:*:cd:*' file-patterns '*(/):directories'
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+zstyle ':completion:*:cd:*' squeeze-slashes true
 
 # 補完候補の区切り文字
 zstyle ':completion:*' list-separator '-->'

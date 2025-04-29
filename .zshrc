@@ -40,6 +40,10 @@ if [[ -f ~/.zplug/init.zsh ]]; then
     zplug load
 fi
 
+# 補完システムの再初期化
+autoload -Uz compinit
+compinit -C
+
 # ローカル設定の読み込み
 if [[ -f ~/.zshrc.local ]]; then
     source ~/.zshrc.local

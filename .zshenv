@@ -35,8 +35,15 @@ fpath=( \
 autoload -Uz run-help
 autoload -Uz add-zsh-hook
 autoload -Uz colors && colors
-autoload -Uz compinit && compinit -u
+autoload -Uz compinit
 autoload -Uz is-at-least
+
+# 補完システムの初期化
+if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+    compinit
+else
+    compinit -C
+fi
 
 # 言語設定
 export LANGUAGE="en_US.UTF-8"

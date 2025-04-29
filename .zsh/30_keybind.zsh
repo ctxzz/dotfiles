@@ -50,4 +50,14 @@ bindkey -M menuselect '^B' backward-char
 bindkey -M menuselect '^F' forward-char
 bindkey -M menuselect '^G' send-break
 bindkey -M menuselect '^J' accept-and-menu-complete
-bindkey -M menuselect '^M' accept-and-menu-complete 
+bindkey -M menuselect '^M' accept-and-menu-complete
+
+# tmux環境でのキーバインド設定
+if [[ -n $TMUX ]]; then
+    # tmuxでの補完メニュー表示を有効化
+    bindkey -M menuselect '^[[Z' reverse-menu-complete
+    bindkey -M menuselect '^[[A' up-line-or-history
+    bindkey -M menuselect '^[[B' down-line-or-history
+    bindkey -M menuselect '^[[D' backward-char
+    bindkey -M menuselect '^[[C' forward-char
+fi 

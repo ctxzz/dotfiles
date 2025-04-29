@@ -42,14 +42,12 @@ choco install -y inkscape
 choco install -y audacity
 
 # ドキュメント
-choco install -y adobereader
 choco install -y sumatrapdf
 choco install -y libreoffice-fresh
 
 # ブラウザ
 choco install -y googlechrome
 choco install -y firefox
-choco install -y microsoft-edge
 
 # コミュニケーションツール
 choco install -y slack
@@ -64,10 +62,5 @@ choco install -y google-drive-file-stream
 # 仮想化
 choco install -y virtualbox
 choco install -y vmware-workstation-player
-
-# セキュリティ
-choco install -y bitwarden
-choco install -y keepass
-choco install -y malwarebytes
 
 Write-Host "Done! Some software may require a restart to complete installation." 

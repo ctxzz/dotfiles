@@ -157,3 +157,33 @@ setopt globdots
 setopt interactive_comments
 setopt list_types
 setopt magic_equal_subst
+
+# 補完メニューの表示を有効化
+setopt menu_complete
+setopt list_packed
+
+# cdコマンドの補完設定
+setopt no_complete_aliases
+setopt complete_in_word
+setopt always_to_end
+setopt list_ambiguous
+setopt list_packed
+setopt list_rows_first
+setopt auto_list
+setopt auto_menu
+setopt menu_complete
+setopt auto_param_slash
+setopt auto_param_keys
+setopt auto_remove_slash
+setopt complete_aliases
+setopt complete_in_word
+setopt always_to_end
+setopt list_ambiguous
+setopt list_packed
+setopt list_rows_first
+setopt auto_list
+setopt auto_menu
+setopt menu_complete
+setopt auto_param_slash
+setopt auto_param_keys
+setopt auto_remove_slash
