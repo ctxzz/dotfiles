@@ -16,6 +16,7 @@ brew "zsh-completions"
 brew "tmux"
 brew "reattach-to-user-namespace"  # Required for tmux copy-paste
 brew "direnv"
+brew "mise"  # Polyglot runtime manager (asdf replacement)
 brew "fzf"
 brew "gh"
 brew "ghq"

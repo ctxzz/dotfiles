@@ -57,5 +57,10 @@ export FZF_DEFAULT_OPTS="--extended --ansi --multi"
 # direnv設定
 eval "$(direnv hook zsh)"
 
+# mise設定
+if command -v mise &> /dev/null; then
+    eval "$(mise activate zsh)"
+fi
+
 # Homebrewの設定
 eval "$(/opt/homebrew/bin/brew shellenv)" 
