@@ -1,18 +1,86 @@
 {
   "permissions": {
     "allow": [
-      "Bash",
+      "Bash(brew:*)",
+      "Bash(cat:*)",
+      "Bash(cd:*)",
+      "Bash(chmod:*)",
+      "Bash(curl:*)",
+      "Bash(diff:*)",
+      "Bash(echo:*)",
+      "Bash(find:*)",
+      "Bash(git:*)",
+      "Bash(grep:*)",
+      "Bash(ln:*)",
+      "Bash(ls:*)",
+      "Bash(make:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(readlink:*)",
+      "Bash(shellcheck:*)",
+      "Bash(source:*)",
+      "Bash(test:*)",
+      "Bash(which:*)",
+      "Bash(zsh:*)",
+      "Bash(bash:*)",
       "Read",
       "Write",
       "Edit",
       "Glob",
       "Grep",
       "Skill",
-      "Task"
+      "Task",
+      "WebSearch"
+    ],
+    "deny": [
+      "Bash(sudo:*)",
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf ~/*)",
+      "Bash(rm -rf $HOME/*)",
+      "Read(.env*)",
+      "Read(*.pem)",
+      "Read(id_rsa*)",
+      "Read(id_ed25519*)",
+      "Read(*.key)",
+      "Write(.env*)",
+      "Write(id_rsa*)",
+      "Write(id_ed25519*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$CLAUDE_HOOK_INPUT\" | jq -r '.tool_input.file_path | select(endswith(\".sh\") or endswith(\".zsh\") or endswith(\".bash\"))' | xargs -r -I {} sh -c 'command -v shellcheck > /dev/null && shellcheck {} || true'"
+          },
+          {
+            "type": "command",
+            "command": "echo \"$CLAUDE_HOOK_INPUT\" | jq -r '.tool_input.file_path | select(endswith(\".zsh\"))' | xargs -r -I {} sh -c 'zsh -n {} 2>&1 || true'"
+          },
+          {
+            "type": "command",
+            "command": "echo \"$CLAUDE_HOOK_INPUT\" | jq -r '.tool_input.file_path | select(endswith(\".sh\") or endswith(\".bash\"))' | xargs -r -I {} sh -c 'bash -n {} 2>&1 || true'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f /System/Library/Sounds/Funk.aiff ]; then afplay /System/Library/Sounds/Funk.aiff; fi"
+          }
+        ]
+      }
     ]
   },
   "environment": {
     "DOTFILES_HOME": "/home/user/dotfiles",
     "DOTFILES_BACKUP_DIR": "$HOME/.dotfiles-backup"
-  }
+  },
+  "alwaysThinkingEnabled": true
 }
