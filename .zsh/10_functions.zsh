@@ -188,4 +188,56 @@ fcd() {
     if [[ -n $dir ]]; then
         cd ~/"$dir"
     fi
+}
+
+# miseでツールをインタラクティブにインストール
+mise-install() {
+    if ! command -v mise &> /dev/null; then
+        echo "mise is not installed"
+        return 1
+    fi
+
+    local tool
+    tool=$(mise ls-remote | fzf-tmux --reverse --preview 'echo "Select a tool to install"' --preview-window=down:3:wrap)
+    if [[ -n $tool ]]; then
+        mise install "$tool"
+    fi
+}
+
+# miseでインストール済みのツールをfzfで選択
+mise-select() {
+    if ! command -v mise &> /dev/null; then
+        echo "mise is not installed"
+        return 1
+    fi
+
+    mise ls | fzf-tmux --reverse --preview 'mise current {}' --preview-window=right:60%
+}
+
+# miseで管理しているツールの情報を表示
+mise-info() {
+    if ! command -v mise &> /dev/null; then
+        echo "mise is not installed"
+        return 1
+    fi
+
+    echo "=== Mise Configuration ==="
+    mise current
+    echo ""
+    echo "=== Installed Tools ==="
+    mise ls
+    echo ""
+    echo "=== Mise Doctor ==="
+    mise doctor
+}
+
+# miseで特定のツールバージョンを素早くインストール
+mise-quick-install() {
+    if ! command -v mise &> /dev/null; then
+        echo "mise is not installed"
+        return 1
+    fi
+
+    local tool="${1:?Please specify a tool (e.g., node@20, python@3.11)}"
+    mise install "$tool" && mise use --global "$tool"
 } 
