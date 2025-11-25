@@ -78,7 +78,7 @@
     ]
   },
   "environment": {
-    "DOTFILES_HOME": "/home/user/dotfiles",
+    "DOTFILES_HOME": "$HOME/dotfiles",
     "DOTFILES_BACKUP_DIR": "$HOME/.dotfiles-backup"
   },
   "alwaysThinkingEnabled": true
