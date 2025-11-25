@@ -16,7 +16,7 @@ Help craft a good commit message based on staged changes.
 ## Format
 
 ```
-Type: Brief description (50 chars max)
+feat: Brief description (50 chars max)
 
 Detailed explanation of what changed and why.
 Include context and reasoning.
