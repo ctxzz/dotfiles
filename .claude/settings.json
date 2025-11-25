@@ -53,7 +53,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"$CLAUDE_HOOK_INPUT\" | jq -r '.tool_input.file_path | select(endswith(\".sh\") or endswith(\".zsh\") or endswith(\".bash\"))' | xargs -r -I {} sh -c 'command -v shellcheck > /dev/null && shellcheck {} || true'"
+            "command": "echo \"$CLAUDE_HOOK_INPUT\" | jq -r '.tool_input.file_path | select(endswith(\".sh\") or endswith(\".zsh\") or endswith(\".bash\"))' | grep . | xargs -I {} sh -c 'command -v shellcheck > /dev/null && shellcheck {} || true'"
           },
           {
             "type": "command",
@@ -61,7 +61,7 @@
           },
           {
             "type": "command",
-            "command": "echo \"$CLAUDE_HOOK_INPUT\" | jq -r '.tool_input.file_path | select(endswith(\".sh\") or endswith(\".bash\"))' | xargs -r -I {} sh -c 'bash -n {} 2>&1 || true'"
+            "command": "echo \"$CLAUDE_HOOK_INPUT\" | jq -r '.tool_input.file_path | select(endswith(\".sh\") or endswith(\".bash\"))' | grep . | xargs -I {} sh -c 'bash -n {} 2>&1 || true'"
           }
         ]
       }
