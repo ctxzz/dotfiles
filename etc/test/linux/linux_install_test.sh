@@ -23,7 +23,7 @@ unit1() {
     elif command -v dnf &> /dev/null; then
         package_manager="dnf"
         e_success "dnf が検出されました"
-    elif command -v pacman &> /dev/null; then
+    elif command -v pacman >/dev/null 2>&1; then
         package_manager="pacman"
         e_success "pacman が検出されました"
     else
