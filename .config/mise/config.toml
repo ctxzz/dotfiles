@@ -1,0 +1,56 @@
+# mise configuration file
+# See: https://mise.jdx.dev/configuration.html
+
+# Global tool versions
+# These can be overridden per-project with .mise.toml or .tool-versions
+[tools]
+# Node.js - use LTS version or specify version like "20.10.0"
+# node = "lts"
+
+# Bun - JavaScript runtime
+# bun = "latest"
+
+# Python
+# python = "3.11"
+
+# Go
+# go = "latest"
+
+# Uncomment and set versions as needed:
+# ruby = "3.2"
+# rust = "latest"
+# deno = "latest"
+
+# Environment variables
+# These are loaded automatically when mise is activated
+[env]
+# Example: Set EDITOR if not already set
+# EDITOR = "vim"
+
+# mise settings
+[settings]
+# Automatically install missing tools when entering a directory
+missing_runtime_behavior = "autoinstall"
+
+# Enable experimental features
+experimental = false
+
+# Verbose output for debugging
+verbose = false
+
+# Use .tool-versions file format (compatible with asdf)
+legacy_version_file = true
+
+# Jobs to run in parallel when installing tools
+jobs = 4
+
+# Task runner configuration
+# Define reusable tasks here
+# [tasks.test]
+# run = "npm test"
+#
+# [tasks.build]
+# run = "npm run build"
+#
+# [tasks.dev]
+# run = "npm run dev"

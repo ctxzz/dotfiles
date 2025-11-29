@@ -106,3 +106,18 @@ alias quit='exit'
 alias x='exit'
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# miseの初期化（推奨: nvm, bun, nodebrewなどを統一管理）
+if command -v mise >/dev/null 2>&1; then
+    eval "$(mise activate bash)"
+fi
+
+# Bun（miseで管理する場合は不要になります）
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
+
+# NVM（miseで管理する場合は不要になります）
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
