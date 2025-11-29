@@ -71,4 +71,12 @@ fi
 # Homebrewの設定
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+# fzfの設定
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Bunの補完
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# NVMの読み込み
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
