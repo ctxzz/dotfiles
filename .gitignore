@@ -5,6 +5,7 @@
 .vim/autoload/
 .vim/pack/
 .tmux/plugins/
+.env
 
 # Claude Code
 .claude/settings.local.json
