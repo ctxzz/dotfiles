@@ -16,6 +16,7 @@ brew "zsh-completions"
 brew "tmux"
 brew "reattach-to-user-namespace"  # Required for tmux copy-paste
 brew "direnv"
+brew "mise"  # Version manager for node, python, ruby, etc. (replaces asdf, nvm, etc.)
 brew "fzf"
 brew "gh"
 brew "ghq"

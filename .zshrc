@@ -74,9 +74,14 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 # fzfの設定
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# Bunの補完
+# miseの初期化（推奨: nvm, bun, nodebrewなどを統一管理）
+if command -v mise >/dev/null 2>&1; then
+    eval "$(mise activate zsh)"
+fi
+
+# Bunの補完（miseで管理する場合は不要になります）
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
-# NVMの読み込み
+# NVMの読み込み（miseで管理する場合は不要になります）
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
