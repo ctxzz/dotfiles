@@ -5,10 +5,10 @@
 # These can be overridden per-project with .mise.toml or .tool-versions
 [tools]
 # Node.js - use LTS version or specify version like "20.10.0"
-# node = "lts"
+node = "lts"
 
 # Bun - JavaScript runtime
-# bun = "latest"
+bun = "latest"
 
 # Python
 # python = "3.11"

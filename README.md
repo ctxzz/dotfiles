@@ -1,6 +1,15 @@
 ## Overview
 
-Personal dotfiles for managing shell configurations (Zsh, Bash), Vim, Tmux, Git, and development tools. Supports macOS and Linux with symlink-based deployment.
+Personal dotfiles for macOS, Linux, and Windows. Includes configurations for zsh, bash, vim, tmux, and development tools.
+
+## Features
+
+- **Shell configurations**: zsh and bash with modern plugins and aliases
+- **Version management**: mise for unified tool version management (Node.js, Python, Ruby, etc.)
+- **Package manager unification**: ni for working with npm/yarn/pnpm/bun seamlessly
+- **Terminal multiplexer**: tmux with custom configurations
+- **Editor**: vim with sensible defaults
+- **Automatic deployment**: Makefile-based symlink management
 
 ## Installation
 
@@ -11,46 +20,45 @@ $ curl -sL dot.omata.me | sh
 ```
 
 ### Manual installation
-```bash
-# Clone repository
-git clone https://github.com/ctxzz/dotfiles.git ~/dotfiles
-cd ~/dotfiles
 
-# Full installation (update + deploy + init)
+```bash
+# Clone the repository
+git clone https://github.com/ctxzz/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+
+# Deploy dotfiles (create symlinks)
+make deploy
+
+# Run initialization scripts (macOS)
+make init
+
+# Or do everything at once
 make install
-
-# Or install specific components
-./etc/install shell    # Shell configs only
-./etc/install vim      # Vim configs only
-./etc/install git      # Git configs only
 ```
 
-### Available commands
+## Post-installation
+
+### Setup mise and ni
+
+After deploying dotfiles, set up development tools:
+
 ```bash
-make list      # Show dot files in this repo
-make deploy    # Create symlinks to home directory
-make init      # Setup environment settings
-make update    # Update repository and submodules
-make clean     # Remove symlinks
+# Install mise via Homebrew (macOS)
+brew install mise
+
+# Run mise setup script
+bash ~/.dotfiles/etc/init/mise_setup.sh
+
+# Restart shell
+exec $SHELL
 ```
 
-## Claude Code Integration
+This will install:
+- Node.js LTS
+- Bun (latest)
+- ni (package manager unifier)
 
-This repository includes Claude Code configuration for AI-assisted development.
-
-### Available Custom Commands
-
-- `/review` - Review staged changes for quality and security
-- `/lint` - Run appropriate linters on code files
-- `/commit-help` - Get help crafting good commit messages
-
-### Configuration Files
-
-- `CLAUDE.md` - Project context and guidelines
-- `.claude/commands/` - Custom slash commands
-- `.claude/settings.json` - Project settings
-
-See `CLAUDE.md` for detailed repository guidelines.
+See `.config/mise/README.md` for detailed usage.
 
 ## Credits
 

@@ -115,6 +115,59 @@ mise prune
 mise current
 ```
 
+## 推奨ツール: ni
+
+[ni](https://github.com/antfu-collective/ni)は、npm/yarn/pnpm/bunを自動判別して統一コマンドで操作できるツールです。
+
+### niのインストール
+
+```bash
+# miseでNode.jsをインストール後
+mise use -g node@lts
+
+# niをグローバルインストール
+npm install -g @antfu/ni
+```
+
+### niの使い方
+
+プロジェクトのロックファイルから自動でパッケージマネージャーを判別します：
+
+```bash
+# 依存関係のインストール（自動判別）
+ni                    # npm install / yarn / pnpm install / bun install
+
+# パッケージの追加
+ni axios              # npm install axios / yarn add axios / etc.
+ni -D vite            # devDependenciesに追加
+
+# スクリプトの実行
+nr dev                # npm run dev / yarn dev / pnpm dev / bun dev
+nr build
+nr test
+
+# 実行
+nx jest               # npx jest / yarn dlx jest / pnpm dlx jest / bunx jest
+
+# パッケージマネージャーのアップグレード
+nu                    # npm upgrade / yarn upgrade / pnpm update
+
+# パッケージの削除
+nun axios             # npm uninstall axios / yarn remove axios / etc.
+
+# 対話的なアップグレード
+nci                   # npm ci（クリーンインストール）
+```
+
+### 対応パッケージマネージャー
+
+- **npm** - package-lock.json
+- **yarn** - yarn.lock
+- **pnpm** - pnpm-lock.yaml
+- **bun** - bun.lockb
+
+プロジェクトに合ったPMを自動検出するので、コマンドを覚え直す必要がありません。
+
 ## トラブルシューティング
 
 ### miseが認識されない
