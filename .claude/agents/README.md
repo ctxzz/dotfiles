@@ -1,6 +1,6 @@
 # Claude Code Agents
 
-This directory contains reusable agents for Claude Code that can help with various development tasks.
+This directory contains reusable agents for Claude Code that help with both coding and general development tasks.
 
 ## What are Agents?
 
@@ -12,7 +12,86 @@ Agents are specialized AI assistants with specific expertise and workflows. Each
 
 ## Available Agents
 
-### 🔍 [code-reviewer.md](./code-reviewer.md)
+### 📋 General & Planning
+
+#### 📊 [project-manager.md](./project-manager.md)
+Expert project manager for planning, task breakdown, and execution strategy.
+
+**Use when:**
+- Starting a new project
+- Breaking down complex work
+- Estimating effort and timelines
+- Managing priorities
+
+**Key features:**
+- Task decomposition
+- Dependency mapping
+- Risk assessment
+- Timeline planning
+
+#### 🔬 [research-assistant.md](./research-assistant.md)
+Expert research assistant for investigating technologies and comparing options.
+
+**Use when:**
+- Evaluating technologies or tools
+- Comparing alternatives
+- Making technology decisions
+- Investigating best practices
+
+**Key features:**
+- Systematic research process
+- Comparison matrices
+- Trade-off analysis
+- Sourced recommendations
+
+#### 🎓 [learning-assistant.md](./learning-assistant.md)
+Expert educator for learning new technologies and concepts.
+
+**Use when:**
+- Learning new technology
+- Creating learning paths
+- Explaining complex concepts
+- Teaching others
+
+**Key features:**
+- Structured learning paths
+- Progressive complexity
+- Hands-on exercises
+- Multiple learning styles
+
+#### 🎯 [decision-maker.md](./decision-maker.md)
+Expert at analyzing options and making well-informed decisions.
+
+**Use when:**
+- Choosing between alternatives
+- Evaluating trade-offs
+- Making architectural decisions
+- Risk assessment
+
+**Key features:**
+- Decision frameworks (SWOT, decision matrices)
+- Risk analysis
+- Bias awareness
+- Confidence levels
+
+#### 🏗️ [system-design.md](./system-design.md)
+Expert system architect for designing scalable and reliable systems.
+
+**Use when:**
+- Designing new systems
+- Architecture planning
+- Scalability considerations
+- System documentation
+
+**Key features:**
+- Architecture patterns
+- Scalability strategies
+- Reliability patterns
+- Design documentation
+
+### 💻 Code-Specific
+
+#### 🔍 [code-reviewer.md](./code-reviewer.md)
 Expert code reviewer focused on quality, security, and best practices.
 
 **Use when:**
@@ -26,7 +105,7 @@ Expert code reviewer focused on quality, security, and best practices.
 - Provides constructive feedback
 - Includes code examples
 
-### 🧪 [test-writer.md](./test-writer.md)
+#### 🧪 [test-writer.md](./test-writer.md)
 Expert in writing comprehensive unit, integration, and property-based tests.
 
 **Use when:**
@@ -40,7 +119,7 @@ Expert in writing comprehensive unit, integration, and property-based tests.
 - Clear, descriptive test names
 - Multiple testing strategies
 
-### ♻️ [refactoring.md](./refactoring.md)
+#### ♻️ [refactoring.md](./refactoring.md)
 Expert in code refactoring and improving code quality.
 
 **Use when:**
@@ -55,7 +134,7 @@ Expert in code refactoring and improving code quality.
 - Preserves functionality
 - Improves readability
 
-### 📚 [documentation-writer.md](./documentation-writer.md)
+#### 📚 [documentation-writer.md](./documentation-writer.md)
 Expert technical writer for API docs, READMEs, and code comments.
 
 **Use when:**
@@ -70,7 +149,7 @@ Expert technical writer for API docs, READMEs, and code comments.
 - Consistent format
 - Comprehensive coverage
 
-### 🐛 [bug-finder.md](./bug-finder.md)
+#### 🐛 [bug-finder.md](./bug-finder.md)
 Expert at finding bugs, edge cases, and potential issues.
 
 **Use when:**
@@ -85,7 +164,7 @@ Expert at finding bugs, edge cases, and potential issues.
 - Security vulnerability detection
 - Prioritized findings
 
-### ⚡ [performance-optimizer.md](./performance-optimizer.md)
+#### ⚡ [performance-optimizer.md](./performance-optimizer.md)
 Expert in analyzing and optimizing code performance.
 
 **Use when:**
@@ -107,6 +186,8 @@ Expert in analyzing and optimizing code performance.
 In Claude Code, you can invoke agents in chat:
 
 ```
+@project-manager Break down this feature into tasks
+@research-assistant Compare React vs Vue for this project
 @code-reviewer Review the changes in src/auth.ts
 ```
 
@@ -119,8 +200,54 @@ Copy the agent content and paste it as a system prompt or context.
 Copy agents you need to your project's `.claude/agents/` directory:
 
 ```bash
-cp ~/.dotfiles/.claude/agents/code-reviewer.md ./.claude/agents/
+cp ~/.dotfiles/.claude/agents/project-manager.md ./.claude/agents/
 ```
+
+## Agent Workflows
+
+### Starting a New Project
+
+1. **Project Manager** → Define scope and break into tasks
+2. **Research Assistant** → Evaluate technology options
+3. **Decision Maker** → Choose technologies
+4. **System Design** → Design architecture
+5. **Learning Assistant** → Create learning plan for new tech
+
+### Feature Development
+
+1. **Project Manager** → Break down feature into tasks
+2. **System Design** → Design component architecture
+3. **Documentation Writer** → Document API design
+4. **Test Writer** → Write tests first (TDD)
+5. [Implement feature]
+6. **Code Reviewer** → Review implementation
+7. **Bug Finder** → Check for issues
+8. **Performance Optimizer** → Optimize if needed
+
+### Code Improvement
+
+1. **Code Reviewer** → Assess current state
+2. **Bug Finder** → Identify existing issues
+3. **Decision Maker** → Prioritize improvements
+4. **Refactoring** → Improve code structure
+5. **Test Writer** → Add test coverage
+6. **Documentation Writer** → Update docs
+
+### Learning & Research
+
+1. **Learning Assistant** → Create learning path
+2. **Research Assistant** → Research best practices
+3. [Practice and experiment]
+4. **Decision Maker** → Evaluate what to adopt
+5. **Project Manager** → Plan integration
+
+### Problem Solving
+
+1. **Research Assistant** → Research problem and solutions
+2. **Decision Maker** → Evaluate options
+3. **System Design** → Design solution architecture
+4. **Project Manager** → Plan implementation
+5. **Bug Finder** → Review for issues
 
 ## Creating Custom Agents
 
@@ -165,23 +292,15 @@ Identify security vulnerabilities in code:
 - OWASP Top 10 issues
 - Authentication/authorization flaws
 - Data exposure risks
-- etc.
 
 ## Process
 1. Check input validation
 2. Review authentication logic
 3. Analyze data handling
-4. etc.
 
 ## Output Format
 ### 🔒 Critical Vulnerabilities
 [List with severity and fix suggestions]
-
-### 🔍 Security Concerns
-[Medium-risk issues]
-
-### 💡 Security Recommendations
-[General improvements]
 ```
 
 ## Agent Tips
@@ -189,8 +308,8 @@ Identify security vulnerabilities in code:
 ### For Better Results
 
 1. **Be Specific**: Give agents clear, focused tasks
-   - ✅ "Review authentication logic for security issues"
-   - ❌ "Check the code"
+   - ✅ "Compare GraphQL vs REST for our mobile app backend"
+   - ❌ "What should I use?"
 
 2. **Provide Context**: Share relevant information
    - Project requirements
@@ -198,38 +317,37 @@ Identify security vulnerabilities in code:
    - Existing patterns to follow
 
 3. **Iterate**: Use agents in sequence
-   - First: Bug Finder → find issues
-   - Then: Refactoring → improve code
-   - Finally: Test Writer → add tests
-   - Last: Code Reviewer → final check
+   - Research → Decide → Design → Implement → Review
 
 4. **Customize**: Modify agents for your needs
    - Add project-specific guidelines
    - Include team coding standards
    - Add language-specific patterns
 
-### Agent Combinations
+### Quick Reference
 
-**Pre-Commit Workflow:**
-1. Bug Finder → Find issues
-2. Performance Optimizer → Check performance
-3. Test Writer → Ensure coverage
-4. Code Reviewer → Final review
+**Planning Phase:**
+- Project Manager
+- Research Assistant
+- Decision Maker
+- System Design
 
-**New Feature Workflow:**
-1. Documentation Writer → Plan and document
-2. Test Writer → Write tests first (TDD)
-3. [Implement feature]
-4. Bug Finder → Check for issues
-5. Performance Optimizer → Optimize if needed
-6. Code Reviewer → Review implementation
+**Implementation Phase:**
+- Test Writer (TDD)
+- Code Reviewer
+- Bug Finder
+- Performance Optimizer
 
-**Legacy Code Improvement:**
-1. Code Reviewer → Assess current state
-2. Bug Finder → Identify existing issues
-3. Refactoring → Improve structure
-4. Test Writer → Add test coverage
-5. Documentation Writer → Document changes
+**Learning Phase:**
+- Learning Assistant
+- Research Assistant
+- Documentation Writer
+
+**Improvement Phase:**
+- Code Reviewer
+- Refactoring
+- Bug Finder
+- Documentation Writer
 
 ## Contributing
 
@@ -246,6 +364,7 @@ To add new agents to this collection:
 - [Claude Code Documentation](https://docs.anthropic.com/claude/docs)
 - [GitHub Copilot Agents Best Practices](https://github.blog/ai-and-ml/github-copilot/how-to-write-a-great-agents-md-lessons-from-over-2500-repositories/)
 - [Effective Prompting Guide](https://docs.anthropic.com/claude/docs/prompt-engineering)
+- [wshobson/agents](https://github.com/wshobson/agents) - Inspiration for this collection
 
 ## License
 
