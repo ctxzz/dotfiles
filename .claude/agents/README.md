@@ -44,21 +44,6 @@ Expert research assistant for investigating technologies and comparing options.
 - Trade-off analysis
 - Sourced recommendations
 
-#### 🎓 [learning-assistant.md](./learning-assistant.md)
-Expert educator for learning new technologies and concepts.
-
-**Use when:**
-- Learning new technology
-- Creating learning paths
-- Explaining complex concepts
-- Teaching others
-
-**Key features:**
-- Structured learning paths
-- Progressive complexity
-- Hands-on exercises
-- Multiple learning styles
-
 #### 🎯 [decision-maker.md](./decision-maker.md)
 Expert at analyzing options and making well-informed decisions.
 
@@ -211,7 +196,6 @@ cp ~/.dotfiles/.claude/agents/project-manager.md ./.claude/agents/
 2. **Research Assistant** → Evaluate technology options
 3. **Decision Maker** → Choose technologies
 4. **System Design** → Design architecture
-5. **Learning Assistant** → Create learning plan for new tech
 
 ### Feature Development
 
@@ -235,11 +219,11 @@ cp ~/.dotfiles/.claude/agents/project-manager.md ./.claude/agents/
 
 ### Learning & Research
 
-1. **Learning Assistant** → Create learning path
-2. **Research Assistant** → Research best practices
-3. [Practice and experiment]
-4. **Decision Maker** → Evaluate what to adopt
-5. **Project Manager** → Plan integration
+1. **Research Assistant** → Research best practices and technologies
+2. [Practice and experiment]
+3. **Decision Maker** → Evaluate what to adopt
+4. **Project Manager** → Plan integration
+5. **Documentation Writer** → Document learnings
 
 ### Problem Solving
 
@@ -339,7 +323,6 @@ Identify security vulnerabilities in code:
 - Performance Optimizer
 
 **Learning Phase:**
-- Learning Assistant
 - Research Assistant
 - Documentation Writer
 
