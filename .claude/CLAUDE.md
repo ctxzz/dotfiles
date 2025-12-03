@@ -1,8 +1,8 @@
 # Global CLAUDE.md
 
 ## Language / Communication
-- Use English for all user-agent communication by default.
-- Respond in other languages only if explicitly requested by the user.
+- Use Japanese for all user-agent communication by default.
+- If user explicitly requests English, respond in English.
 
 ## Coding Style & Conventions
 - Always format code using 2-space indent.
