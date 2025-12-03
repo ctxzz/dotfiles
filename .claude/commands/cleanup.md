@@ -1,44 +1,42 @@
 ---
-description: コードベースのクリーンアップと未使用コードの削除
+description: Clean up codebase and remove unused code
 ---
 
-# コードベースクリーンアップ
+# Codebase Cleanup
 
-## ファイル整理
-1. **未使用ファイル**
-   - 孤立したファイルの特定
-   - 古いテストフィクスチャの削除
-   - 一時ファイルのクリーンアップ
-   - 非推奨モジュールのアーカイブ
+## Dependency Cleanup
+1. **Unused Dependencies**
+   - Find unused packages
+   - Remove unused devDependencies
+   - Update outdated packages
+   - Clean and reinstall dependencies
 
-2. **コード品質**
-   - コメントアウトされたコードの削除
-   - TODOアイテムの修正
-   - 古いコメントの更新
-   - 変数名の改善
+2. **Code Cleanup**
+   - Find unused imports
+   - Remove dead code paths
+   - Eliminate unused variables
+   - Clean up console.logs and debug statements
 
-## dotfiles特有のクリーンアップ
-1. **設定ファイル**
-   - 重複する設定の統合
-   - 未使用の設定項目の削除
-   - バックアップファイルの整理
-   - .oldや.backupファイルの確認
+## File Organization
+1. **Unused Files**
+   - Identify orphaned files
+   - Remove old test fixtures
+   - Clean up temporary files
+   - Archive deprecated modules
 
-2. **シンボリックリンク**
-   - 壊れたシンボリックリンクの検出
-   - 不要なシンボリックリンクの削除
+2. **Code Quality**
+   - Remove commented code
+   - Fix TODO items
+   - Update outdated comments
+   - Improve variable naming
 
-3. **スクリプト**
-   - 未使用の初期化スクリプトの削除
-   - 古いインストールスクリプトの整理
-   - デバッグ用のecho文の削除
+## Git Cleanup
+- Remove untracked files: !`git clean -fd --dry-run`
+- Prune deleted branches: !`git remote prune origin`
+- Review .gitignore coverage
 
-## Git クリーンアップ
-- 追跡されていないファイルの削除: !`git clean -fd --dry-run`
-- 削除されたブランチのプルーン: !`git remote prune origin`
-- .gitignoreの更新確認
-
-## 注意事項
-- 削除前にバックアップの確認
-- 重要なファイルは削除しない
-- git clean実行前にdry-runで確認
+## Safety Measures
+- Always run with --dry-run first
+- Review changes before executing
+- Ensure backups exist
+- Verify tests still pass after cleanup

@@ -1,33 +1,32 @@
 ---
-description: 指定されたコードまたはモジュールの包括的なドキュメントを生成
-argument-hint: [ファイルまたはディレクトリ]
+description: Generate comprehensive documentation for code or modules
+argument-hint: [file-or-module]
 ---
 
-# ドキュメント生成: $ARGUMENTS
+# Documentation Generator: $ARGUMENTS
 
-指定されたコードに対して包括的なドキュメントを作成する：
+Create comprehensive documentation for the specified code:
 
-## スクリプトドキュメント
-- スクリプトの目的と機能
-- 使用方法と例
-- 必要な依存関係
-- 環境変数やオプション
-- エラー処理とトラブルシューティング
+## API Documentation
+- Function signatures and parameters
+- Return values and types
+- Usage examples with code snippets
+- Error conditions and handling
 
-## README更新
-- インストール手順
-- 設定オプション
-- 使用例
-- トラブルシューティングセクション
+## Code Comments
+- Inline comments for complex logic
+- JSDoc/PyDoc comments for functions
+- Type annotations where missing
 
-## コードコメント
-- 複雑なロジックへのインラインコメント
-- 関数の説明コメント
-- 設定ファイルの各項目の説明
+## README Updates
+- Installation instructions
+- Configuration options
+- Usage examples
+- Troubleshooting section
 
-## アーキテクチャドキュメント
-- システム全体の概要
-- コンポーネント間の相互作用
-- データフロー図（テキスト/ASCII形式）
+## Architecture Documentation
+- High-level system overview
+- Component interactions
+- Data flow diagrams (in text/ASCII format)
 
 @$ARGUMENTS

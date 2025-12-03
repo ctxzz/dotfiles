@@ -1,40 +1,47 @@
 ---
-description: コードのセキュリティ分析を実行
-argument-hint: [ファイルまたはディレクトリ]
+description: Comprehensive security analysis of code
+argument-hint: [file-or-directory]
 ---
 
-# セキュリティレビュー: $ARGUMENTS
+# Security Review: $ARGUMENTS
 
-指定されたコードをセキュリティ脆弱性の観点から分析する：
+Analyze the specified code for security vulnerabilities:
 
-## 認証・認可
-- 認証フローの適切性
-- 権限制御の確認
-- 権限昇格リスクの確認
+## Authentication & Authorization
+- Check for proper authentication flows
+- Verify authorization controls
+- Look for privilege escalation risks
 
-## 入力検証
-- コマンドインジェクションリスク
-- パストラバーサル問題
-- 環境変数の安全な扱い
-- ユーザー入力の検証
+## Input Validation
+- SQL injection vulnerabilities
+- XSS attack vectors
+- Command injection risks
+- Path traversal issues
+- Unsafe deserialization
 
-## データ保護
-- 機密データの露出
-- 秘密情報の安全な保管
-- パスワードやトークンのハードコーディング
+## Data Protection
+- Sensitive data exposure
+- Encryption implementation
+- Secure storage practices
+- API key and credential handling
 
-## dotfiles特有のセキュリティ
-- シェルスクリプトのインジェクション脆弱性
-- 安全でないファイルパーミッション
-- 秘密情報の.gitignore確認
-- シンボリックリンクの安全性
-- ダウンロードスクリプトのSSL検証
+## Code Execution
+- Eval and dynamic code execution risks
+- Unsafe file operations
+- Shell command injection
+- Environment variable injection
 
-## 依存関係
-- 既知の脆弱なパッケージ
-- 古い依存関係
-- 不審なインポート
+## Dependencies
+- Known vulnerable packages
+- Outdated dependencies
+- Suspicious imports
 
-各発見事項に対して具体的で実行可能な推奨事項を提供する。
+## Output Format
+For each finding, provide:
+- **Severity**: Critical / High / Medium / Low
+- **Location**: File and line number
+- **Description**: What the vulnerability is
+- **Impact**: What could happen if exploited
+- **Recommendation**: How to fix it
 
 @$ARGUMENTS

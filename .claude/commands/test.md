@@ -1,39 +1,54 @@
 ---
-description: 指定されたスクリプトまたは機能に対する包括的なテストスイートを生成
-argument-hint: [ファイルまたは関数]
+description: Generate comprehensive test suite for code
+argument-hint: [file-or-function]
 ---
 
-# テスト生成: $ARGUMENTS
+# Test Generator: $ARGUMENTS
 
-包括的なテストスイートを作成する：
+Create a comprehensive test suite:
 
-## テストタイプ
-1. **ユニットテスト**
-   - 正常系のシナリオ
-   - エッジケースと境界条件
-   - エラーハンドリング
-   - 依存関係のモック
+## Test Types
+1. **Unit Tests**
+   - Happy path scenarios
+   - Edge cases and boundary conditions
+   - Error handling
+   - Mock dependencies
 
-2. **統合テスト**
-   - スクリプト間の相互作用
-   - システムコマンドの実行
-   - ファイル操作
+2. **Integration Tests**
+   - Component interactions
+   - API integrations
+   - Database operations
 
-## テスト構成
-- 論理的なグループ化のためのunit関数
-- セットアップとティアダウン関数
-- テストデータの準備
-- 共有テストユーティリティ
+## Test Organization
+- Describe blocks for logical grouping
+- Setup and teardown functions
+- Test data factories
+- Shared test utilities
 
-## カバレッジ目標
-- 重要な機能のテストを優先
-- エラー境界を徹底的にテスト
-- 各OSごとのテスト（macOS, Linux, Windows）
+## Coverage Goals
+- Aim for 90%+ code coverage
+- Focus on critical business logic
+- Test error boundaries thoroughly
 
-## dotfiles特有の考慮事項
-- シンボリックリンクの作成/削除テスト
-- 設定ファイルのバックアップ/復元テスト
-- パッケージマネージャーの存在確認
-- 初期化スクリプトの実行テスト
+## Output Format
+```javascript
+describe('functionName', () => {
+  // Happy path
+  it('should return expected result for valid input', () => {});
+
+  // Edge cases
+  it('should handle empty input correctly', () => {});
+  it('should handle null/undefined input', () => {});
+
+  // Error cases
+  it('should throw error for invalid input', () => {});
+});
+```
+
+## Guidelines
+- Test behavior, not implementation
+- Use meaningful test data (avoid magic numbers)
+- Keep tests simple and readable
+- Each test should verify a single behavior
 
 @$ARGUMENTS

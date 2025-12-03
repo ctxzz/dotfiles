@@ -1,43 +1,44 @@
 ---
-description: コードのリファクタリングを実行
-argument-hint: [対象] [戦略?]
+description: Intelligent code refactoring with quality improvements
+argument-hint: [target] [strategy?]
 ---
 
-# コードリファクタリング: $ARGUMENTS
+# Code Refactoring: $ARGUMENTS
 
-## 分析フェーズ
-1. **コード品質評価**
-   - コードスメルの特定
-   - 複雑度メトリクスの測定
-   - 重複パターンの発見
-   - 保守性の評価
+## Analysis Phase
+1. **Code Quality Assessment**
+   - Identify code smells
+   - Measure complexity metrics
+   - Find duplication patterns
+   - Assess maintainability
 
-2. **リファクタリング戦略**
-   - 再利用可能な関数の抽出
-   - 命名規則の改善
-   - 複雑なロジックの簡素化
-   - エラーハンドリングの強化
+2. **Refactoring Strategy**
+   - Extract reusable functions
+   - Improve naming conventions
+   - Simplify complex logic
+   - Enhance type safety
 
-## 実装フェーズ
-1. **機能の保持**
-   - 既存の動作を維持
-   - テストカバレッジを維持
-   - 後方互換性の確保
+## Implementation Phase
+1. **Preserve Functionality**
+   - Maintain existing behavior
+   - Keep test coverage intact
+   - Ensure backward compatibility
 
-2. **構造の改善**
-   - 関心事の分離を改善
-   - よりクリーンな抽象化
-   - 可読性の向上
+2. **Improve Structure**
+   - Better separation of concerns
+   - Cleaner abstractions
+   - Improved readability
 
-## dotfiles特有の最適化
-- シェルスクリプトの最適化
-- 設定ファイルの整理
-- 初期化スクリプトの効率化
-- 重複する設定の統合
+## Common Refactoring Patterns
+- Extract Method/Function: Break down large functions
+- Extract Variable: Make complex expressions readable
+- Replace Magic Numbers: Use named constants
+- Consolidate Conditional: Simplify complex conditions
+- Remove Dead Code: Eliminate unused code
 
-## 検証
-- 既存のテストスイートを実行
-- パフォーマンスへの影響を確認
-- 破壊的変更がないことを確認
+## Validation
+- Run existing test suite
+- Verify performance impact
+- Check for breaking changes
 
 @$ARGUMENTS

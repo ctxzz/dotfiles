@@ -1,27 +1,29 @@
 ---
-description: ステージされた変更から適切なコミットメッセージを生成してコミット実行
+description: Generate conventional commit message from staged changes and execute commit
 ---
 
-# スマートGitコミット
+# Smart Git Commit
 
-## コンテキスト分析
-- 現在のgitステータス: !`git status --porcelain`
-- ステージされた変更: !`git diff --cached --name-only`
-- 最近のコミット: !`git log --oneline -5`
+## Context Analysis
+- Current git status: !`git status --porcelain`
+- Staged changes: !`git diff --cached --name-only`
+- Recent commits: !`git log --oneline -5`
 
-## タスク
-1. ステージされた変更を分析して何が変更されたかを理解する
-2. Conventional Commits形式でコミットメッセージを生成する
-   - feat: 新機能
-   - fix: バグ修正
-   - docs: ドキュメント
-   - refactor: リファクタリング
-   - test: テスト
-   - chore: その他の変更
-3. メッセージは説明的かつ簡潔に
-4. 生成したメッセージでコミットを実行
-5. コミットハッシュとサマリーを表示
+## Your Task
+1. Analyze the staged changes to understand what was modified
+2. Generate a conventional commit message following the format:
+   - feat: New feature
+   - fix: Bug fix
+   - docs: Documentation changes
+   - refactor: Code refactoring
+   - test: Test additions or modifications
+   - chore: Other changes (build, CI, etc.)
+3. Make the message descriptive but concise
+4. Execute the commit with the generated message
+5. Show the commit hash and summary
 
-## 注意事項
-- dotfiles固有の変更パターンを考慮する
-- 複数のファイルが変更されている場合は全体的な意図を把握する
+## Guidelines
+- Follow project's commit message conventions if they exist
+- Keep subject line under 72 characters
+- Use imperative mood ("add" not "added")
+- Include scope when relevant (e.g., "feat(api): add endpoint")
