@@ -64,11 +64,10 @@
 - `fullOutput` - 全出力を表示
 - `inline` - Raycast内にインライン表示
 
-## サンプルスクリプト
-
-カテゴリ別にスクリプトを配置し、用途ごとに整理する。
-
 ## 参考リンク
 
 - [Raycast Script Commands 公式リポジトリ](https://github.com/raycast/script-commands)
+- [Raycast Manual](https://manual.raycast.com/mac)
 - [Raycast Manual - Script Commands](https://manual.raycast.com/script-commands)
+- [Raycast Manual - Dynamic Placeholders](https://manual.raycast.com/dynamic-placeholders)
+
