@@ -2,12 +2,12 @@
 
 ## セットアップ方法
 
-1. Raycastのインストール:    
+1. Raycastのインストール:
    ```bash
    brew install --cask raycast
    ```
 
-2. Script Commandsディレクトリの追加:  
+2. Script Commandsディレクトリの追加:
    - Raycast Settings を開く
    - Extensions > Script Commands > Add Directory
    - `~/.config/raycast/scripts` を選択
@@ -43,7 +43,7 @@
 ```bash
 #!/bin/bash
 
-# Required parameters:  
+# Required parameters:
 # @raycast.schemaVersion 1
 # @raycast.title Script Title
 # @raycast.mode silent
