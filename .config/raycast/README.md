@@ -23,13 +23,13 @@
   - `development/` - 開発ツール系
   - `media/` - メディア制御系
   - `system/` - システム操作系
-- `configs/` - エクスポートした設定ファイル（. rayconfig）を保存
+- `configs/` - エクスポートした設定ファイル（.rayconfig）を保存
 
 ## 設定ファイルの管理
 
 ### エクスポート方法
 1. Raycast Settings > Advanced > Export Settings
-2. エクスポートされたファイル（例:  `Raycast 2025-12-26 18. 14.07.rayconfig`）を `configs/` ディレクトリに保存
+2. エクスポートされたファイル（例: `Raycast 2025-12-26 18.14.07.rayconfig`）を `configs/` ディレクトリに保存
 3. Git にコミット
 
 ### インポート方法
@@ -54,8 +54,8 @@
 # @raycast.argument1 { "type": "text", "placeholder": "Argument description" }
 
 # Documentation:
-# @raycast. description What this script does
-# @raycast. author ctxzz
+# @raycast.description What this script does
+# @raycast.author ctxzz
 ```
 
 ### モード一覧
