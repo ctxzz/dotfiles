@@ -9,6 +9,7 @@ Personal dotfiles for macOS, Linux, and Windows. Includes configurations for zsh
 - **Package manager unification**: ni for working with npm/yarn/pnpm/bun seamlessly
 - **Terminal multiplexer**: tmux with custom configurations
 - **Editor**: vim with sensible defaults
+- **Workspace management**: Unified workspace system for cloud-synced and local directories (see [WORKSPACE.md](WORKSPACE.md))
 - **Automatic deployment**: Makefile-based symlink management
 
 ## Installation
