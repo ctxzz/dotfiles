@@ -78,20 +78,20 @@ ensure_symlink() {
 
 detect_google_drive_root() {
     local pattern="$HOME/Library/CloudStorage/${GD_PREFIX}"'*'
-    local matches
+    local first_match
     
-    # Expand pattern and check if any matches exist
-    # shellcheck disable=SC2206
-    matches=( $pattern )
+    # Find first matching directory
+    # Use nullglob behavior manually by checking if expansion worked
+    for first_match in $pattern; do
+        if [ -d "$first_match" ]; then
+            printf "%s" "$first_match"
+            return 0
+        fi
+    done
     
-    if [ ! -d "${matches[0]}" ]; then
-        e_warning "Google Drive not found: $pattern"
-        e_warning "Please ensure Google Drive is installed and syncing"
-        return 1
-    fi
-    
-    printf "%s" "${matches[0]}"
-    return 0
+    e_warning "Google Drive not found: $pattern"
+    e_warning "Please ensure Google Drive is installed and syncing"
+    return 1
 }
 
 main() {
