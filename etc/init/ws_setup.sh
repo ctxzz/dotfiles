@@ -91,8 +91,8 @@ detect_google_drive_root() {
     # and does not contain spaces.
     # shellcheck disable=SC2231
     for first_match in $pattern; do
-        # Check if pattern still contains asterisk (no match found)
-        if [[ "$first_match" == *"*"* ]]; then
+        # Check if glob expansion failed (first_match equals the pattern)
+        if [ "$first_match" = "$pattern" ]; then
             # No matching directory found
             return 1
         fi
@@ -178,7 +178,7 @@ main() {
             echo ""
             echo "Skipped symlinks (targets do not exist yet):"
             for skipped in "${SKIPPED_SYMLINKS[@]}"; do
-                echo "  - $skipped"
+                printf '  - %s\n' "$skipped"
             done
         fi
         echo ""

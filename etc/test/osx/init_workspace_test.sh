@@ -11,6 +11,13 @@ export ERR
 #
 # -- END
 
+# Helper function to display script output on failure
+show_output_on_failure() {
+    local output="$1"
+    echo "Script output:" >&2
+    echo "$output" >&2
+}
+
 # ワークスペースセットアップスクリプトの存在確認
 unit1() {
     e_header "ワークスペースセットアップスクリプトの存在確認"
@@ -73,8 +80,7 @@ unit3() {
             e_success "~/ws/local が作成されました"
         else
             e_failure "~/ws/local が作成されていません"
-            echo "Script output:" >&2
-            echo "$output" >&2
+            show_output_on_failure "$output"
             ERR=1
         fi
         
@@ -100,8 +106,7 @@ unit3() {
         fi
     else
         e_failure "スクリプトの実行に失敗しました"
-        echo "Script output:" >&2
-        echo "$output" >&2
+        show_output_on_failure "$output"
         ERR=1
     fi
     
@@ -165,8 +170,7 @@ unit4() {
         fi
     else
         e_failure "Google Drive環境でスクリプトの実行に失敗しました"
-        echo "Script output:" >&2
-        echo "$output" >&2
+        show_output_on_failure "$output"
         ERR=1
     fi
     
