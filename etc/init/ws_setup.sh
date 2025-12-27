@@ -32,7 +32,6 @@ GD_PAPER_REL="02thesis"
 GD_NOTE_REL="06note"
 # =================
 
-log() { printf "[%s] %s\n" "$(date +'%H:%M:%S')" "$*"; }
 die() { 
     e_failure "$*"
     exit 1
@@ -81,7 +80,8 @@ detect_google_drive_root() {
     local first_match
     
     # Find first matching directory
-    # Use nullglob behavior manually by checking if expansion worked
+    # Intentional word splitting for glob expansion
+    # shellcheck disable=SC2231
     for first_match in $pattern; do
         if [ -d "$first_match" ]; then
             printf "%s" "$first_match"
