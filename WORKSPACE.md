@@ -306,11 +306,11 @@ bash ~/.dotfiles/etc/init/ws_setup.sh
 このワークスペースシステムは、既存の Raycast ワークフローと統合されています：
 
 * **Start Development Mode**（`.config/raycast/scripts/workflow/start-development-mode.sh`）
-  * `~/ws/hama-med` からプロジェクトを検索
+  * 例として、`~/ws/hama-med`（ユーザーが任意に作成する開発用ディレクトリ）からプロジェクトを検索します
 * **Start Meeting Mode**（`.config/raycast/scripts/workflow/start-meeting-mode.sh`）
   * `~/ws/slide` からスライドディレクトリを検索
 
-これらのスクリプトは、ワークスペースシステムを前提として設計されています。
+これらのスクリプトは、ワークスペースシステムを前提として設計されています。`~/ws/hama-med` などのプロジェクト用ディレクトリは `ws_setup.sh` では自動作成されないため、必要に応じてユーザーが `~/ws` 配下に任意の名前で作成し、スクリプト側のパス設定も適宜変更してください。
 
 ---
 
