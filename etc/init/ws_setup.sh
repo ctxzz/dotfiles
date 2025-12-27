@@ -115,9 +115,14 @@ main() {
             ensure_symlink "$gd_mydrive/$GD_NOTE_REL"  "$WS_DIR/note"
         else
             e_warning "Google Drive 'My Drive' not found: $gd_mydrive"
+            e_warning "Files may still be downloading. Run this script again after sync completes."
         fi
     else
-        e_warning "Skipping Google Drive setup"
+        e_warning "Google Drive for Desktop is not installed or not syncing yet"
+        e_warning "This is normal for initial setup. After installing Google Drive:"
+        e_warning "  1. Install: https://www.google.com/drive/download/"
+        e_warning "  2. Sign in and wait for initial sync to complete"
+        e_warning "  3. Re-run: bash ~/.dotfiles/etc/init/ws_setup.sh"
     fi
     
     # Setup Obsidian (iCloud)
@@ -125,7 +130,10 @@ main() {
         ensure_symlink "$OBSIDIAN_REAL" "$WS_DIR/obsidian"
     else
         e_warning "Obsidian iCloud directory not found: $OBSIDIAN_REAL"
-        e_warning "Install Obsidian and enable iCloud sync to use this feature"
+        e_warning "This is normal if Obsidian is not installed yet. After installing:"
+        e_warning "  1. Install Obsidian: https://obsidian.md/"
+        e_warning "  2. Enable iCloud sync in Obsidian settings"
+        e_warning "  3. Re-run: bash ~/.dotfiles/etc/init/ws_setup.sh"
     fi
     
     # Create local workspace directories
@@ -143,6 +151,20 @@ main() {
     echo "  ~/ws/local/         # Local-only (not synced)"
     echo "  ~/ws/local/sandbox  # Experiments and temporary work"
     echo "  ~/ws/local/work     # Local work files"
+    
+    # Show summary of what needs to be done if cloud services are missing
+    if ! gd_root="$(detect_google_drive_root)" 2>/dev/null || [ ! -d "$OBSIDIAN_REAL" ]; then
+        echo ""
+        e_header "Note: Some cloud services are not available yet"
+        if ! gd_root="$(detect_google_drive_root)" 2>/dev/null; then
+            echo "  - Google Drive: Install and sync, then re-run setup"
+        fi
+        if [ ! -d "$OBSIDIAN_REAL" ]; then
+            echo "  - Obsidian (iCloud): Install and enable iCloud, then re-run setup"
+        fi
+        echo ""
+        echo "You can continue using ~/ws/local for now and set up cloud sync later."
+    fi
 }
 
 main "$@"

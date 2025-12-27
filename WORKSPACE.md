@@ -168,14 +168,32 @@ bash ~/.dotfiles/etc/init/ws_setup.sh
 
 ### 前提条件
 
-以下がインストールされている必要があります：
+**重要**: クラウドサービスは必須ではありません。Google Drive や Obsidian がインストールされていない場合でも、スクリプトは正常に動作し、`~/ws/local` を使用できます。
 
-* **Google Drive for Desktop**（Google Drive 同期が必要な場合）
+クラウド同期機能を使用する場合は、以下がインストールされている必要があります：
+
+* **Google Drive for Desktop**（オプション：Google Drive 同期が必要な場合のみ）
   * `~/Library/CloudStorage/GoogleDrive-omata*` にマウントされていること
   * My Drive 内に `03slide`, `02thesis`, `06note` ディレクトリが存在すること
-* **Obsidian**（Obsidian を使用する場合）
+  * 初期同期が完了していること
+* **Obsidian**（オプション：Obsidian を使用する場合のみ）
   * iCloud 同期が有効になっていること
   * `~/Library/Mobile Documents/iCloud~md~obsidian/Documents` が存在すること
+
+### 初期セットアップ時の動作
+
+初めてセットアップスクリプトを実行する際、Google Drive や Obsidian がまだインストールされていない場合：
+
+1. スクリプトは警告メッセージを表示しますが、エラーで停止しません
+2. `~/ws/local` ディレクトリは正常に作成されます
+3. クラウドサービスのインストール後、スクリプトを再実行してください
+
+```bash
+# クラウドサービスのインストール後、再セットアップ
+bash ~/.dotfiles/etc/init/ws_setup.sh
+```
+
+スクリプトは冪等性があるため、何度実行しても安全です。
 
 ### セットアップスクリプトの動作
 
