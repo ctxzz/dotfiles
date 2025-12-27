@@ -29,9 +29,6 @@ bun = "latest"
 
 # mise settings
 [settings]
-# Automatically install missing tools when entering a directory
-missing_runtime_behavior = "autoinstall"
-
 # Enable experimental features
 experimental = false
 
