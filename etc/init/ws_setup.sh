@@ -152,10 +152,10 @@ main() {
     echo "  ~/ws/local/work     # Local work files"
     
     # Show summary of what needs to be done if cloud services are missing
-    if [ -z "$gd_root" ] || [ ! -d "$OBSIDIAN_REAL" ]; then
+    if [ -z "${gd_root:-}" ] || [ ! -d "$OBSIDIAN_REAL" ]; then
         echo ""
         e_header "Note: Some cloud services are not available yet"
-        if [ -z "$gd_root" ]; then
+        if [ -z "${gd_root:-}" ]; then
             echo "  - Google Drive: Install and sync, then re-run setup"
         fi
         if [ ! -d "$OBSIDIAN_REAL" ]; then
