@@ -20,6 +20,16 @@ if ! is_osx; then
     exit 1
 fi
 
+# Check if Homebrew is installed
+# Workspace setup should run after Homebrew installation and package installation
+if ! has "brew"; then
+    e_warning "Homebrew is not installed yet"
+    e_warning "Workspace setup will be skipped for now"
+    e_warning "After installing Homebrew and cloud services (Google Drive, Obsidian):"
+    e_warning "  Run: bash ~/.dotfiles/etc/init/ws_setup.sh"
+    exit 0
+fi
+
 # Run the workspace setup script
 if [ -f "$DOTPATH/etc/init/ws_setup.sh" ]; then
     e_header "Setting up workspace (ws) directories..."
@@ -27,6 +37,7 @@ if [ -f "$DOTPATH/etc/init/ws_setup.sh" ]; then
         e_warning "Workspace setup encountered some issues"
         e_warning "You can run it manually later: bash $DOTPATH/etc/init/ws_setup.sh"
         # Don't exit with error - allow setup to continue
+        exit 0
     }
 else
     e_failure "error: ws_setup.sh not found at $DOTPATH/etc/init/ws_setup.sh"
