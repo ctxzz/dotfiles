@@ -33,6 +33,9 @@ GD_PAPER_REL="02thesis"
 GD_NOTE_REL="06note"
 # =================
 
+# Track skipped symlinks for reporting
+SKIPPED_SYMLINKS=()
+
 die() { 
     e_failure "$*"
     exit 1
@@ -69,11 +72,13 @@ ensure_symlink() {
     # Check if target exists before creating symlink
     if [ ! -e "$target" ]; then
         e_warning "Target does not exist, skipping symlink creation: $target"
-        return
+        SKIPPED_SYMLINKS+=("$linkpath (target: $target)")
+        return 1
     fi
     
     ln -s "$target" "$linkpath"
     e_success "Created symlink: $linkpath -> $target"
+    return 0
 }
 
 detect_google_drive_root() {
@@ -86,6 +91,11 @@ detect_google_drive_root() {
     # and does not contain spaces.
     # shellcheck disable=SC2231
     for first_match in $pattern; do
+        # Check if pattern still contains asterisk (no match found)
+        if [[ "$first_match" == *"*"* ]]; then
+            # No matching directory found
+            return 1
+        fi
         if [ -d "$first_match" ]; then
             printf "%s" "$first_match"
             return 0
@@ -107,14 +117,14 @@ main() {
     local gd_root=""
     if gd_root="$(detect_google_drive_root)"; then
         e_success "Detected Google Drive: $gd_root"
-        ensure_symlink "$gd_root" "$CLOUD_DIR/GoogleDrive"
+        ensure_symlink "$gd_root" "$CLOUD_DIR/GoogleDrive" || true
         
         # Setup Google Drive workspace links
         local gd_mydrive="$CLOUD_DIR/GoogleDrive/$GD_MYDRIVE_REL"
         if [ -d "$gd_mydrive" ]; then
-            ensure_symlink "$gd_mydrive/$GD_SLIDE_REL" "$WS_DIR/slide"
-            ensure_symlink "$gd_mydrive/$GD_PAPER_REL" "$WS_DIR/paper"
-            ensure_symlink "$gd_mydrive/$GD_NOTE_REL"  "$WS_DIR/note"
+            ensure_symlink "$gd_mydrive/$GD_SLIDE_REL" "$WS_DIR/slide" || true
+            ensure_symlink "$gd_mydrive/$GD_PAPER_REL" "$WS_DIR/paper" || true
+            ensure_symlink "$gd_mydrive/$GD_NOTE_REL"  "$WS_DIR/note" || true
         else
             e_warning "Google Drive 'My Drive' not found: $gd_mydrive"
             e_warning "Files may still be downloading. Run this script again after sync completes."
@@ -129,7 +139,7 @@ main() {
     
     # Setup Obsidian (iCloud)
     if [ -d "$OBSIDIAN_REAL" ]; then
-        ensure_symlink "$OBSIDIAN_REAL" "$WS_DIR/obsidian"
+        ensure_symlink "$OBSIDIAN_REAL" "$WS_DIR/obsidian" || true
     else
         e_warning "Obsidian iCloud directory not found: $OBSIDIAN_REAL"
         e_warning "This is normal if Obsidian is not installed yet. After installing:"
@@ -155,7 +165,7 @@ main() {
     echo "  ~/ws/local/work     # Local work files"
     
     # Show summary of what needs to be done if cloud services are missing
-    if [ -z "${gd_root:-}" ] || [ ! -d "$OBSIDIAN_REAL" ]; then
+    if [ -z "${gd_root:-}" ] || [ ! -d "$OBSIDIAN_REAL" ] || [ "${#SKIPPED_SYMLINKS[@]}" -gt 0 ]; then
         echo ""
         e_header "Note: Some cloud services are not available yet"
         if [ -z "${gd_root:-}" ]; then
@@ -164,8 +174,17 @@ main() {
         if [ ! -d "$OBSIDIAN_REAL" ]; then
             echo "  - Obsidian (iCloud): Install and enable iCloud, then re-run setup"
         fi
+        if [ "${#SKIPPED_SYMLINKS[@]}" -gt 0 ]; then
+            echo ""
+            echo "Skipped symlinks (targets do not exist yet):"
+            for skipped in "${SKIPPED_SYMLINKS[@]}"; do
+                echo "  - $skipped"
+            done
+        fi
         echo ""
         echo "You can continue using ~/ws/local for now and set up cloud sync later."
+        echo "Re-run this script after cloud services are installed and synced:"
+        echo "  bash ~/.dotfiles/etc/init/ws_setup.sh"
     fi
 }
 

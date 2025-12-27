@@ -64,7 +64,8 @@ unit3() {
     
     # モック環境でスクリプトを実行
     e_header "モック環境でスクリプトを実行中..."
-    if HOME="$test_home" bash "$DOTPATH/etc/init/ws_setup.sh" >/dev/null 2>&1; then
+    local output
+    if output=$(HOME="$test_home" bash "$DOTPATH/etc/init/ws_setup.sh" 2>&1); then
         e_success "スクリプトが正常に実行されました"
         
         # 基本ディレクトリの確認
@@ -72,6 +73,8 @@ unit3() {
             e_success "~/ws/local が作成されました"
         else
             e_failure "~/ws/local が作成されていません"
+            echo "Script output:" >&2
+            echo "$output" >&2
             ERR=1
         fi
         
@@ -97,6 +100,8 @@ unit3() {
         fi
     else
         e_failure "スクリプトの実行に失敗しました"
+        echo "Script output:" >&2
+        echo "$output" >&2
         ERR=1
     fi
     
@@ -126,23 +131,42 @@ unit4() {
     
     # Google Driveがある環境でスクリプトを実行
     e_header "Google Driveモック環境でスクリプトを実行中..."
-    if HOME="$test_home" bash "$DOTPATH/etc/init/ws_setup.sh" >/dev/null 2>&1; then
+    local output
+    if output=$(HOME="$test_home" bash "$DOTPATH/etc/init/ws_setup.sh" 2>&1); then
         e_success "Google Drive環境でスクリプトが正常に実行されました"
         
-        # シンボリックリンクの確認
+        # シンボリックリンクの存在と正しいターゲットの確認
         if [ -L "$test_home/Cloud/GoogleDrive" ]; then
-            e_success "~/Cloud/GoogleDrive シンボリックリンクが作成されました"
+            local target
+            target=$(readlink "$test_home/Cloud/GoogleDrive")
+            local expected="$test_home/Library/CloudStorage/${test_email}"
+            if [ "$target" = "$expected" ]; then
+                e_success "~/Cloud/GoogleDrive シンボリックリンクが正しいターゲットを指しています"
+            else
+                e_failure "~/Cloud/GoogleDrive のターゲットが不正です: $target (期待値: $expected)"
+                ERR=1
+            fi
         else
             e_warning "~/Cloud/GoogleDrive シンボリックリンクが作成されていません"
         fi
         
         if [ -L "$test_home/ws/slide" ]; then
-            e_success "~/ws/slide シンボリックリンクが作成されました"
+            local target
+            target=$(readlink "$test_home/ws/slide")
+            local expected="$test_home/Cloud/GoogleDrive/My Drive/03slide"
+            if [ "$target" = "$expected" ]; then
+                e_success "~/ws/slide シンボリックリンクが正しいターゲットを指しています"
+            else
+                e_failure "~/ws/slide のターゲットが不正です: $target (期待値: $expected)"
+                ERR=1
+            fi
         else
             e_warning "~/ws/slide シンボリックリンクが作成されていません"
         fi
     else
         e_failure "Google Drive環境でスクリプトの実行に失敗しました"
+        echo "Script output:" >&2
+        echo "$output" >&2
         ERR=1
     fi
     

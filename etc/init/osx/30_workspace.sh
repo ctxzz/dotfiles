@@ -27,6 +27,9 @@ if ! has "brew"; then
     e_warning "Workspace setup will be skipped for now"
     e_warning "After installing Homebrew and cloud services (Google Drive, Obsidian):"
     e_warning "  Run: bash ~/.dotfiles/etc/init/ws_setup.sh"
+    # Exit with success (0) to not fail the overall init process
+    # Note: This means init.sh won't detect that workspace setup was skipped
+    # The warnings above inform the user about this situation
     exit 0
 fi
 
