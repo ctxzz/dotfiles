@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eu
+trap 'e_failure "An error occurred. Exiting."; exit 1' ERR INT
 
 ###############################################################################
 # ws / Cloud セットアップスクリプト
