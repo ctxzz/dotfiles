@@ -34,12 +34,14 @@
 etc/init/
 ├── init.sh                 # メイン初期化スクリプト（OS判別して適切なスクリプトを実行）
 ├── mise_setup.sh           # mise、Node.js、Bun、niの自動セットアップ
+├── ws_setup.sh             # ワークスペース（ws）セットアップ
 ├── linux/                  # Linux固有の初期化
 │   ├── linux_install.sh   # パッケージインストール
 │   └── linux_settings.sh  # システム設定
 ├── osx/                    # macOS固有の初期化
 │   ├── 10_brew.sh         # Homebrewセットアップ
 │   ├── 20_bundle.sh       # Homebrew bundleインストール
+│   ├── 30_workspace.sh    # ワークスペースセットアップ
 │   ├── Brewfile           # インストールするパッケージリスト
 │   ├── macos_defaults.sh  # macOSシステム設定
 │   └── zsh.sh             # zshセットアップ
@@ -61,7 +63,8 @@ etc/test/
 │   └── linux_settings_test.sh
 └── osx/                    # macOS固有のテスト
     ├── init_brew_test.sh
-    └── init_bundle_test.sh
+    ├── init_bundle_test.sh
+    └── init_workspace_test.sh  # ワークスペースセットアップテスト
 ```
 
 ### etc/lib/ - 共通ライブラリ
@@ -133,6 +136,29 @@ mise（バージョン管理ツール）の設定ディレクトリ。
 - **ghq**: リポジトリ管理
 - **fzf**: ファジーファインダー
 - **ripgrep**: 高速grep
+
+## ワークスペース（ws）システム
+
+作業ディレクトリの一元管理システムです。詳細は [WORKSPACE.md](WORKSPACE.md) を参照してください。
+
+### 概要
+
+* `~/ws/` - 唯一の作業入口
+* `~/ws/slide`, `~/ws/paper`, `~/ws/note` - Google Drive 同期ディレクトリ
+* `~/ws/obsidian` - Obsidian（iCloud 同期）
+* `~/ws/local/` - ローカル専用（非同期）
+
+### セットアップ
+
+```bash
+# 自動セットアップ（dotfiles インストール時）
+make install
+
+# 手動セットアップ
+bash ~/.dotfiles/etc/init/ws_setup.sh
+```
+
+詳細な運用ルールやトラブルシューティングについては [WORKSPACE.md](WORKSPACE.md) を参照してください。
 
 ## メンテナンス
 
