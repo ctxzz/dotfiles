@@ -89,8 +89,7 @@ detect_google_drive_root() {
         fi
     done
     
-    e_warning "Google Drive not found: $pattern"
-    e_warning "Please ensure Google Drive is installed and syncing"
+    # Not found
     return 1
 }
 
@@ -153,10 +152,10 @@ main() {
     echo "  ~/ws/local/work     # Local work files"
     
     # Show summary of what needs to be done if cloud services are missing
-    if ! gd_root="$(detect_google_drive_root)" 2>/dev/null || [ ! -d "$OBSIDIAN_REAL" ]; then
+    if [ -z "$gd_root" ] || [ ! -d "$OBSIDIAN_REAL" ]; then
         echo ""
         e_header "Note: Some cloud services are not available yet"
-        if ! gd_root="$(detect_google_drive_root)" 2>/dev/null; then
+        if [ -z "$gd_root" ]; then
             echo "  - Google Drive: Install and sync, then re-run setup"
         fi
         if [ ! -d "$OBSIDIAN_REAL" ]; then
