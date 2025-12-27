@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -eu
 trap 'e_failure "An error occurred. Exiting."; exit 1' ERR INT
 
