@@ -102,7 +102,7 @@ main() {
     ensure_dir "$CLOUD_DIR"
     
     # Detect and link Google Drive
-    local gd_root
+    local gd_root=""
     if gd_root="$(detect_google_drive_root)"; then
         e_success "Detected Google Drive: $gd_root"
         ensure_symlink "$gd_root" "$CLOUD_DIR/GoogleDrive"
