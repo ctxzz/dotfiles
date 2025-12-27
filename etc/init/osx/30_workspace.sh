@@ -33,15 +33,14 @@ fi
 # Run the workspace setup script
 if [ -f "$DOTPATH/etc/init/ws_setup.sh" ]; then
     e_header "Setting up workspace (ws) directories..."
-    bash "$DOTPATH/etc/init/ws_setup.sh" || {
+    if bash "$DOTPATH/etc/init/ws_setup.sh"; then
+        e_success "Workspace setup script completed"
+    else
         e_warning "Workspace setup encountered some issues"
         e_warning "You can run it manually later: bash $DOTPATH/etc/init/ws_setup.sh"
-        # Don't exit with error - allow setup to continue
-        exit 0
-    }
+        # Don't fail the entire init process
+    fi
 else
     e_failure "error: ws_setup.sh not found at $DOTPATH/etc/init/ws_setup.sh"
     exit 1
 fi
-
-e_success "Workspace setup script completed"

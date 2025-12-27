@@ -114,12 +114,15 @@ unit4() {
         return
     fi
     
+    # Google Drive detection pattern (matches the pattern in ws_setup.sh)
+    local gd_pattern="GoogleDrive-omata"
+    local test_email="${gd_pattern}@example.com"
+    
     # テスト用の一時ディレクトリを作成
-    # Note: Using "GoogleDrive-omata" prefix to match the detection pattern in ws_setup.sh
     local test_home="/tmp/ws_test_gd_$$"
-    mkdir -p "$test_home/Library/CloudStorage/GoogleDrive-omata@example.com/My Drive/03slide"
-    mkdir -p "$test_home/Library/CloudStorage/GoogleDrive-omata@example.com/My Drive/02thesis"
-    mkdir -p "$test_home/Library/CloudStorage/GoogleDrive-omata@example.com/My Drive/06note"
+    mkdir -p "$test_home/Library/CloudStorage/${test_email}/My Drive/03slide"
+    mkdir -p "$test_home/Library/CloudStorage/${test_email}/My Drive/02thesis"
+    mkdir -p "$test_home/Library/CloudStorage/${test_email}/My Drive/06note"
     
     # Google Driveがある環境でスクリプトを実行
     e_header "Google Driveモック環境でスクリプトを実行中..."
