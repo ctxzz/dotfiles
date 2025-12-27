@@ -81,7 +81,9 @@ detect_google_drive_root() {
     local first_match
     
     # Find first matching directory
-    # Intentional word splitting for glob expansion
+    # Intentional word splitting for glob expansion:
+    # pattern is safely controlled ($HOME, GD_PREFIX, and a literal '*')
+    # and does not contain spaces.
     # shellcheck disable=SC2231
     for first_match in $pattern; do
         if [ -d "$first_match" ]; then
