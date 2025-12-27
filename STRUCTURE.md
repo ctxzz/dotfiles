@@ -63,7 +63,8 @@ etc/test/
 │   └── linux_settings_test.sh
 └── osx/                    # macOS固有のテスト
     ├── init_brew_test.sh
-    └── init_bundle_test.sh
+    ├── init_bundle_test.sh
+    └── init_workspace_test.sh  # ワークスペースセットアップテスト
 ```
 
 ### etc/lib/ - 共通ライブラリ
