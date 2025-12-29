@@ -2,12 +2,14 @@
 
 # -- START sh test
 #
-trap 'echo Error: $0: stopped; exit 1' ERR INT
 
 . "$DOTPATH"/etc/lib/vital.sh
 
 ERR=0
 export ERR
+
+# Set up error trap after vital.sh is loaded
+trap 'echo Error: $0: stopped; exit 1' ERR INT
 #
 # -- END
 
