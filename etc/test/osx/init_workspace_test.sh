@@ -8,7 +8,7 @@
 ERR=0
 export ERR
 
-# Set up error trap after vital.sh is loaded
+# Set up error trap after ERR variable is defined
 trap 'echo Error: $0: stopped; exit 1' ERR INT
 #
 # -- END
