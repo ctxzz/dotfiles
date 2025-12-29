@@ -1,6 +1,5 @@
 #!/bin/bash
 set -eu
-trap 'e_failure "An error occurred. Exiting."; exit 1' ERR INT
 
 ###############################################################################
 # ws / Cloud セットアップスクリプト
@@ -19,6 +18,9 @@ else
     e_failure() { printf "✗ %s\n" "$*" >&2; }
     e_warning() { printf "! %s\n" "$*"; }
 fi
+
+# Set up error trap after e_failure is defined
+trap 'e_failure "An error occurred. Exiting."; exit 1' ERR INT
 
 # ===== 設定 =====
 GD_PREFIX="GoogleDrive-omata"   # ここまでなら公開OK

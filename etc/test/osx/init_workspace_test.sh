@@ -88,6 +88,7 @@ unit3() {
             e_success "~/ws/local/sandbox が作成されました"
         else
             e_failure "~/ws/local/sandbox が作成されていません"
+            show_output_on_failure "$output"
             ERR=1
         fi
         
@@ -95,6 +96,7 @@ unit3() {
             e_success "~/ws/local/work が作成されました"
         else
             e_failure "~/ws/local/work が作成されていません"
+            show_output_on_failure "$output"
             ERR=1
         fi
         
@@ -102,6 +104,7 @@ unit3() {
             e_success "~/Cloud が作成されました"
         else
             e_failure "~/Cloud が作成されていません"
+            show_output_on_failure "$output"
             ERR=1
         fi
     else
