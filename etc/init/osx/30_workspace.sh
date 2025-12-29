@@ -39,9 +39,16 @@ if [ -f "$DOTPATH/etc/init/ws_setup.sh" ]; then
     if bash "$DOTPATH/etc/init/ws_setup.sh"; then
         e_success "Workspace setup script completed"
     else
-        e_warning "Workspace setup encountered some issues"
+        ws_status=$?
+        # Treat critical execution failures (e.g., not executable, not found) as fatal
+        if [ "$ws_status" -eq 126 ] || [ "$ws_status" -eq 127 ]; then
+            e_failure "Workspace setup script failed to execute (exit code $ws_status)"
+            e_failure "Please ensure it is executable and has no syntax errors: $DOTPATH/etc/init/ws_setup.sh"
+            exit 1
+        fi
+        e_warning "Workspace setup encountered some issues (exit code $ws_status)"
         e_warning "You can run it manually later: bash $DOTPATH/etc/init/ws_setup.sh"
-        # Don't fail the entire init process
+        # Don't fail the entire init process for non-critical workspace issues
     fi
 else
     e_failure "error: ws_setup.sh not found at $DOTPATH/etc/init/ws_setup.sh"
