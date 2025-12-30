@@ -138,6 +138,7 @@ unit4() {
     mkdir -p "$test_home/Library/CloudStorage/${test_email}/My Drive/03slide"
     mkdir -p "$test_home/Library/CloudStorage/${test_email}/My Drive/02thesis"
     mkdir -p "$test_home/Library/CloudStorage/${test_email}/My Drive/06note"
+    mkdir -p "$test_home/Library/Mobile Documents/iCloud~md~obsidian/Documents"
     
     # Google Driveがある環境でスクリプトを実行
     e_header "Google Driveモック環境でスクリプトを実行中..."
@@ -160,6 +161,22 @@ unit4() {
             e_warning "~/Cloud/GoogleDrive シンボリックリンクが作成されていません"
         fi
         
+        # iCloud symlink check
+        if [ -L "$test_home/Cloud/iCloud" ]; then
+            local target
+            target=$(readlink "$test_home/Cloud/iCloud")
+            local expected="$test_home/Library/Mobile Documents"
+            if [ "$target" = "$expected" ]; then
+                e_success "~/Cloud/iCloud シンボリックリンクが正しいターゲットを指しています"
+            else
+                e_failure "~/Cloud/iCloud のターゲットが不正です: $target (期待値: $expected)"
+                ERR=1
+            fi
+        else
+            e_failure "~/Cloud/iCloud シンボリックリンクが作成されていません"
+            ERR=1
+        fi
+        
         if [ -L "$test_home/ws/slide" ]; then
             local target
             target=$(readlink "$test_home/ws/slide")
@@ -172,6 +189,22 @@ unit4() {
             fi
         else
             e_warning "~/ws/slide シンボリックリンクが作成されていません"
+        fi
+        
+        # Obsidian symlink check
+        if [ -L "$test_home/ws/obsidian" ]; then
+            local target
+            target=$(readlink "$test_home/ws/obsidian")
+            local expected="$test_home/Library/Mobile Documents/iCloud~md~obsidian/Documents"
+            if [ "$target" = "$expected" ]; then
+                e_success "~/ws/obsidian シンボリックリンクが正しいターゲットを指しています"
+            else
+                e_failure "~/ws/obsidian のターゲットが不正です: $target (期待値: $expected)"
+                ERR=1
+            fi
+        else
+            e_failure "~/ws/obsidian シンボリックリンクが作成されていません"
+            ERR=1
         fi
     else
         e_failure "Google Drive環境でスクリプトの実行に失敗しました"
