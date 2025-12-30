@@ -1,6 +1,4 @@
 # Taps
-tap "homebrew/bundle"
-tap "homebrew/services"
 tap "muesli/tap"
 
 # Base dependencies
@@ -27,7 +25,7 @@ brew "z"    # Directory jumper
 brew "ripgrep"  # Better grep
 brew "eza"  # Better ls (replacement for exa)
 brew "delta"  # Better git diff
-brew "tldr"  # Simplified man pages
+brew "tealdeer"  # Simplified man pages (tldr replacement)
 brew "jq"  # JSON processor
 brew "yq"  # YAML processor
 brew "fd"  # Better find
@@ -64,7 +62,7 @@ brew "graphviz"
 # macOS Applications
 cask "audio-hijack"
 cask "deepl"
-cask "flux"
+cask "flux-app"
 cask "font-fontawesome"
 cask "jordanbaird-ice"
 cask "karabiner-elements"
