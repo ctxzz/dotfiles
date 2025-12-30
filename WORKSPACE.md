@@ -74,13 +74,14 @@
 
 ```text
 ~/ws/obsidian
-  -> ~/Cloud/iCloud/iCloud~md~obsidian/Documents
+  -> ~/Library/Mobile Documents/iCloud~md~obsidian/Documents
 ```
 
 * Obsidian Vault
 * iCloud 同期前提
 * 思考メモ・知識管理専用
-* `~/Cloud/iCloud` を経由して Obsidian が実際に管理しているディレクトリを参照する
+* Obsidian が実際に管理しているディレクトリを直接参照する
+* Note: `~/Cloud/iCloud` シンボリックリンクを経由することも可能
 
 ---
 
