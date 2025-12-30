@@ -29,7 +29,7 @@ set +e
 
 # よくある場所を検索
 searchPaths=(
-  "$HOME/ws/hama-med"
+  "$HOME/ws/work/hama-med"
   "$HOME/ghq/github.com/ctxzz"
   "$HOME/ghq/github.com"
 )
