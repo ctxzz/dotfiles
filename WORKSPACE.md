@@ -35,7 +35,8 @@
 │       ├── sandbox
 │       └── work
 └── Cloud/                  # クラウド同期実体（裏側）
-    └── GoogleDrive/
+    ├── GoogleDrive/
+    └── iCloud/
 ```
 
 ---
@@ -73,13 +74,13 @@
 
 ```text
 ~/ws/obsidian
-  -> ~/Library/Mobile Documents/iCloud~md~obsidian/Documents
+  -> ~/Cloud/iCloud/iCloud~md~obsidian/Documents
 ```
 
 * Obsidian Vault
 * iCloud 同期前提
 * 思考メモ・知識管理専用
-* Obsidian が実際に管理しているディレクトリをそのまま参照する
+* `~/Cloud/iCloud` を経由して Obsidian が実際に管理しているディレクトリを参照する
 
 ---
 
@@ -144,6 +145,31 @@
 
   という **固定名のシンボリックリンク**を作成
 * 以降はこの抽象パスのみを使用する
+
+---
+
+## iCloud Drive パスの扱いについて
+
+実際の iCloud Drive 実体は、次のように
+**長いディレクトリ名**になります。
+
+```text
+~/Library/Mobile Documents/
+```
+
+このパスを直接参照すると可読性が低いため、次の方針を取ります。
+
+### 方針
+
+* iCloud Drive のルートディレクトリに対して
+
+  ```text
+  ~/Cloud/iCloud
+  ```
+
+  という **固定名のシンボリックリンク**を作成
+* Obsidian などの iCloud 連携アプリは、`~/Cloud/iCloud` を経由して参照する
+* Google Drive と同様、抽象パスを使用することで一貫性を保つ
 
 ---
 
@@ -225,8 +251,9 @@ bash ~/.dotfiles/etc/init/ws_setup.sh
    * `~/Cloud/GoogleDrive` シンボリックリンクを作成
    * `~/ws/slide`, `~/ws/paper`, `~/ws/note` リンクを作成
 
-3. **iCloud（Obsidian）のリンク作成**
-   * `~/ws/obsidian` シンボリックリンクを作成
+3. **iCloud のリンク作成**
+   * `~/Cloud/iCloud` シンボリックリンクを作成（iCloud Drive ルート）
+   * `~/ws/obsidian` シンボリックリンクを作成（Obsidian Vault）
 
 4. **ローカルワークスペースの作成**
    * `~/ws/local/sandbox` ディレクトリを作成
@@ -246,6 +273,7 @@ ls -l ~/ws/obsidian
 
 # Cloud ディレクトリの確認
 ls -l ~/Cloud/GoogleDrive
+ls -l ~/Cloud/iCloud
 ```
 
 ---

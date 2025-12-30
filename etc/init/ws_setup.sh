@@ -27,7 +27,8 @@ GD_PREFIX="GoogleDrive-omata"   # ここまでなら公開OK
 WS_DIR="$HOME/ws"
 CLOUD_DIR="$HOME/Cloud"
 
-OBSIDIAN_REAL="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents"
+ICLOUD_ROOT="$HOME/Library/Mobile Documents"
+OBSIDIAN_REAL="$ICLOUD_ROOT/iCloud~md~obsidian/Documents"
 
 GD_MYDRIVE_REL="My Drive"
 GD_SLIDE_REL="03slide"
@@ -139,15 +140,25 @@ main() {
         e_warning "  3. Re-run: bash ~/.dotfiles/etc/init/ws_setup.sh"
     fi
     
-    # Setup Obsidian (iCloud)
-    if [ -d "$OBSIDIAN_REAL" ]; then
-        ensure_symlink "$OBSIDIAN_REAL" "$WS_DIR/obsidian" || true
+    # Setup iCloud symlink
+    if [ -d "$ICLOUD_ROOT" ]; then
+        ensure_symlink "$ICLOUD_ROOT" "$CLOUD_DIR/iCloud" || true
+        
+        # Setup Obsidian (iCloud)
+        if [ -d "$OBSIDIAN_REAL" ]; then
+            ensure_symlink "$OBSIDIAN_REAL" "$WS_DIR/obsidian" || true
+        else
+            e_warning "Obsidian iCloud directory not found: $OBSIDIAN_REAL"
+            e_warning "This is normal if Obsidian is not installed yet. After installing:"
+            e_warning "  1. Install Obsidian: https://obsidian.md/"
+            e_warning "  2. Enable iCloud sync in Obsidian settings"
+            e_warning "  3. Re-run: bash ~/.dotfiles/etc/init/ws_setup.sh"
+        fi
     else
-        e_warning "Obsidian iCloud directory not found: $OBSIDIAN_REAL"
-        e_warning "This is normal if Obsidian is not installed yet. After installing:"
-        e_warning "  1. Install Obsidian: https://obsidian.md/"
-        e_warning "  2. Enable iCloud sync in Obsidian settings"
-        e_warning "  3. Re-run: bash ~/.dotfiles/etc/init/ws_setup.sh"
+        e_warning "iCloud root directory not found: $ICLOUD_ROOT"
+        e_warning "This is normal if iCloud Drive is not enabled. After enabling:"
+        e_warning "  1. Enable iCloud Drive in System Settings → Apple ID → iCloud"
+        e_warning "  2. Re-run: bash ~/.dotfiles/etc/init/ws_setup.sh"
     fi
     
     # Create local workspace directories
@@ -167,11 +178,14 @@ main() {
     echo "  ~/ws/local/work     # Local work files"
     
     # Show summary of what needs to be done if cloud services are missing
-    if [ -z "${gd_root:-}" ] || [ ! -d "$OBSIDIAN_REAL" ] || [ "${#SKIPPED_SYMLINKS[@]}" -gt 0 ]; then
+    if [ -z "${gd_root:-}" ] || [ ! -d "$ICLOUD_ROOT" ] || [ ! -d "$OBSIDIAN_REAL" ] || [ "${#SKIPPED_SYMLINKS[@]}" -gt 0 ]; then
         echo ""
         e_header "Note: Some cloud services are not available yet"
         if [ -z "${gd_root:-}" ]; then
             echo "  - Google Drive: Install and sync, then re-run setup"
+        fi
+        if [ ! -d "$ICLOUD_ROOT" ]; then
+            echo "  - iCloud Drive: Enable in System Settings, then re-run setup"
         fi
         if [ ! -d "$OBSIDIAN_REAL" ]; then
             echo "  - Obsidian (iCloud): Install and enable iCloud, then re-run setup"
