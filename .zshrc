@@ -19,31 +19,6 @@ fi
 #     ~/bin/tmuxx
 # fi
 
-# zplugの初期化
-if [[ ! -d ~/.zplug ]]; then
-    export ZPLUG_HOME=~/.zplug
-    git clone https://github.com/zplug/zplug $ZPLUG_HOME
-    zplug update --self
-fi
-
-if [[ -f ~/.zplug/init.zsh ]]; then
-    export ZPLUG_LOADFILE=~/.zsh/zplug.zsh
-    source ~/.zplug/init.zsh
-
-    if ! zplug check --verbose; then
-        printf "Install? [y/N]: "
-        if read -q; then
-            echo; zplug install
-        fi
-        echo
-    fi
-    zplug load
-fi
-
-# 補完システムの再初期化
-autoload -Uz compinit
-compinit -C
-
 # ローカル設定の読み込み
 if [[ -f ~/.zshrc.local ]]; then
     source ~/.zshrc.local
