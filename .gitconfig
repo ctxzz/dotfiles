@@ -1,6 +1,6 @@
 [user]
 	name = ctxzz
-	email = @gmail.com
+	email = 18323160+ctxzz@users.noreply.github.com
 
 [core]
     editor = vim
@@ -27,10 +27,11 @@
 	tool = vimdiff
 
 [ghq]
-	root = ~/src
+	root = ~/ghq
 
 [github]
 	user = ctxzz
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
