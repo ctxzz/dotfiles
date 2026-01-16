@@ -2,8 +2,12 @@
 	name = ctxzz
 	email = 18323160+ctxzz@users.noreply.github.com
 
+[include]
+	path = ~/.gitconfig.local
+
 [core]
     editor = vim
+	pager = delta
 
 [color]
 	ui = auto
@@ -18,13 +22,56 @@
 	context = 240
 	commit = 246 024
 
-[diff]
-	tool      = vimdiff
-	algorithm = histogram
-	compactionHeuristic = true
+[delta]
+	navigate = true
+	line-numbers = true
+	side-by-side = true
+	syntax-theme = GitHub
 
-[merge]
-	tool = vimdiff
+[interactive]
+	diffFilter = delta --color-only
+
+#[diff]
+# 	tool      = vimdiff
+# 	algorithm = histogram
+# 	compactionHeuristic = true
+
+#[merge]
+# 	tool = vimdiff
+
+[pull]
+	rebase = true
+
+[rebase]
+	autoStash = true
+
+[fetch]
+	prune = true
+
+[push]
+	autoSetupRemote = true
+	default = current
+
+[rerere]
+	enabled = true
+
+[init]
+	defaultBranch = main
+
+[alias]
+	st = status -sb
+	ci = commit
+	co = checkout
+	sw = switch
+	br = branch
+	df = diff
+	dc = diff --cached
+
+	lo = log --oneline --decorate --graph -n 20
+
+	# 現在ブランチを origin に push / pull
+	ps = "!git push origin $(git rev-parse --abbrev-ref HEAD)"
+	pl = "!git pull origin $(git rev-parse --abbrev-ref HEAD)"
 
 [ghq]
 	root = ~/ghq
