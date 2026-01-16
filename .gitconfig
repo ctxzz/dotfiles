@@ -25,8 +25,9 @@
 [delta]
 	navigate = true
 	line-numbers = true
-	side-by-side = true
 	syntax-theme = GitHub
+	plus-color = "#012800"
+	minus-color = "#340001"
 
 [interactive]
 	diffFilter = delta --color-only
@@ -66,8 +67,9 @@
 	br = branch
 	df = diff
 	dc = diff --cached
-
 	lo = log --oneline --decorate --graph -n 20
+	
+	dss = "-c delta.side-by-side=true diff"
 
 	# 現在ブランチを origin に push / pull
 	ps = "!git push origin $(git rev-parse --abbrev-ref HEAD)"
