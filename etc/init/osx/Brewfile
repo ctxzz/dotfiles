@@ -1,5 +1,6 @@
 # Taps
 tap "muesli/tap"
+tap "nikitabobko/tap"
 
 # Base dependencies
 brew "openssl@3"
@@ -27,6 +28,7 @@ brew "eza"  # Better ls (replacement for exa)
 brew "delta"  # Better git diff
 brew "tealdeer"  # Simplified man pages (tldr replacement)
 brew "jq"  # JSON processor
+brew "yazi"  # Terminal file manager
 brew "yq"  # YAML processor
 brew "fd"  # Better find
 
@@ -60,16 +62,18 @@ brew "pandoc"
 brew "graphviz"
 
 # macOS Applications
+cask "1password"
+cask "aerospace"
 cask "audio-hijack"
 cask "flux-app"
 cask "font-fontawesome"
+cask "google-chrome"
 cask "jordanbaird-ice"
 cask "karabiner-elements"
 cask "loopback"
 cask "mactex-no-gui"
 cask "notion"
 cask "obs"
-cask "rectangle"
 cask "rescuetime"
 cask "stats"
 cask "raycast"
