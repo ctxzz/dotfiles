@@ -12,18 +12,7 @@ brew install --cask aerospace
 
 ## Setup
 
-### Automatic Setup (Recommended)
-
-During `make init` on macOS, the AeroSpace configuration is automatically deployed:
-
-```bash
-cd ~/.dotfiles
-make init
-```
-
-### Manual Setup
-
-If you installed AeroSpace after running `make init`:
+After installing AeroSpace, run the setup script to deploy the configuration:
 
 ```bash
 bash ~/.dotfiles/etc/init/aerospace_setup.sh
