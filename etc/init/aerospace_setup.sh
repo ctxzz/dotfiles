@@ -36,8 +36,20 @@ else
     e_warning "既存のファイル: $HOME/.config/aerospace/aerospace.toml"
     
     # バックアップを作成してから上書きするか確認
-    read -p "既存の設定を上書きしますか？ (バックアップを作成します) [y/N]: " -n 1 -r
-    echo
+    # FORCE環境変数が設定されている場合は自動的に上書き
+    if [ "${FORCE:-}" = "1" ]; then
+        REPLY="y"
+    elif [ -t 0 ]; then
+        # 対話モード（標準入力が端末）の場合のみプロンプト表示
+        read -p "既存の設定を上書きしますか？ (バックアップを作成します) [y/N]: " -n 1 -r
+        echo
+    else
+        # 非対話モード（自動化スクリプトなど）ではスキップ
+        e_warning "非対話モードのため、設定ファイルの更新をスキップします"
+        e_warning "上書きする場合は FORCE=1 を設定してください: FORCE=1 bash $0"
+        REPLY="n"
+    fi
+    
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         backup_file="$HOME/.config/aerospace/aerospace.toml.backup.$(date +%Y%m%d_%H%M%S)"
         cp "$HOME/.config/aerospace/aerospace.toml" "$backup_file"

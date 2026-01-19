@@ -38,7 +38,9 @@ if [ -f "$DOTPATH/etc/init/aerospace_setup.sh" ]; then
         e_success "AeroSpace setup script completed"
     else
         aerospace_status=$?
-        # Treat critical execution failures (e.g., not executable, not found) as fatal
+        # Exit code 126: Permission denied (script not executable)
+        # Exit code 127: Command not found (script doesn't exist or can't be found)
+        # Treat critical execution failures as fatal
         if [ "$aerospace_status" -eq 126 ] || [ "$aerospace_status" -eq 127 ]; then
             e_failure "AeroSpace setup script failed to execute (exit code $aerospace_status)"
             e_failure "Please ensure it is executable and has no syntax errors: $DOTPATH/etc/init/aerospace_setup.sh"
