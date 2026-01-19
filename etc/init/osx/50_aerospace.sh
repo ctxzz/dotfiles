@@ -59,7 +59,7 @@ else
   fi
 
   if [[ $REPLY =~ ^[Yy]$ ]]; then
-    backup_file="$HOME/.config/aerospace/aerospace.toml.backup.$(date +%Y%m%d_%H%M%S)"
+    backup_file="$HOME/.config/aerospace/aerospace.toml.backup"
     cp "$HOME/.config/aerospace/aerospace.toml" "$backup_file"
     e_success "既存の設定をバックアップしました: $backup_file"
 
