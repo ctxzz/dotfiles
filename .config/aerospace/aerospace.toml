@@ -1,0 +1,166 @@
+# =========================================================
+# Core
+# =========================================================
+start-at-login = true
+
+after-startup-command = [
+  'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0'
+]
+
+# フォーカスがあるモニタへマウスを寄せる
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+key-mapping.preset = 'qwerty'
+
+accordion-padding = 20
+
+[gaps]
+inner.horizontal = 8
+inner.vertical   = 8
+outer.left       = 8
+outer.right      = 8
+outer.top        = 8
+outer.bottom     = 8
+
+# =========================================================
+# Keybindings
+# =========================================================
+[mode.main.binding]
+
+# Layout
+alt-slash = 'layout tiles horizontal vertical'
+alt-comma = 'layout accordion horizontal vertical'
+
+# Focus（視覚移動）
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+
+# Move
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+# Resize
+alt-shift-minus = 'resize smart -50'
+alt-shift-equal = 'resize smart +50'
+
+# ---------------------------------------------------------
+# Workspaces
+# ---------------------------------------------------------
+
+# 汎用（自動配置なし）
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+
+# 役割ベース
+alt-a = 'workspace A'   # Adobe
+alt-w = 'workspace W'   # Web
+alt-c = 'workspace C'   # Chat
+alt-d = 'workspace D'   # Development
+alt-n = 'workspace N'   # Notes
+alt-t = 'workspace T'   # Terminal
+alt-z = 'workspace Z'   # Screen-sharing / Zoom
+
+# Send window to workspace
+alt-shift-1 = 'move-node-to-workspace 1'
+alt-shift-2 = 'move-node-to-workspace 2'
+alt-shift-3 = 'move-node-to-workspace 3'
+
+alt-shift-a = 'move-node-to-workspace A'
+alt-shift-w = 'move-node-to-workspace W'
+alt-shift-c = 'move-node-to-workspace C'
+alt-shift-d = 'move-node-to-workspace D'
+alt-shift-n = 'move-node-to-workspace N'
+alt-shift-t = 'move-node-to-workspace T'
+alt-shift-z = 'move-node-to-workspace Z'
+
+# Convenience
+alt-tab = 'workspace-back-and-forth'
+alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+# Service mode
+alt-shift-semicolon = 'mode service'
+
+[mode.service.binding]
+esc = ['reload-config', 'mode main']
+r = ['flatten-workspace-tree', 'mode main']
+f = ['layout floating tiling', 'mode main']
+backspace = ['close-all-windows-but-current', 'mode main']
+
+# =========================================================
+# App routing
+# =========================================================
+
+# ---- A: Adobe（まとめて）----
+[[on-window-detected]]
+if.app-name-regex-substring = 'Adobe'
+run = 'move-node-to-workspace A'
+
+# ---- W: Web ----
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = 'move-node-to-workspace W'
+
+[[on-window-detected]]
+if.app-id = 'company.thebrowser.dia'
+run = 'move-node-to-workspace W'
+
+[[on-window-detected]]
+if.app-id = 'company.thebrowser.Browser'   # Arc
+run = 'move-node-to-workspace W'
+
+# ---- C: Chat ----
+[[on-window-detected]]
+if.app-id = 'com.hnc.Discord'
+run = 'move-node-to-workspace C'
+
+# ---- D: Development ----
+[[on-window-detected]]
+if.app-id = 'com.microsoft.VSCode'
+run = 'move-node-to-workspace D'
+
+[[on-window-detected]]
+if.app-id = 'com.todesktop.230313mzl4w4u92' # Cursor
+run = 'move-node-to-workspace D'
+
+# ---- N: Notes ----
+[[on-window-detected]]
+if.app-id = 'notion.id'
+run = 'move-node-to-workspace N'
+
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = 'move-node-to-workspace N'
+
+# ---- T: Terminal ----
+[[on-window-detected]]
+if.app-id = 'dev.warp.Warp-Stable'
+run = 'move-node-to-workspace T'
+
+# ---- Z: Screen-sharing / Zoom ----
+[[on-window-detected]]
+if.app-id = 'us.zoom.xos'
+run = 'move-node-to-workspace Z'
+
+# ---- Floating on launch（workspaceは固定しない）----
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.1password.1password'
+run = 'layout floating'
+
