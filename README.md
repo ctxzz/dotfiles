@@ -61,6 +61,25 @@ This will install:
 
 See `.config/mise/README.md` for detailed usage.
 
+### Setup AeroSpace (macOS only)
+
+AeroSpace is a tiling window manager for macOS. After installing via Homebrew:
+
+```bash
+# Install AeroSpace via Homebrew (macOS)
+brew install --cask aerospace
+
+# Run AeroSpace setup script
+bash ~/.dotfiles/etc/init/aerospace_setup.sh
+```
+
+This will:
+- Deploy the AeroSpace configuration to `~/.config/aerospace/`
+- Set up workspace organization and keybindings
+- Configure automatic window routing for common applications
+
+See `.config/aerospace/README.md` for keybindings and usage details.
+
 ## Credits
 
 Acknowledgments; I established this dotfiles referring to the following user's repositories. Thanks.
