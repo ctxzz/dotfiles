@@ -37,30 +37,6 @@ make init
 make install
 ```
 
-## Post-installation
-
-### Setup mise and ni
-
-After deploying dotfiles, set up development tools:
-
-```bash
-# Install mise via Homebrew (macOS)
-brew install mise
-
-# Run mise setup script
-bash ~/.dotfiles/etc/init/mise_setup.sh
-
-# Restart shell
-exec $SHELL
-```
-
-This will install:
-- Node.js LTS
-- Bun (latest)
-- ni (package manager unifier)
-
-See `.config/mise/README.md` for detailed usage.
-
 ## Credits
 
 Acknowledgments; I established this dotfiles referring to the following user's repositories. Thanks.
