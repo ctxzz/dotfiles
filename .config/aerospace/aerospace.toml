@@ -80,11 +80,11 @@ alt-e = 'workspace E'   # Editor
 alt-t = 'workspace T'   # Terminal
 alt-z = 'workspace Z'   # Zoom / Screen-share
 
-alt-shift-a = 'move-node-to-workspace A'
-alt-shift-w = 'move-node-to-workspace W'
-alt-shift-e = 'move-node-to-workspace E'
-alt-shift-t = 'move-node-to-workspace T'
-alt-shift-z = 'move-node-to-workspace Z'
+# alt-shift-a = 'move-node-to-workspace A'
+# alt-shift-w = 'move-node-to-workspace W'
+# alt-shift-e = 'move-node-to-workspace E'
+# alt-shift-t = 'move-node-to-workspace T'
+# alt-shift-z = 'move-node-to-workspace Z'
 
 # =========================================================
 # Convenience
