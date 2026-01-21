@@ -55,9 +55,8 @@ brew "httpie"
 brew "nmap"
 
 # Container and virtualization
-brew "docker"
-brew "docker-compose"
-brew "docker-credential-helper"
+brew "podman"
+brew "podman-compose"
 
 # Document processing
 brew "pandoc"
@@ -76,6 +75,7 @@ cask "loopback"
 cask "mactex-no-gui"
 cask "notion"
 cask "obs"
+cask "podman-desktop"
 cask "rescuetime"
 cask "stats"
 cask "raycast"
