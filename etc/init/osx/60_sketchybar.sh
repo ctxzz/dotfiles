@@ -75,11 +75,14 @@ fi
 # pluginsディレクトリの内容をコピー（存在する場合）
 if [ -d "$DOTPATH/.config/sketchybar/plugins" ]; then
   e_header "sketchybar pluginsをコピーしています..."
-  # pluginsディレクトリ内にファイルがある場合のみコピー
-  if [ "$(ls -A "$DOTPATH/.config/sketchybar/plugins" 2>/dev/null | grep -v '.gitkeep' || true)" ]; then
-    cp -r "$DOTPATH/.config/sketchybar/plugins/"* "$HOME/.config/sketchybar/plugins/" 2>/dev/null || true
-    # 実行権限を付与
-    chmod +x "$HOME/.config/sketchybar/plugins/"* 2>/dev/null || true
+  # pluginsディレクトリ内にファイルがある場合のみコピー（.gitkeepを除く）
+  plugin_files=$(find "$DOTPATH/.config/sketchybar/plugins" -type f ! -name '.gitkeep' 2>/dev/null || true)
+  if [ -n "$plugin_files" ]; then
+    # ファイルごとにコピー
+    while IFS= read -r file; do
+      cp "$file" "$HOME/.config/sketchybar/plugins/" 2>/dev/null || true
+      chmod +x "$HOME/.config/sketchybar/plugins/$(basename "$file")" 2>/dev/null || true
+    done <<< "$plugin_files"
     e_success "sketchybar pluginsをコピーしました"
   else
     e_warning "pluginsディレクトリは空です（後で追加してください）"
