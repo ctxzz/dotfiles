@@ -23,6 +23,7 @@ brew "ghq"
 brew "peco"
 brew "tree"
 brew "borders"  # Hightlight window border
+brew "sketchybar"  # macOS menu bar replacement
 brew "bat"  # Better cat
 brew "z"    # Directory jumper
 brew "ripgrep"  # Better grep
@@ -68,6 +69,7 @@ cask "aerospace"
 cask "audio-hijack"
 cask "flux-app"
 cask "font-fontawesome"
+cask "font-hack-nerd-font"
 cask "google-chrome"
 cask "jordanbaird-ice"
 cask "karabiner-elements"
