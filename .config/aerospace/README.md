@@ -30,7 +30,7 @@ The configuration uses a semantic workspace system:
 - **P** (Private) - Personal browser (Dia)
 
 #### Role-based Workspaces
-- **R** (Resource) - Resource management (Obsidian, OneNote, Preview, Acrobat)
+- **R** (Resource) - Resource management (Obsidian, GoodNotes, Preview, Acrobat)
 - **W** (Web) - Web browsing (Chrome)
 - **E** (Editor) - Coding (VSCode, Cursor)
 - **T** (Terminal) - Terminal (Warp)
@@ -77,7 +77,7 @@ The configuration uses a semantic workspace system:
 
 Windows are automatically routed to workspaces:
 
-- Obsidian, OneNote, Preview, Acrobat → **R** (Resource)
+- Obsidian, GoodNotes, Preview, Acrobat → **R** (Resource)
 - Google Chrome → **W** (Web)
 - Arc Browser → **O** (Office)
 - Dia Browser → **P** (Private)

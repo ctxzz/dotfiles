@@ -109,7 +109,7 @@ if.app-id = 'md.obsidian'
 run = 'move-node-to-workspace R'
 
 [[on-window-detected]]
-if.app-id = 'com.microsoft.onenote.mac'
+if.app-id = 'com.goodnotesapp.x'
 run = 'move-node-to-workspace R'
 
 [[on-window-detected]]
@@ -117,7 +117,7 @@ if.app-id = 'com.apple.Preview'
 run = 'move-node-to-workspace R'
 
 [[on-window-detected]]
-if.app-name-regex-substring = 'Acrobat'
+if.app-id = 'com.adobe.Acrobat.Pro'
 run = 'move-node-to-workspace R'
 
 # Web (generic)
