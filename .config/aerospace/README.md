@@ -30,13 +30,10 @@ The configuration uses a semantic workspace system:
 - **P** (Private) - Personal browser (Dia)
 
 #### Role-based Workspaces
-- **A** (Adobe) - Creative applications
+- **R** (Resource) - Resource management (Obsidian, GoodNotes, Preview, Acrobat)
 - **W** (Web) - Web browsing (Chrome)
-- **C** (Chat) - Communication (Discord)
-- **D** (Development) - Coding (VSCode, Cursor)
-- **N** (Notes) - Note-taking (Notion, Obsidian)
+- **E** (Editor) - Coding (VSCode, Cursor)
 - **T** (Terminal) - Terminal (Warp)
-- **Z** (Zoom) - Video calls
 
 #### Generic Workspaces
 - **1, 2, 3** - General purpose workspaces
@@ -57,7 +54,7 @@ The configuration uses a semantic workspace system:
 
 ### Workspace Switching
 - `Alt+[I|O|P]` - Switch to Inbox/Office/Private
-- `Alt+[A|W|C|D|N|T|Z]` - Switch to role-based workspaces
+- `Alt+[R|W|E|T]` - Switch to role-based workspaces
 - `Alt+[1|2|3]` - Switch to generic workspaces
 - `Alt+Tab` - Switch to previous workspace
 
@@ -80,19 +77,20 @@ The configuration uses a semantic workspace system:
 
 Windows are automatically routed to workspaces:
 
-- Adobe apps → **A** (Adobe)
+- Obsidian, GoodNotes, Preview, Acrobat → **R** (Resource)
 - Google Chrome → **W** (Web)
 - Arc Browser → **O** (Office)
 - Dia Browser → **P** (Private)
-- Discord → **C** (Chat)
-- VSCode, Cursor → **D** (Development)
-- Notion, Obsidian → **N** (Notes)
+- Notion → **P** (Private)
+- VSCode, Cursor → **E** (Editor)
 - Warp → **T** (Terminal)
-- Zoom → **Z** (Zoom)
 
 Some apps float by default:
 - Finder
 - System Preferences
+- QuickTime Player
+- Activity Monitor
+- Console
 - 1Password
 
 ## Window Borders
