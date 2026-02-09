@@ -15,7 +15,7 @@ export ERR
 unit1() {
     e_header "デプロイテストの実行"
     
-    cd "$DOTPATH"
+    cd "$DOTPATH" || exit
     if make deploy >/dev/null; then
         e_success "デプロイが成功しました"
     else
@@ -28,7 +28,7 @@ unit1() {
 unit2() {
     e_header "シンボリックリンクの整合性チェック"
     
-    cd "$DOTPATH"
+    cd "$DOTPATH" || exit
     local invalid_links=0
     
     for i in $(make --silent list | sed "s|[*@/]$||g"); do
@@ -69,7 +69,7 @@ unit2() {
 unit3() {
     e_header "ファイルのパーミッションチェック"
     
-    cd "$DOTPATH"
+    cd "$DOTPATH" || exit
     local invalid_perms=0
     
     for i in $(make --silent list | sed "s|[*@/]$||g"); do
