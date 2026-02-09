@@ -105,8 +105,12 @@ if [ -d "$DOTPATH/.config/sketchybar/items" ]; then
 fi
 
 # コピーした設定ファイルに実行権限を付与
-chmod +x "$HOME/.config/sketchybar/sketchybarrc" 2>/dev/null || true
-chmod +x "$HOME/.config/sketchybar/"*.sh 2>/dev/null || true
+if [ -f "$HOME/.config/sketchybar/sketchybarrc" ]; then
+  chmod +x "$HOME/.config/sketchybar/sketchybarrc"
+fi
+if compgen -G "$HOME/.config/sketchybar/"*.sh > /dev/null; then
+  chmod +x "$HOME/.config/sketchybar/"*.sh
+fi
 
 # sketchybarが実行中か確認
 if brew services list | grep -q "sketchybar.*started"; then
