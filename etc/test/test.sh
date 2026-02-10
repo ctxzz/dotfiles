@@ -6,7 +6,7 @@ trap 'echo Error: $0: stopped; exit 1' ERR INT
 
 # DOTPATHが設定されていない場合は、スクリプトのパスから推測
 if [ -z "$DOTPATH" ]; then
-    DOTPATH=$(cd $(dirname $0)/../.. && pwd)
+    DOTPATH=$(cd $(dirname "$0")/../.. && pwd)
     export DOTPATH
 fi
 
