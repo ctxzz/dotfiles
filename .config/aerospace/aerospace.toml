@@ -4,7 +4,7 @@
 start-at-login = true
 
 after-startup-command = [
-  'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0'
+  'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=8.0'
 ]
 
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
@@ -24,12 +24,12 @@ key-mapping.preset = 'qwerty'
 accordion-padding = 20
 
 [gaps]
-inner.horizontal = 2
-inner.vertical   = 2
-outer.left       = 2
-outer.right      = 2
-outer.top        = 2
-outer.bottom     = 2
+inner.horizontal = 8
+inner.vertical   = 8
+outer.left       = 8
+outer.right      = 8
+outer.top        = 8
+outer.bottom     = 8
 
 # =========================================================
 # Monitor Assignment
@@ -166,6 +166,14 @@ run = 'move-node-to-workspace E'
 
 [[on-window-detected]]
 if.app-id = 'dev.warp.Warp-Stable'
+run = 'move-node-to-workspace E'
+
+[[on-window-detected]]
+if.app-id = 'com.google.antigravity'
+run = 'move-node-to-workspace E'
+
+[[on-window-detected]]
+if.app-id = 'com.openai.codex'
 run = 'move-node-to-workspace E'
 
 # Floating on launch
