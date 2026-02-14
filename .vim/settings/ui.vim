@@ -35,9 +35,10 @@ set background=dark     " Dark background
 set splitbelow          " Open horizontal splits below
 set splitright          " Open vertical splits to the right
 
-" Visual bell
-set visualbell          " Use visual bell instead of beeping
-set t_vb=               " Disable visual bell
+" Disable all bells (audio and visual)
+" Setting visualbell prevents beeping, t_vb= disables the visual flash
+set visualbell          
+set t_vb=
 
 "if g:env.is_tmux_running
 "  augroup titlesettings
