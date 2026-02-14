@@ -124,5 +124,4 @@ set secure
 
 " __END__ {{{1
 " vi:set ts=2 sw=2 sts=2:
-" vim:fdt=substitute(getline(v\:foldstart),'\\(.\*\\){\\{3}','\\1',''):
 " vim:fdm=marker expandtab fdc=3:
