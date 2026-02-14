@@ -31,6 +31,21 @@ syntax enable           " Enable syntax highlighting
 set termguicolors       " Enable true color support
 set background=dark     " Dark background
 
+" Transparent background for UI elements
+augroup TransparentBG
+  autocmd!
+  autocmd VimEnter,ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
+  autocmd VimEnter,ColorScheme * highlight LineNr ctermbg=NONE guibg=NONE
+  autocmd VimEnter,ColorScheme * highlight CursorLine ctermbg=NONE guibg=NONE
+  autocmd VimEnter,ColorScheme * highlight CursorLineNr ctermbg=NONE guibg=NONE
+  autocmd VimEnter,ColorScheme * highlight SignColumn ctermbg=NONE guibg=NONE
+  autocmd VimEnter,ColorScheme * highlight StatusLine ctermbg=NONE guibg=NONE
+  autocmd VimEnter,ColorScheme * highlight StatusLineNC ctermbg=NONE guibg=NONE
+  autocmd VimEnter,ColorScheme * highlight VertSplit ctermbg=NONE guibg=NONE
+  autocmd VimEnter,ColorScheme * highlight Pmenu ctermbg=NONE guibg=NONE
+  autocmd VimEnter,ColorScheme * highlight ColorColumn ctermbg=NONE guibg=NONE
+augroup END
+
 " Split behavior
 set splitbelow          " Open horizontal splits below
 set splitright          " Open vertical splits to the right
