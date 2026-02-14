@@ -17,7 +17,6 @@ set linebreak           " Don't break words when wrapping
 set display+=lastline   " Show as much as possible of the last line
 set scrolloff=5         " Keep 5 lines above/below cursor
 set sidescrolloff=5     " Keep 5 columns left/right of cursor
-set colorcolumn=80      " Highlight column 80
 set signcolumn=yes      " Always show sign column
 
 " Search settings
@@ -30,6 +29,37 @@ set smartcase           " Case sensitive when uppercase present
 syntax enable           " Enable syntax highlighting
 set termguicolors       " Enable true color support
 set background=dark     " Dark background
+
+" Transparent background for UI elements
+" Function to apply transparent backgrounds
+function! s:apply_transparent_bg()
+  highlight Normal guibg=NONE ctermbg=NONE
+  highlight LineNr guibg=NONE ctermbg=NONE
+  highlight CursorLine guibg=NONE ctermbg=NONE
+  highlight CursorLineNr guibg=NONE ctermbg=NONE
+  highlight SignColumn guibg=NONE ctermbg=NONE
+  highlight StatusLine guibg=NONE ctermbg=NONE
+  highlight StatusLineNC guibg=NONE ctermbg=NONE
+  highlight VertSplit guibg=NONE ctermbg=NONE
+  highlight Pmenu guibg=NONE ctermbg=NONE
+  highlight PmenuSbar guibg=NONE ctermbg=NONE
+  highlight PmenuThumb guibg=NONE ctermbg=NONE
+  highlight ColorColumn guibg=NONE ctermbg=NONE
+  highlight Folded guibg=NONE ctermbg=NONE
+  highlight FoldColumn guibg=NONE ctermbg=NONE
+  highlight NonText guibg=NONE ctermbg=NONE
+  highlight SpecialKey guibg=NONE ctermbg=NONE
+  highlight EndOfBuffer guibg=NONE ctermbg=NONE
+endfunction
+
+" Apply immediately after syntax enable
+call s:apply_transparent_bg()
+
+" Re-apply transparent backgrounds on colorscheme changes and syntax events
+augroup TransparentBG
+  autocmd!
+  autocmd VimEnter,ColorScheme,Syntax * call s:apply_transparent_bg()
+augroup END
 
 " Split behavior
 set splitbelow          " Open horizontal splits below
