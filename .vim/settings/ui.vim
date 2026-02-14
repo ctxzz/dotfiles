@@ -2,6 +2,44 @@ if !exists('g:env')
   finish
 endif
 
+" Basic UI settings
+set number              " Show line numbers
+set relativenumber      " Show relative line numbers
+set ruler               " Show cursor position
+set showcmd             " Show command in bottom bar
+set showmode            " Show current mode
+set laststatus=2        " Always show status line
+set cursorline          " Highlight current line
+set wildmenu            " Visual autocomplete for command menu
+set showmatch           " Highlight matching [{()}]
+set wrap                " Wrap long lines
+set linebreak           " Don't break words when wrapping
+set display+=lastline   " Show as much as possible of the last line
+set scrolloff=5         " Keep 5 lines above/below cursor
+set sidescrolloff=5     " Keep 5 columns left/right of cursor
+set colorcolumn=80      " Highlight column 80
+set signcolumn=yes      " Always show sign column
+
+" Search settings
+set hlsearch            " Highlight search results
+set incsearch           " Incremental search
+set ignorecase          " Case insensitive search
+set smartcase           " Case sensitive when uppercase present
+
+" Syntax and colors
+syntax enable           " Enable syntax highlighting
+set termguicolors       " Enable true color support
+set background=dark     " Dark background
+
+" Split behavior
+set splitbelow          " Open horizontal splits below
+set splitright          " Open vertical splits to the right
+
+" Disable all bells (audio and visual)
+" Setting visualbell prevents beeping, t_vb= disables the visual flash
+set visualbell          
+set t_vb=
+
 "if g:env.is_tmux_running
 "  augroup titlesettings
 "    autocmd!
