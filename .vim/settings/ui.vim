@@ -30,6 +30,18 @@ syntax enable           " Enable syntax highlighting
 set termguicolors       " Enable true color support
 set background=dark     " Dark background
 
+colorscheme catppuccin_mocha
+
+" Statusline 
+set statusline=%f       " File name
+set statusline+=\ %m    " Modified flag
+set statusline+=%=      " Right align
+set statusline+=%y      " File type
+set statusline+=\ %l:%c " Line:Column
+set statusline+=\ %p%%  " File position (%)
+
+set fillchars+=stl:\ ,stlnc:\ ,vert:│
+
 " Transparent background for UI elements
 " Function to apply transparent backgrounds
 function! s:apply_transparent_bg()
@@ -38,9 +50,9 @@ function! s:apply_transparent_bg()
   highlight CursorLine guibg=NONE ctermbg=NONE
   highlight CursorLineNr guibg=NONE ctermbg=NONE
   highlight SignColumn guibg=NONE ctermbg=NONE
-  highlight StatusLine guibg=NONE ctermbg=NONE
-  highlight StatusLineNC guibg=NONE ctermbg=NONE
-  highlight VertSplit guibg=NONE ctermbg=NONE
+  highlight StatusLine term=bold cterm=bold gui=bold guibg=NONE ctermbg=NONE guifg=#87afff ctermfg=111
+  highlight StatusLineNC term=NONE cterm=NONE gui=NONE guibg=NONE ctermbg=NONE guifg=#4e4e4e ctermfg=239
+  highlight VertSplit term=NONE cterm=NONE gui=NONE guibg=NONE ctermbg=NONE guifg=#5f5f5f ctermfg=59
   highlight Pmenu guibg=NONE ctermbg=NONE
   highlight PmenuSbar guibg=NONE ctermbg=NONE
   highlight PmenuThumb guibg=NONE ctermbg=NONE
