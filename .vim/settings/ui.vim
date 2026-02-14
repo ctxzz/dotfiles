@@ -17,7 +17,6 @@ set linebreak           " Don't break words when wrapping
 set display+=lastline   " Show as much as possible of the last line
 set scrolloff=5         " Keep 5 lines above/below cursor
 set sidescrolloff=5     " Keep 5 columns left/right of cursor
-set colorcolumn=80      " Highlight column 80
 set signcolumn=yes      " Always show sign column
 
 " Search settings
