@@ -2,6 +2,47 @@ if !exists('g:env')
     finish
 endif
 
+" Basic editor settings
+set encoding=utf-8      " Use UTF-8 encoding
+set fileencoding=utf-8  " Default file encoding
+set fileformats=unix,dos,mac  " File format detection order
+set backspace=indent,eol,start  " Make backspace work as expected
+set autoread            " Auto reload files changed outside vim
+set hidden              " Allow hidden buffers
+set history=1000        " Longer command history
+set nobackup            " Don't create backup files
+set nowritebackup       " Don't create backup before writing
+set noswapfile          " Don't create swap files
+set undofile            " Persistent undo
+set undodir=~/.vim/undo " Undo directory
+set clipboard=unnamed   " Use system clipboard
+
+" Create undo directory if it doesn't exist
+if !isdirectory(expand('~/.vim/undo'))
+    call mkdir(expand('~/.vim/undo'), 'p')
+endif
+
+" Indentation settings
+set tabstop=4           " Tab width
+set shiftwidth=4        " Indent width
+set softtabstop=4       " Soft tab width
+set expandtab           " Use spaces instead of tabs
+set smarttab            " Smart tab behavior
+set autoindent          " Auto indent new lines
+set smartindent         " Smart indent new lines
+
+" Performance settings
+set lazyredraw          " Don't redraw while executing macros
+set ttyfast             " Fast terminal connection
+set updatetime=300      " Faster completion (default is 4000ms)
+set timeout             " Enable timeout
+set timeoutlen=500      " Timeout length
+set ttimeoutlen=10      " Key code timeout
+
+" Completion settings
+set completeopt=menuone,noinsert,noselect  " Better completion experience
+set pumheight=10        " Popup menu height
+
 " OS detection
 function! IsMac()
     return has('macunix')
