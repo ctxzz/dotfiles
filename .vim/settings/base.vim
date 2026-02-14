@@ -15,7 +15,11 @@ set nowritebackup       " Don't create backup before writing
 set noswapfile          " Don't create swap files
 set undofile            " Persistent undo
 set undodir=~/.vim/undo " Undo directory
-set clipboard=unnamed   " Use system clipboard
+
+" Clipboard settings (if supported)
+if has('clipboard')
+    set clipboard=unnamed,unnamedplus  " Use system clipboard (cross-platform)
+endif
 
 " Create undo directory if it doesn't exist
 if !isdirectory(expand('~/.vim/undo'))
@@ -33,7 +37,6 @@ set smartindent         " Smart indent new lines
 
 " Performance settings
 set lazyredraw          " Don't redraw while executing macros
-set ttyfast             " Fast terminal connection
 set updatetime=300      " Faster completion (default is 4000ms)
 set timeout             " Enable timeout
 set timeoutlen=500      " Timeout length
