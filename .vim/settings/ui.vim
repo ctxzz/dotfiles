@@ -1,20 +1,17 @@
 if !exists('g:env')
-  finish
+    finish
 endif
 
 " Basic UI settings
 set number              " Show line numbers
 set relativenumber      " Show relative line numbers
-set ruler               " Show cursor position
 set showcmd             " Show command in bottom bar
 set showmode            " Show current mode
 set laststatus=2        " Always show status line
-set cursorline          " Highlight current line
 set wildmenu            " Visual autocomplete for command menu
 set showmatch           " Highlight matching [{()}]
 set wrap                " Wrap long lines
 set linebreak           " Don't break words when wrapping
-set display+=lastline   " Show as much as possible of the last line
 set scrolloff=5         " Keep 5 lines above/below cursor
 set sidescrolloff=5     " Keep 5 columns left/right of cursor
 set signcolumn=yes      " Always show sign column
