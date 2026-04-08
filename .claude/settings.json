@@ -11,10 +11,12 @@
     "network": {
       "allowedDomains": [
         "github.com",
+        "api.github.com",
         "*.githubusercontent.com",
         "*.npmjs.org",
         "registry.yarnpkg.com",
-        "pypi.org"
+        "pypi.org",
+        "files.pythonhosted.org"
       ]
     }
   },
