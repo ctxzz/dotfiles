@@ -104,8 +104,8 @@ main() {
         e_failure "一部のデプロイテストが失敗しました"
     fi
     
-    return "$ERR"
 }
 
 # メイン処理の実行
 main
+exit "$ERR"

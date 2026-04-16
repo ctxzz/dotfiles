@@ -45,6 +45,29 @@ run_script() {
     fi
 }
 
+# Define PowerShell script execution function (for Windows)
+run_ps1_script() {
+    local script="$1"
+    if [ -f "$script" ]; then
+        e_header "$(basename "$script")"
+        if [ "${DEBUG:-}" != 1 ]; then
+            local pwsh
+            if has "pwsh"; then
+                pwsh="pwsh"
+            elif has "powershell.exe"; then
+                pwsh="powershell.exe"
+            else
+                e_failure "PowerShell not found (pwsh or powershell.exe required)"
+                return 1
+            fi
+            "$pwsh" -ExecutionPolicy Bypass -File "$script" || {
+                e_failure "Failed to execute: $script"
+                return 1
+            }
+        fi
+    fi
+}
+
 # Run OS-specific scripts
 case "$OS" in
     "osx")
@@ -60,6 +83,14 @@ case "$OS" in
         for i in "$DOTPATH"/etc/init/linux/*.sh; do
             if [ -f "$i" ]; then
                 run_script "$i"
+            fi
+        done
+        ;;
+    "win")
+        # Windows scripts (executed via PowerShell)
+        for i in "$DOTPATH"/etc/init/win/*.ps1; do
+            if [ -f "$i" ]; then
+                run_ps1_script "$i"
             fi
         done
         ;;

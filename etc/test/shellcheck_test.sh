@@ -24,14 +24,18 @@ unit1() {
     files+=("$DOTPATH"/etc/init/osx/*.sh)
     files+=("$DOTPATH"/etc/init/linux/*.sh)
     files+=("$DOTPATH"/etc/test/*.sh)
+    files+=("$DOTPATH"/etc/test/osx/*.sh)
+    files+=("$DOTPATH"/etc/test/linux/*.sh)
+    files+=("$DOTPATH"/etc/test/win/*.sh)
 
     # カスタムルール
     local custom_rules=(
-        "-e SC1090"  # Can't follow non-constant source
-        "-e SC1091"  # Not following
-        "-e SC2006"  # Use $(..) instead of legacy `..`
-        "-e SC2086"  # Double quote to prevent globbing and word splitting
-        "-e SC2155"  # Declare and assign separately to avoid masking return values
+        -e SC1090  # Can't follow non-constant source
+        -e SC1091  # Not following
+        -e SC2006  # Use $(..) instead of legacy `..`
+        -e SC2086  # Double quote to prevent globbing and word splitting
+        -e SC2088  # Tilde does not expand in quotes (intentional in display messages)
+        -e SC2155  # Declare and assign separately to avoid masking return values
     )
 
     e_header "シェルスクリプトのチェックを開始します"
@@ -47,9 +51,7 @@ unit1() {
 
         total_files=$((total_files + 1))
         local output
-        output=$(shellcheck "${custom_rules[@]}" "$file" 2>&1)
-
-        if [ $? -eq 0 ]; then
+        if output=$(shellcheck "${custom_rules[@]}" "$file" 2>&1); then
             e_success "$file" | e_indent
         else
             if [[ "$output" == *"warning"* ]]; then
@@ -97,6 +99,9 @@ unit2() {
     files+=("$DOTPATH"/etc/init/osx/*.sh)
     files+=("$DOTPATH"/etc/init/linux/*.sh)
     files+=("$DOTPATH"/etc/test/*.sh)
+    files+=("$DOTPATH"/etc/test/osx/*.sh)
+    files+=("$DOTPATH"/etc/test/linux/*.sh)
+    files+=("$DOTPATH"/etc/test/win/*.sh)
 
     for file in "${files[@]}"; do
         if [ ! -f "$file" ]; then
@@ -115,8 +120,8 @@ main() {
     unit1
     unit2
     
-    return "$ERR"
 }
 
 # メイン処理の実行
 main
+exit "$ERR"

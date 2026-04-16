@@ -34,6 +34,15 @@ e_warning() {
     printf "${YELLOW}!${NC} %s\n" "$1"
 }
 
+e_indent() {
+    local indent="${1:-4}"
+    local pad
+    pad="$(printf '%*s' "$indent" '')"
+    while IFS= read -r line; do
+        printf '%s%s\n' "$pad" "$line"
+    done
+}
+
 # OS判定関数
 ostype() {
     uname | tr '[:upper:]' '[:lower:]'
@@ -45,17 +54,29 @@ os_detect() {
         *'linux'*)  PLATFORM='linux'   ;;
         *'darwin'*) PLATFORM='osx'     ;;
         *'bsd'*)    PLATFORM='bsd'     ;;
+        *'msys'*)   PLATFORM='win'     ;;
+        *'cygwin'*) PLATFORM='win'     ;;
+        *'mingw'*)  PLATFORM='win'     ;;
         *)          PLATFORM='unknown' ;;
     esac
 }
 
 get_os() {
-    case "$(ostype)" in
-        *'linux'*)  echo 'linux'   ;;
-        *'darwin'*) echo 'osx'     ;;
-        *'bsd'*)    echo 'bsd'     ;;
-        *)          echo 'unknown' ;;
-    esac
+    os_detect
+    echo "$PLATFORM"
+}
+
+is_osx() {
+    [ "$(get_os)" = "osx" ]
+}
+alias is_mac=is_osx
+
+is_linux() {
+    [ "$(get_os)" = "linux" ]
+}
+
+is_win() {
+    [ "$(get_os)" = "win" ]
 }
 
 # 初期化

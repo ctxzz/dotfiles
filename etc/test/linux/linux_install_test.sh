@@ -17,9 +17,9 @@ unit1() {
 
     local package_manager=""
 
-    if command -v apt &> /dev/null; then
+    if command -v apt-get &> /dev/null; then
         package_manager="apt"
-        e_success "apt が検出されました"
+        e_success "apt-get が検出されました"
     elif command -v dnf &> /dev/null; then
         package_manager="dnf"
         e_success "dnf が検出されました"
@@ -35,10 +35,10 @@ unit1() {
     # パッケージマネージャーの基本的な動作確認
     case "$package_manager" in
         "apt")
-            if apt --version >/dev/null 2>&1; then
-                e_success "apt が正常に動作します"
+            if apt-get --version >/dev/null 2>&1; then
+                e_success "apt-get が正常に動作します"
             else
-                e_failure "apt が正常に動作しません"
+                e_failure "apt-get が正常に動作しません"
                 ERR=1
             fi
             ;;
@@ -61,30 +61,61 @@ unit1() {
     esac
 }
 
-# 初期化スクリプトの存在確認
+# 初期化スクリプトの存在確認（全スクリプト）
 unit2() {
-    e_header "初期化スクリプトの存在確認"
+    e_header "Linuxセットアップスクリプトの存在確認"
 
-    local install_script="$DOTPATH/etc/init/linux/linux_install.sh"
-    if [ -f "$install_script" ]; then
-        e_success "インストールスクリプトが存在します: $install_script"
+    local scripts=(
+        "$DOTPATH/etc/init/linux/10_install.sh"
+        "$DOTPATH/etc/init/linux/20_mise.sh"
+        "$DOTPATH/etc/init/linux/30_zsh.sh"
+        "$DOTPATH/etc/init/linux/40_settings.sh"
+    )
+    local missing=0
 
-        # スクリプトの実行権限確認
-        if [ -x "$install_script" ]; then
-            e_success "インストールスクリプトに実行権限があります"
+    for script in "${scripts[@]}"; do
+        if [ -f "$script" ]; then
+            e_success "スクリプトが存在します: $(basename "$script")"
         else
-            e_warning "インストールスクリプトに実行権限がありません"
-            chmod +x "$install_script"
-            e_success "実行権限を付与しました"
+            e_failure "スクリプトが存在しません: $script"
+            missing=$((missing + 1))
+            ERR=1
         fi
-    else
-        e_failure "インストールスクリプトが存在しません: $install_script"
-        ERR=1
+    done
+
+    if [ "$missing" -eq 0 ]; then
+        e_success "すべてのセットアップスクリプトが存在します"
     fi
 }
 
-# 開発ツールの確認
+# 構文チェック
 unit3() {
+    e_header "Linuxセットアップスクリプトの構文チェック"
+
+    local scripts=(
+        "$DOTPATH/etc/init/linux/10_install.sh"
+        "$DOTPATH/etc/init/linux/20_mise.sh"
+        "$DOTPATH/etc/init/linux/30_zsh.sh"
+        "$DOTPATH/etc/init/linux/40_settings.sh"
+    )
+
+    for script in "${scripts[@]}"; do
+        if [ ! -f "$script" ]; then
+            e_warning "スキップ (見つかりません): $(basename "$script")"
+            continue
+        fi
+        if bash -n "$script" 2>/dev/null; then
+            e_success "構文OK: $(basename "$script")"
+        else
+            e_failure "構文エラー: $script"
+            bash -n "$script" 2>&1 || true
+            ERR=1
+        fi
+    done
+}
+
+# 開発ツールの確認
+unit4() {
     e_header "開発ツールの確認"
 
     local tools=("git" "curl" "wget")
@@ -107,7 +138,7 @@ unit3() {
 }
 
 # システムユーティリティの確認
-unit4() {
+unit5() {
     e_header "システムユーティリティの確認"
 
     local utils=("tmux" "zsh")
@@ -135,6 +166,7 @@ main() {
     unit2
     unit3
     unit4
+    unit5
 
     if [ "$ERR" -eq 0 ]; then
         e_success "すべてのLinuxインストールテストが成功しました"
@@ -142,8 +174,8 @@ main() {
         e_failure "一部のLinuxインストールテストが失敗しました"
     fi
 
-    return "$ERR"
 }
 
 # メイン処理の実行
 main
+exit "$ERR"

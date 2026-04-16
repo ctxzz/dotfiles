@@ -15,18 +15,9 @@ export ERR
 unit1() {
     e_header "初期化スクリプトの存在確認"
 
-    local settings_script="$DOTPATH/etc/init/linux/linux_settings.sh"
+    local settings_script="$DOTPATH/etc/init/linux/40_settings.sh"
     if [ -f "$settings_script" ]; then
         e_success "設定スクリプトが存在します: $settings_script"
-
-        # スクリプトの実行権限確認
-        if [ -x "$settings_script" ]; then
-            e_success "設定スクリプトに実行権限があります"
-        else
-            e_warning "設定スクリプトに実行権限がありません"
-            chmod +x "$settings_script"
-            e_success "実行権限を付与しました"
-        fi
     else
         e_failure "設定スクリプトが存在しません: $settings_script"
         ERR=1
@@ -99,7 +90,7 @@ unit3() {
 unit4() {
     e_header "設定ファイルの構文確認"
 
-    local settings_script="$DOTPATH/etc/init/linux/linux_settings.sh"
+    local settings_script="$DOTPATH/etc/init/linux/40_settings.sh"
 
     if [ -f "$settings_script" ]; then
         # bashの構文チェック
@@ -113,23 +104,24 @@ unit4() {
     fi
 }
 
-# 自動起動設定の確認
+# ワークスペースディレクトリの確認（設定実行後）
 unit5() {
-    e_header "自動起動設定ディレクトリの確認"
+    e_header "ワークスペースディレクトリの確認"
 
-    local autostart_dir="$HOME/.config/autostart"
-    if [ -d "$autostart_dir" ]; then
-        e_success "自動起動ディレクトリが存在します: $autostart_dir"
+    local ws_dirs=("$HOME/ws/local/sandbox" "$HOME/ws/local/work")
+    local missing=0
 
-        # 自動起動設定ファイルの確認
-        local autostart_files=$(find "$autostart_dir" -name "*.desktop" 2>/dev/null | wc -l)
-        if [ "$autostart_files" -gt 0 ]; then
-            e_success "$autostart_files 個の自動起動設定があります"
+    for dir in "${ws_dirs[@]}"; do
+        if [ -d "$dir" ]; then
+            e_success "$dir が存在します"
         else
-            e_warning "自動起動設定がありません"
+            e_warning "$dir が存在しません（40_settings.sh 実行後に作成されます）"
+            missing=$((missing + 1))
         fi
-    else
-        e_warning "自動起動ディレクトリが存在しません（設定実行で作成されます）"
+    done
+
+    if [ "$missing" -eq 0 ]; then
+        e_success "ワークスペースディレクトリが正しく設定されています"
     fi
 }
 
@@ -147,8 +139,8 @@ main() {
         e_failure "一部のLinux設定テストが失敗しました"
     fi
 
-    return "$ERR"
 }
 
 # メイン処理の実行
 main
+exit "$ERR"
