@@ -290,7 +290,7 @@ mnote() {
   path="${path}.md"
 
   if [[ -f "$path" ]]; then
-    vim "$path"
+    ${EDITOR:-vim} "$path"
     return
   fi
 
@@ -300,7 +300,7 @@ mnote() {
     : > "$path"
   fi
 
-  vim "$path"
+  ${EDITOR:-vim} "$path"
 }
 
 # Obsidian inboxにノートを作成して開く
@@ -323,7 +323,7 @@ minbox() {
   path="${path}.md"
 
   if [[ -f "$path" ]]; then
-    vim "$path"
+    ${EDITOR:-vim} "$path"
     return
   fi
 
@@ -333,7 +333,7 @@ minbox() {
     : > "$path"
   fi
 
-  vim "$path"
+  ${EDITOR:-vim} "$path"
 }
 
 # Obsidianノートをfzfで検索して開く
@@ -355,7 +355,7 @@ msearch() {
     --preview-window=right:60%)
 
   if [[ -n "$selection" ]]; then
-    vim "$selection"
+    ${EDITOR:-vim} "$selection"
   fi
 }
 
