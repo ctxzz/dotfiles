@@ -17,7 +17,7 @@ Personal dotfiles for macOS, Linux, and Windows. Includes configurations for zsh
 ### Quick installation
 To quickly install:
 ```console
-$ curl -sL dot.omata.me | sh
+curl -sL dot.omata.me | sh
 ```
 
 ### Manual installation
