@@ -265,15 +265,15 @@ mnote() {
       template="$vault/System/Templates/19_Quick.md"
       ;;
     meeting)
-      folder="$vault/20_Memo/21_Meetings"
+      folder="$vault/10_Memo/11_Meetings"
       template="$vault/System/Templates/21_Meetings.md"
       ;;
     event)
-      folder="$vault/20_Memo/22_Events"
+      folder="$vault/10_Memo/12_Events"
       template="$vault/System/Templates/22_Events.md"
       ;;
     lecture)
-      folder="$vault/20_Memo/23_Lectures"
+      folder="$vault/10_Memo/13_Lectures"
       template="$vault/System/Templates/23_Lectures.md"
       ;;
     *)
