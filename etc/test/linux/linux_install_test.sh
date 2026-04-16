@@ -19,7 +19,7 @@ unit1() {
 
     if command -v apt-get &> /dev/null; then
         package_manager="apt"
-        e_success "apt が検出されました"
+        e_success "apt-get が検出されました"
     elif command -v dnf &> /dev/null; then
         package_manager="dnf"
         e_success "dnf が検出されました"
@@ -36,9 +36,9 @@ unit1() {
     case "$package_manager" in
         "apt")
             if apt-get --version >/dev/null 2>&1; then
-                e_success "apt が正常に動作します"
+                e_success "apt-get が正常に動作します"
             else
-                e_failure "apt が正常に動作しません"
+                e_failure "apt-get が正常に動作しません"
                 ERR=1
             fi
             ;;
