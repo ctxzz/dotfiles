@@ -40,9 +40,9 @@ install_pkg() {
     local pkg="$1"
     e_header "Installing $pkg..."
     case "$PM" in
-        apt)    sudo apt-get install -y "$pkg" ;;
-        dnf)    sudo dnf install -y "$pkg" ;;
-        pacman) sudo pacman -S --noconfirm "$pkg" ;;
+        apt)    sudo apt-get install -y "$pkg" || return 1 ;;
+        dnf)    sudo dnf install -y "$pkg" || return 1 ;;
+        pacman) sudo pacman -S --noconfirm "$pkg" || return 1 ;;
     esac
     e_success "Installed: $pkg"
 }
