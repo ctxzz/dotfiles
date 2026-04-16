@@ -24,6 +24,9 @@ unit1() {
     files+=("$DOTPATH"/etc/init/osx/*.sh)
     files+=("$DOTPATH"/etc/init/linux/*.sh)
     files+=("$DOTPATH"/etc/test/*.sh)
+    files+=("$DOTPATH"/etc/test/osx/*.sh)
+    files+=("$DOTPATH"/etc/test/linux/*.sh)
+    files+=("$DOTPATH"/etc/test/win/*.sh)
 
     # カスタムルール
     local custom_rules=(
@@ -97,6 +100,9 @@ unit2() {
     files+=("$DOTPATH"/etc/init/osx/*.sh)
     files+=("$DOTPATH"/etc/init/linux/*.sh)
     files+=("$DOTPATH"/etc/test/*.sh)
+    files+=("$DOTPATH"/etc/test/osx/*.sh)
+    files+=("$DOTPATH"/etc/test/linux/*.sh)
+    files+=("$DOTPATH"/etc/test/win/*.sh)
 
     for file in "${files[@]}"; do
         if [ ! -f "$file" ]; then
