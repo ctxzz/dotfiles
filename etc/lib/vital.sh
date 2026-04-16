@@ -45,17 +45,29 @@ os_detect() {
         *'linux'*)  PLATFORM='linux'   ;;
         *'darwin'*) PLATFORM='osx'     ;;
         *'bsd'*)    PLATFORM='bsd'     ;;
+        *'msys'*)   PLATFORM='win'     ;;
+        *'cygwin'*) PLATFORM='win'     ;;
+        *'mingw'*)  PLATFORM='win'     ;;
         *)          PLATFORM='unknown' ;;
     esac
 }
 
 get_os() {
-    case "$(ostype)" in
-        *'linux'*)  echo 'linux'   ;;
-        *'darwin'*) echo 'osx'     ;;
-        *'bsd'*)    echo 'bsd'     ;;
-        *)          echo 'unknown' ;;
-    esac
+    os_detect
+    echo "$PLATFORM"
+}
+
+is_osx() {
+    [ "$(get_os)" = "osx" ]
+}
+alias is_mac=is_osx
+
+is_linux() {
+    [ "$(get_os)" = "linux" ]
+}
+
+is_win() {
+    [ "$(get_os)" = "win" ]
 }
 
 # 初期化
