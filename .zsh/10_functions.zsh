@@ -350,7 +350,7 @@ msearch() {
     return 1
   fi
 
-  selection=$(grep -rl "$query" "$vault" --include="*.md" 2>/dev/null | \
+  selection=$(find "$vault" -type f -name '*.md' -exec grep -l -e "$query" {} + 2>/dev/null | \
     fzf-tmux --reverse --preview 'bat --color=always --style=numbers --line-range=:500 {}' \
     --preview-window=right:60%)
 
