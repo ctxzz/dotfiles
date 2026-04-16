@@ -13,9 +13,13 @@ if (-not (Get-Command mise -ErrorAction SilentlyContinue)) {
             --accept-source-agreements --accept-package-agreements
     } else {
         # Direct download fallback — detect architecture
-        $arch = if ([System.Environment]::Is64BitOperatingSystem) {
-            $proc = [System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture
-            if ($proc -eq [System.Runtime.InteropServices.Architecture]::Arm64) { "aarch64" } else { "x86_64" }
+        if (-not [System.Environment]::Is64BitOperatingSystem) {
+            Write-Host "✗ 32-bit Windows は mise の直接ダウンロードインストールではサポートされていません" -ForegroundColor Red
+            exit 1
+        }
+        $proc = [System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture
+        $arch = if ($proc -eq [System.Runtime.InteropServices.Architecture]::Arm64) {
+            "aarch64"
         } else {
             "x86_64"
         }
