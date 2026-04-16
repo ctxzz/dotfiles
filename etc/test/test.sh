@@ -6,7 +6,7 @@ trap 'echo Error: $0: stopped; exit 1' ERR INT
 
 # DOTPATHが設定されていない場合は、スクリプトのパスから推測
 if [ -z "$DOTPATH" ]; then
-    DOTPATH=$(cd $(dirname "$0")/../.. && pwd)
+    DOTPATH=$(cd "$(dirname "$0")"/../.. && pwd)
     export DOTPATH
 fi
 
@@ -94,17 +94,23 @@ main() {
     fi
     
     # テスト結果の集計
-    local n_unit=$(find "$DOTPATH"/etc/test -name "*_test.sh" | xargs grep "^unit[0-9]$" | wc -l | sed "s/ //g")
-    local n_file=$(find "$DOTPATH"/etc/test -name "*_test.sh" | wc -l | sed "s/ //g")
+    local n_unit
+    n_unit=$(find "$DOTPATH"/etc/test -name "*_test.sh" -print0 | xargs -0 grep "^unit[0-9]$" | wc -l | sed "s/ //g")
+    local n_file
+    n_file=$(find "$DOTPATH"/etc/test -name "*_test.sh" | wc -l | sed "s/ //g")
     
     e_header "テスト結果の集計"
     echo "テストファイル数: $n_file"
     echo "テストケース数: $n_unit"
     echo "エラー数: $ERR"
     
-    [ "$ERR" = 0 ] && e_success "すべてのテストが成功しました" || e_failure "一部のテストが失敗しました"
-    return "$ERR"
+    if [ "$ERR" = 0 ]; then
+        e_success "すべてのテストが成功しました"
+    else
+        e_failure "一部のテストが失敗しました"
+    fi
 }
 
 # メイン処理の実行
 main
+exit "$ERR"

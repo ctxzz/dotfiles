@@ -34,6 +34,15 @@ e_warning() {
     printf "${YELLOW}!${NC} %s\n" "$1"
 }
 
+e_indent() {
+    local indent="${1:-4}"
+    local pad
+    pad="$(printf '%*s' "$indent" '')"
+    while IFS= read -r line; do
+        printf '%s%s\n' "$pad" "$line"
+    done
+}
+
 # OS判定関数
 ostype() {
     uname | tr '[:upper:]' '[:lower:]'
