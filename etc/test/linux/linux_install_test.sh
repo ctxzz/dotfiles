@@ -108,7 +108,7 @@ unit3() {
             e_success "構文OK: $(basename "$script")"
         else
             e_failure "構文エラー: $script"
-            bash -n "$script"
+            bash -n "$script" 2>&1 || true
             ERR=1
         fi
     done
