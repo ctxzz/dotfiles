@@ -231,6 +231,134 @@ mise-info() {
     mise doctor
 }
 
+# Obsidian vaultのパスを返す
+_obsidian_vault() {
+  print -r -- "${OBSIDIAN_VAULT:-$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Suitcase}"
+}
+
+# Obsidianノート用のスラグを生成
+_obsidian_slug() {
+  local slug="${1:l}"
+  slug="${slug// /_}"
+  slug="${slug//[^[:alnum:]_ぁ-んァ-ヶ一-龠々-]/}"
+  slug="${slug##[_ ]}"
+  slug="${slug%%[_ ]}"
+  print -r -- "$slug"
+}
+
+# Obsidianノートを作成して開く
+mnote() {
+  emulate -L zsh
+  setopt pipefail extendedglob
+
+  local vault="$(_obsidian_vault)"
+  local kind="${1:-inbox}"
+  shift || true
+  local title="${*:-}"
+
+  local date="$(date +%Y%m%d)"
+  local folder template path slug
+
+  case "$kind" in
+    inbox)
+      folder="$vault/00_Inbox"
+      template="$vault/System/Templates/19_Quick.md"
+      ;;
+    meeting)
+      folder="$vault/20_Memo/21_Meetings"
+      template="$vault/System/Templates/21_Meetings.md"
+      ;;
+    event)
+      folder="$vault/20_Memo/22_Events"
+      template="$vault/System/Templates/22_Events.md"
+      ;;
+    lecture)
+      folder="$vault/20_Memo/23_Lectures"
+      template="$vault/System/Templates/23_Lectures.md"
+      ;;
+    *)
+      folder="$vault/00_Inbox"
+      template="$vault/System/Templates/19_Quick.md"
+      ;;
+  esac
+
+  mkdir -p "$folder"
+
+  slug="$(_obsidian_slug "$title")"
+  path="$folder/$date"
+  [[ -n "$slug" ]] && path="${path}_${slug}"
+  path="${path}.md"
+
+  if [[ -f "$path" ]]; then
+    vim "$path"
+    return
+  fi
+
+  if [[ -f "$template" ]]; then
+    cp "$template" "$path"
+  else
+    : > "$path"
+  fi
+
+  vim "$path"
+}
+
+# Obsidian inboxにノートを作成して開く
+minbox() {
+  emulate -L zsh
+  setopt pipefail extendedglob
+
+  local vault="$(_obsidian_vault)"
+  local template="$vault/System/Templates/19_Quick.md"
+  local folder="$vault/00_Inbox"
+  local date="$(date +%Y%m%d)"
+  local title="${*:-}"
+  local slug path
+
+  mkdir -p "$folder"
+
+  slug="$(_obsidian_slug "$title")"
+  path="$folder/$date"
+  [[ -n "$slug" ]] && path="${path}_${slug}"
+  path="${path}.md"
+
+  if [[ -f "$path" ]]; then
+    vim "$path"
+    return
+  fi
+
+  if [[ -f "$template" ]]; then
+    cp "$template" "$path"
+  else
+    : > "$path"
+  fi
+
+  vim "$path"
+}
+
+# Obsidianノートをfzfで検索して開く
+msearch() {
+  emulate -L zsh
+  setopt pipefail
+
+  local vault="$(_obsidian_vault)"
+  local query="${*:-}"
+  local selection path
+
+  if [[ -z "$query" ]]; then
+    print -u2 "usage: msearch <query>"
+    return 1
+  fi
+
+  selection=$(grep -rl "$query" "$vault" --include="*.md" 2>/dev/null | \
+    fzf-tmux --reverse --preview 'bat --color=always --style=numbers --line-range=:500 {}' \
+    --preview-window=right:60%)
+
+  if [[ -n "$selection" ]]; then
+    vim "$selection"
+  fi
+}
+
 # miseで特定のツールバージョンを素早くインストール
 mise-quick-install() {
     if ! command -v mise &> /dev/null; then
