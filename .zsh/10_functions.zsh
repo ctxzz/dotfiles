@@ -343,7 +343,7 @@ msearch() {
 
   local vault="$(_obsidian_vault)"
   local query="${*:-}"
-  local selection path
+  local selection
 
   if [[ -z "$query" ]]; then
     print -u2 "usage: msearch <query>"
