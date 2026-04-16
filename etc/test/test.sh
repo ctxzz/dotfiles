@@ -95,7 +95,7 @@ main() {
     
     # テスト結果の集計
     local n_unit
-    n_unit=$(find "$DOTPATH"/etc/test -name "*_test.sh" -print0 | xargs -0 grep "^unit[0-9]$" | wc -l | sed "s/ //g")
+    n_unit=$(find "$DOTPATH"/etc/test -name "*_test.sh" -print0 | xargs -0 grep -E "^unit[0-9]+\(\)" | wc -l | sed "s/ //g")
     local n_file
     n_file=$(find "$DOTPATH"/etc/test -name "*_test.sh" | wc -l | sed "s/ //g")
     
