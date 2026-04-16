@@ -78,8 +78,16 @@ e_header "Installing modern CLI tools..."
 case "$PM" in
     apt)
         install_pkg "bat"
-        # fd-find is the apt package name; binary is fdfind
-        install_pkg_optional "fd-find"
+        # On Debian/Ubuntu the package is fd-find; the binary is named fdfind.
+        # A 'fd' alias is created automatically in newer versions, otherwise:
+        #   sudo ln -s $(which fdfind) /usr/local/bin/fd
+        if install_pkg_optional "fd-find"; then
+            if has "fdfind" && ! has "fd"; then
+                mkdir -p "$HOME/.local/bin"
+                ln -sf "$(which fdfind)" "$HOME/.local/bin/fd"
+                e_success "Created fd -> fdfind alias in ~/.local/bin"
+            fi
+        fi
         install_pkg_optional "git-lfs"
         # eza: not in default repos on older Ubuntu/Debian, try optional
         install_pkg_optional "eza"

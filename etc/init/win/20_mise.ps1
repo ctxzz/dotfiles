@@ -12,12 +12,18 @@ if (-not (Get-Command mise -ErrorAction SilentlyContinue)) {
         winget install --id jdx.mise --silent `
             --accept-source-agreements --accept-package-agreements
     } else {
-        # Direct download fallback
+        # Direct download fallback — detect architecture
+        $arch = if ([System.Environment]::Is64BitOperatingSystem) {
+            $proc = [System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture
+            if ($proc -eq [System.Runtime.InteropServices.Architecture]::Arm64) { "aarch64" } else { "x86_64" }
+        } else {
+            "x86_64"
+        }
         $miseDir = "$env:USERPROFILE\.local\bin"
         New-Item -ItemType Directory -Force -Path $miseDir | Out-Null
-        $miseUrl = "https://github.com/jdx/mise/releases/latest/download/mise-x86_64-pc-windows-msvc.zip"
+        $miseUrl = "https://github.com/jdx/mise/releases/latest/download/mise-${arch}-pc-windows-msvc.zip"
         $zipPath = "$env:TEMP\mise.zip"
-        Write-Host "Downloading mise from $miseUrl..." -ForegroundColor Yellow
+        Write-Host "Downloading mise ($arch) from $miseUrl..." -ForegroundColor Yellow
         Invoke-WebRequest -Uri $miseUrl -OutFile $zipPath
         Expand-Archive -Path $zipPath -DestinationPath $miseDir -Force
         Remove-Item $zipPath -Force

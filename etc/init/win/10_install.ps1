@@ -32,15 +32,17 @@ function Install-Pkg {
     )
     try {
         if ($useWinget -and $WingetId) {
-            winget install --id $WingetId --silent `
-                --accept-source-agreements --accept-package-agreements 2>&1 | Out-Null
+            $output = winget install --id $WingetId --silent `
+                --accept-source-agreements --accept-package-agreements 2>&1
+            if ($LASTEXITCODE -ne 0) { throw $output }
             Write-Host "  ✓ $WingetId" -ForegroundColor Green
         } elseif ($useChoco -and $ChocoId) {
-            choco install -y $ChocoId 2>&1 | Out-Null
+            $output = choco install -y $ChocoId 2>&1
+            if ($LASTEXITCODE -ne 0) { throw $output }
             Write-Host "  ✓ $ChocoId" -ForegroundColor Green
         }
     } catch {
-        Write-Host "  ! Failed to install $WingetId/$ChocoId (skipping)" -ForegroundColor Yellow
+        Write-Host "  ! Failed to install $WingetId/$ChocoId`: $_" -ForegroundColor Yellow
     }
 }
 
