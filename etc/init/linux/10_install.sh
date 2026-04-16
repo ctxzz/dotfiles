@@ -50,7 +50,10 @@ install_pkg() {
 # Helper: install an optional package (failure is non-fatal)
 install_pkg_optional() {
     local pkg="$1"
-    install_pkg "$pkg" || e_warning "Failed to install $pkg (skipping)"
+    if ! install_pkg "$pkg"; then
+        e_warning "Failed to install $pkg (skipping)"
+        return 1
+    fi
 }
 
 # Essential build tools
