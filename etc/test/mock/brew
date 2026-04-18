@@ -1,0 +1,16 @@
+#!/bin/bash
+# Mock Homebrew for container-based macOS pseudo-testing
+case "${1:-}" in
+    --version) echo "Homebrew 4.0.0 (mock)" ;;
+    --prefix)  echo "/usr/local" ;;
+    --cellar)  echo "/usr/local/Cellar" ;;
+    doctor)    echo "Your system is ready to brew." ;;
+    list)      ;;
+    install)   echo "mock brew install: ${*:2}" ;;
+    update)    echo "Already up-to-date." ;;
+    upgrade)   echo "Nothing to upgrade." ;;
+    cleanup)   echo "Nothing to clean." ;;
+    shellenv)  echo "export HOMEBREW_PREFIX=/usr/local" ;;
+    *)         echo "mock brew: $*" ;;
+esac
+exit 0

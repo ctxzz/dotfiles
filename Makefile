@@ -6,13 +6,16 @@ DOTFILES   := $(filter-out $(EXCLUSIONS), $(CANDIDATES))
 all: install
 
 help:
-	@echo "make list		#=> Show dot files in this repo"
-	@echo "make deploy		#=> Create symlink to home directory"
-	@echo "make init		#=> Setup environment settings"
-	@echo "make test		#=> Test dotfils and init scripts"
-	@echo "make update		#=> Fetch changes for this repo"
-	@echo "make install		#=> Run make update, deploy, init"
-	@echo "make clean		#=> Remove the dot files and this repo"
+	@echo "make list			#=> Show dot files in this repo"
+	@echo "make deploy			#=> Create symlink to home directory"
+	@echo "make init			#=> Setup environment settings"
+	@echo "make test			#=> Test dotfils and init scripts"
+	@echo "make test-container              #=> Test in Podman container (default: OS=ubuntu)"
+	@echo "make test-container OS=ubuntu   #=> ubuntu / fedora / arch / macos / windows"
+	@echo "make test-container-full OS=... #=> Same + make init (package install)"
+	@echo "make update			#=> Fetch changes for this repo"
+	@echo "make install			#=> Run make update, deploy, init"
+	@echo "make clean			#=> Remove the dot files and this repo"
 
 list:
 	@$(foreach val, $(DOTFILES), /bin/ls -dF $(val);)
@@ -27,6 +30,12 @@ init:
 
 test:
 	@DOTPATH=$(DOTPATH) bash $(DOTPATH)/etc/test/test.sh
+
+test-container:
+	@bash $(DOTPATH)/etc/test/run_container.sh $(OS)
+
+test-container-full:
+	@bash $(DOTPATH)/etc/test/run_container.sh $(OS) --init
 
 update:
 	git pull origin master
