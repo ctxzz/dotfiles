@@ -1,0 +1,37 @@
+# Git
+.git
+.gitmodules
+
+# Secrets / local overrides
+.env
+.env.*
+*.env
+.gitconfig
+.netrc
+
+# Claude Code
+.claude/settings.local.json
+.claude/backups/
+.claude/bash-audit.log
+.claude_code_state/
+CLAUDE.local.md
+
+# macOS
+.DS_Store
+
+# Editor
+*.swp
+*.swo
+*~
+*.backup
+*.old
+.viminfo
+.vim/undo/
+
+# History / cache
+.zsh/history/
+.zsh_history
+.bash_history
+
+# tmux plugins (large, not needed for tests)
+.tmux/plugins/
