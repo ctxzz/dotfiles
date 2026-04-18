@@ -20,23 +20,35 @@ DOTPATH="$(cd "$(dirname "$0")"/../.. && pwd)"
 OS="${1:-ubuntu}"
 RUN_INIT="false"
 MOCK_OS=""
+DISTRO=""
 
 # フラグのパース
 for arg in "$@"; do
     case "$arg" in --init) RUN_INIT="true" ;; esac
 done
 
-# OS → ベースイメージ / モード のマッピング
+# OS → ベースイメージ / DISTRO / モック のマッピング
 case "$OS" in
-    ubuntu)  BASE_IMAGE="ubuntu:22.04" ;;
-    fedora)  BASE_IMAGE="fedora:39" ;;
-    arch)    BASE_IMAGE="archlinux:latest" ;;
+    ubuntu)
+        BASE_IMAGE="ubuntu:22.04"
+        DISTRO="ubuntu"
+        ;;
+    fedora)
+        BASE_IMAGE="fedora:39"
+        DISTRO="fedora"
+        ;;
+    arch)
+        BASE_IMAGE="archlinux:latest"
+        DISTRO="arch"
+        ;;
     macos|darwin)
         BASE_IMAGE="ubuntu:22.04"
+        DISTRO="ubuntu"
         MOCK_OS="macos"
         ;;
     windows|win)
         BASE_IMAGE="ubuntu:22.04"
+        DISTRO="ubuntu"
         MOCK_OS="windows"
         ;;
     *)
@@ -78,8 +90,9 @@ echo ""
 
 echo "==> イメージをビルド中..."
 podman build \
+    --format docker \
     --build-arg BASE_IMAGE="$BASE_IMAGE" \
-    --build-arg DISTRO="ubuntu" \
+    --build-arg DISTRO="$DISTRO" \
     --build-arg RUN_INIT="$RUN_INIT" \
     --build-arg MOCK_OS="$MOCK_OS" \
     -t "$IMAGE_NAME" \

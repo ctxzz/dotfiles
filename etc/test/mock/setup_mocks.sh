@@ -17,7 +17,7 @@ case "$MOCK_OS" in
 #!/bin/bash
 case "${1:-}" in
     ""|"-s") echo "Darwin" ;;
-    *)       exec /bin/uname "$@" ;;
+    *)       exec "$(command -v uname 2>/dev/null || echo /bin/uname)" "$@" ;;
 esac
 EOF
         chmod +x "$BIN/uname"
@@ -36,7 +36,7 @@ EOF
 #!/bin/bash
 case "${1:-}" in
     ""|"-s") echo "MSYS_NT-10.0" ;;
-    *)       exec /bin/uname "$@" ;;
+    *)       exec "$(command -v uname 2>/dev/null || echo /bin/uname)" "$@" ;;
 esac
 EOF
         chmod +x "$BIN/uname"

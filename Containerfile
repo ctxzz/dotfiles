@@ -22,10 +22,12 @@ RUN if [ "$DISTRO" = "ubuntu" ] || [ "$DISTRO" = "debian" ]; then \
     elif [ "$DISTRO" = "arch" ]; then \
         pacman -Sy --noconfirm sudo make git curl wget bash; \
     fi \
-    && echo 'root ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+    && echo 'root ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/nopasswd-root \
+    && chmod 440 /etc/sudoers.d/nopasswd-root
 
 # Install PowerShell (pwsh) for Windows mock PS syntax checking
 # Uses GitHub Releases to support both x64 and ARM64
+# To upgrade: pass --build-arg PWSH_VERSION=<version>
 ARG PWSH_VERSION=7.4.6
 RUN if [ "$MOCK_OS" = "windows" ]; then \
         case "$(uname -m)" in \
