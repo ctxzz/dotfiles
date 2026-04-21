@@ -257,7 +257,7 @@ mnote() {
   local title="${*:-}"
 
   local date="$(date +%Y%m%d)"
-  local folder template path slug
+  local folder template note_path slug
 
   case "$kind" in
     inbox)
@@ -285,55 +285,27 @@ mnote() {
   mkdir -p "$folder"
 
   slug="$(_obsidian_slug "$title")"
-  path="$folder/$date"
-  [[ -n "$slug" ]] && path="${path}_${slug}"
-  path="${path}.md"
+  note_path="$folder/$date"
+  [[ -n "$slug" ]] && note_path="${note_path}_${slug}"
+  note_path="${note_path}.md"
 
-  if [[ -f "$path" ]]; then
-    ${EDITOR:-vim} "$path"
+  if [[ -f "$note_path" ]]; then
+    ${EDITOR:-vim} "$note_path"
     return
   fi
 
   if [[ -f "$template" ]]; then
-    cp "$template" "$path"
+    cp "$template" "$note_path"
   else
-    : > "$path"
+    : > "$note_path"
   fi
 
-  ${EDITOR:-vim} "$path"
+  ${EDITOR:-vim} "$note_path"
 }
 
 # Obsidian inboxにノートを作成して開く
 minbox() {
-  emulate -L zsh
-  setopt pipefail extendedglob
-
-  local vault="$(_obsidian_vault)"
-  local template="$vault/System/Templates/19_Quick.md"
-  local folder="$vault/00_Inbox"
-  local date="$(date +%Y%m%d)"
-  local title="${*:-}"
-  local slug path
-
-  mkdir -p "$folder"
-
-  slug="$(_obsidian_slug "$title")"
-  path="$folder/$date"
-  [[ -n "$slug" ]] && path="${path}_${slug}"
-  path="${path}.md"
-
-  if [[ -f "$path" ]]; then
-    ${EDITOR:-vim} "$path"
-    return
-  fi
-
-  if [[ -f "$template" ]]; then
-    cp "$template" "$path"
-  else
-    : > "$path"
-  fi
-
-  ${EDITOR:-vim} "$path"
+  mnote inbox "$@"
 }
 
 # Obsidianノートをfzfで検索して開く
