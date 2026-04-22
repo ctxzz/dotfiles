@@ -298,23 +298,23 @@ _ob_new() {
   case "$kind" in
     inbox)
       folder="$vault/00_Inbox"
-      template="$vault/System/Templates/19_Quick.md"
+      template="$vault/System/Templates/Quick.md"
       ;;
     meeting)
       folder="$vault/10_Memo/11_Meetings"
-      template="$vault/System/Templates/21_Meetings.md"
+      template="$vault/System/Templates/Meetings.md"
       ;;
     event)
       folder="$vault/10_Memo/12_Events"
-      template="$vault/System/Templates/22_Events.md"
+      template="$vault/System/Templates/Events.md"
       ;;
     lecture)
       folder="$vault/10_Memo/13_Lectures"
-      template="$vault/System/Templates/23_Lectures.md"
+      template="$vault/System/Templates/Lectures.md"
       ;;
     *)
       folder="$vault/00_Inbox"
-      template="$vault/System/Templates/19_Quick.md"
+      template="$vault/System/Templates/Quick.md"
       ;;
   esac
 
@@ -406,7 +406,7 @@ _ob_day() {
   local vault="$(_obsidian_vault)"
   local date_str="${1:-$(date +%Y%m%d)}"
   local folder="$vault/00_Inbox/Daily"
-  local template="$vault/System/Templates/10_Daily.md"
+  local template="$vault/System/Templates/Daily.md"
   local note_path="$folder/${date_str}.md"
 
   mkdir -p "$folder"
