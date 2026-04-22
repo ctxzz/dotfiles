@@ -252,7 +252,9 @@ ob() {
   setopt pipefail extendedglob
 
   local subcommand="${1:-}"
-  shift || true
+  if (( $# > 0 )); then
+    shift
+  fi
 
   case "$subcommand" in
     new)      _ob_new "$@" ;;
