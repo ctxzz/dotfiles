@@ -277,9 +277,20 @@ ob() {
 # ob new: ノートを作成して開く
 _ob_new() {
   local vault="$(_obsidian_vault)"
-  local kind="${1:-inbox}"
+  local kind="${1:-}"
   shift || true
   local title="${*:-}"
+
+  # kindが未指定の場合はfzfで選択
+  if [[ -z "$kind" ]]; then
+    if command -v fzf >/dev/null 2>&1; then
+      kind=$(printf '%s\n' inbox meeting event lecture | fzf --prompt="kind> " --height=~10)
+      [[ -z "$kind" ]] && return 1
+    else
+      print -u2 "usage: ob new <inbox|meeting|event|lecture> [title]"
+      return 1
+    fi
+  fi
 
   local date_str="$(date +%Y%m%d)"
   local folder template note_path slug
@@ -310,9 +321,7 @@ _ob_new() {
   mkdir -p "$folder"
 
   slug="$(_obsidian_slug "$title")"
-  note_path="$folder/$date_str"
-  [[ -n "$slug" ]] && note_path="${note_path}_${slug}"
-  note_path="${note_path}.md"
+  note_path="$folder/${date_str}_${slug}.md"
 
   if [[ -f "$note_path" ]]; then
     ${EDITOR:-vim} "$note_path"
