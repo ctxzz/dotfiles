@@ -260,7 +260,6 @@ ob() {
     grep)     _ob_grep "$@" ;;
     recent)   _ob_recent "$@" ;;
     inbox)    _ob_new inbox "$@" ;;
-    day)      _ob_day "$@" ;;
     *)
       print -u2 "usage: ob <subcommand> [args]"
       print -u2 "  ob new [inbox|meeting|event|lecture] [title]"
@@ -268,7 +267,6 @@ ob() {
       print -u2 "  ob grep <pattern>"
       print -u2 "  ob recent [n]"
       print -u2 "  ob inbox [title]"
-      print -u2 "  ob day [YYYYMMDD]"
       return 1
       ;;
   esac
@@ -400,35 +398,6 @@ _ob_recent() {
     ${EDITOR:-vim} "$selection"
   fi
 }
-
-# ob day: デイリーノートを作成/開く
-_ob_day() {
-  local vault="$(_obsidian_vault)"
-  local date_str="${1:-$(date +%Y%m%d)}"
-  local folder="$vault/00_Inbox/Daily"
-  local template="$vault/System/Templates/Daily.md"
-  local note_path="$folder/${date_str}.md"
-
-  mkdir -p "$folder"
-
-  if [[ -f "$note_path" ]]; then
-    ${EDITOR:-vim} "$note_path"
-    return
-  fi
-
-  if [[ -f "$template" ]]; then
-    cp "$template" "$note_path"
-  else
-    : > "$note_path"
-  fi
-
-  ${EDITOR:-vim} "$note_path"
-}
-
-# 後方互換エイリアス
-mnote()   { ob new "$@" }
-minbox()  { ob inbox "$@" }
-msearch() { ob search "$@" }
 
 # miseで特定のツールバージョンを素早くインストール
 mise-quick-install() {
