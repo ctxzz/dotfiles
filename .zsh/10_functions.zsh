@@ -246,17 +246,42 @@ _obsidian_slug() {
   print -r -- "$slug"
 }
 
-# Obsidianノートを作成して開く
-mnote() {
+# Obsidian vault操作のディスパッチャ
+ob() {
   emulate -L zsh
   setopt pipefail extendedglob
 
+  local subcommand="${1:-}"
+  shift || true
+
+  case "$subcommand" in
+    new)      _ob_new "$@" ;;
+    search)   _ob_search "$@" ;;
+    grep)     _ob_grep "$@" ;;
+    recent)   _ob_recent "$@" ;;
+    inbox)    _ob_new inbox "$@" ;;
+    day)      _ob_day "$@" ;;
+    *)
+      print -u2 "usage: ob <subcommand> [args]"
+      print -u2 "  ob new [inbox|meeting|event|lecture] [title]"
+      print -u2 "  ob search <query>"
+      print -u2 "  ob grep <pattern>"
+      print -u2 "  ob recent [n]"
+      print -u2 "  ob inbox [title]"
+      print -u2 "  ob day [YYYYMMDD]"
+      return 1
+      ;;
+  esac
+}
+
+# ob new: ノートを作成して開く
+_ob_new() {
   local vault="$(_obsidian_vault)"
   local kind="${1:-inbox}"
   shift || true
   local title="${*:-}"
 
-  local date="$(date +%Y%m%d)"
+  local date_str="$(date +%Y%m%d)"
   local folder template note_path slug
 
   case "$kind" in
@@ -285,7 +310,7 @@ mnote() {
   mkdir -p "$folder"
 
   slug="$(_obsidian_slug "$title")"
-  note_path="$folder/$date"
+  note_path="$folder/$date_str"
   [[ -n "$slug" ]] && note_path="${note_path}_${slug}"
   note_path="${note_path}.md"
 
@@ -303,22 +328,14 @@ mnote() {
   ${EDITOR:-vim} "$note_path"
 }
 
-# Obsidian inboxにノートを作成して開く
-minbox() {
-  mnote inbox "$@"
-}
-
-# Obsidianノートをfzfで検索して開く
-msearch() {
-  emulate -L zsh
-  setopt pipefail
-
+# ob search: ファイル名・内容をfzfで絞り込んで開く
+_ob_search() {
   local vault="$(_obsidian_vault)"
   local query="${*:-}"
   local selection
 
   if [[ -z "$query" ]]; then
-    print -u2 "usage: msearch <query>"
+    print -u2 "usage: ob search <query>"
     return 1
   fi
 
@@ -330,6 +347,79 @@ msearch() {
     ${EDITOR:-vim} "$selection"
   fi
 }
+
+# ob grep: ripgrepでvault全文検索してfzfで選択して開く
+_ob_grep() {
+  local vault="$(_obsidian_vault)"
+  local pattern="${*:-}"
+  local selection
+
+  if [[ -z "$pattern" ]]; then
+    print -u2 "usage: ob grep <pattern>"
+    return 1
+  fi
+
+  if ! command -v rg &>/dev/null; then
+    print -u2 "ob grep requires ripgrep (rg)"
+    return 1
+  fi
+
+  selection=$(rg --line-number --with-filename --color=never -e "$pattern" "$vault" 2>/dev/null | \
+    fzf-tmux --reverse --delimiter=':' \
+    --preview 'bat --color=always --style=numbers --line-range={2}:+50 {1}' \
+    --preview-window=right:60% | \
+    cut -d: -f1)
+
+  if [[ -n "$selection" ]]; then
+    ${EDITOR:-vim} "$selection"
+  fi
+}
+
+# ob recent: 最近更新されたノートをfzfで選択して開く
+_ob_recent() {
+  local vault="$(_obsidian_vault)"
+  local n="${1:-20}"
+  local selection
+
+  selection=$(find "$vault" -type f -name '*.md' -print0 | \
+    xargs -0 ls -t 2>/dev/null | \
+    head -n "$n" | \
+    fzf-tmux --reverse --preview 'bat --color=always --style=numbers --line-range=:500 {}' \
+    --preview-window=right:60%)
+
+  if [[ -n "$selection" ]]; then
+    ${EDITOR:-vim} "$selection"
+  fi
+}
+
+# ob day: デイリーノートを作成/開く
+_ob_day() {
+  local vault="$(_obsidian_vault)"
+  local date_str="${1:-$(date +%Y%m%d)}"
+  local folder="$vault/00_Inbox/Daily"
+  local template="$vault/System/Templates/10_Daily.md"
+  local note_path="$folder/${date_str}.md"
+
+  mkdir -p "$folder"
+
+  if [[ -f "$note_path" ]]; then
+    ${EDITOR:-vim} "$note_path"
+    return
+  fi
+
+  if [[ -f "$template" ]]; then
+    cp "$template" "$note_path"
+  else
+    : > "$note_path"
+  fi
+
+  ${EDITOR:-vim} "$note_path"
+}
+
+# 後方互換エイリアス
+mnote()   { ob new "$@" }
+minbox()  { ob inbox "$@" }
+msearch() { ob search "$@" }
 
 # miseで特定のツールバージョンを素早くインストール
 mise-quick-install() {
