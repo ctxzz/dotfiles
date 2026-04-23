@@ -278,7 +278,9 @@ ob() {
 _ob_new() {
   local vault="$(_obsidian_vault)"
   local kind="${1:-}"
-  shift || true
+  if (( $# > 0 )); then
+    shift
+  fi
   local title="${*:-}"
 
   # kindが未指定の場合はfzfで選択
