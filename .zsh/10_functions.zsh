@@ -294,6 +294,13 @@ _ob_new() {
     fi
   fi
 
+  # titleが未指定の場合は入力を促す
+  if [[ -z "$title" ]]; then
+    print -n "title> "
+    read -r title
+    [[ -z "$title" ]] && return 1
+  fi
+
   local date_str="$(date +%Y%m%d)"
   local folder template note_path slug
 
