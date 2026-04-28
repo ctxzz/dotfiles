@@ -294,6 +294,17 @@ _ob_new() {
     fi
   fi
 
+  # titleが未指定の場合は入力を促す
+  if [[ -z "$title" ]]; then
+    if [[ ! -r /dev/tty ]]; then
+      print -u2 "title is required, but no interactive terminal is available"
+      return 1
+    fi
+    print -n "title> " > /dev/tty
+    read -r title < /dev/tty || return 1
+    [[ -z "$title" ]] && return 1
+  fi
+
   local date_str="$(date +%Y%m%d)"
   local folder template note_path slug
 
