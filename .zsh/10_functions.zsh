@@ -296,8 +296,12 @@ _ob_new() {
 
   # titleが未指定の場合は入力を促す
   if [[ -z "$title" ]]; then
-    print -n "title> "
-    read -r title
+    if [[ ! -r /dev/tty ]]; then
+      print -u2 "title is required, but no interactive terminal is available"
+      return 1
+    fi
+    print -n "title> " > /dev/tty
+    read -r title < /dev/tty || return 1
     [[ -z "$title" ]] && return 1
   fi
 
