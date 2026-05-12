@@ -135,6 +135,7 @@ unit4() {
     
     # テスト用の一時ディレクトリを作成
     local test_home="/tmp/ws_test_gd_$$"
+    mkdir -p "$test_home/Library/CloudStorage/${test_email}/My Drive/01document"
     mkdir -p "$test_home/Library/CloudStorage/${test_email}/My Drive/03slide"
     mkdir -p "$test_home/Library/CloudStorage/${test_email}/My Drive/02thesis"
     mkdir -p "$test_home/Library/CloudStorage/${test_email}/My Drive/06note"
@@ -161,6 +162,20 @@ unit4() {
             e_warning "~/Cloud/GoogleDrive シンボリックリンクが作成されていません"
         fi
         
+        if [ -L "$test_home/ws/document" ]; then
+            local target
+            target=$(readlink "$test_home/ws/document")
+            local expected="$test_home/Cloud/GoogleDrive/My Drive/01document"
+            if [ "$target" = "$expected" ]; then
+                e_success "~/ws/document シンボリックリンクが正しいターゲットを指しています"
+            else
+                e_failure "~/ws/document のターゲットが不正です: $target (期待値: $expected)"
+                ERR=1
+            fi
+        else
+            e_warning "~/ws/document シンボリックリンクが作成されていません"
+        fi
+
         # iCloud symlink check
         if [ -L "$test_home/Cloud/iCloud" ]; then
             local target
