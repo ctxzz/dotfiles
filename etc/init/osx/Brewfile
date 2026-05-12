@@ -86,9 +86,7 @@ cask "warp"
 cask "zoom"
 
 # Mac App Store applications
-mas "Endel", id: 1346247457
 mas "Goodnotes", id: 1444383602
-mas "Hotspot Shield", id: 771076721
 mas "Microsoft Remote Desktop", id: 1295203466
 mas "Quick Camera", id: 598853070
 mas "Tailscale", id: 1475387142
