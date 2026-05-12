@@ -31,6 +31,7 @@ ICLOUD_ROOT="$HOME/Library/Mobile Documents"
 OBSIDIAN_REAL="$ICLOUD_ROOT/iCloud~md~obsidian/Documents"
 
 GD_MYDRIVE_REL="My Drive"
+GD_DOCUMENT_REL="01document"
 GD_SLIDE_REL="03slide"
 GD_PAPER_REL="02thesis"
 GD_NOTE_REL="06note"
@@ -125,6 +126,7 @@ main() {
         # Setup Google Drive workspace links
         local gd_mydrive="$CLOUD_DIR/GoogleDrive/$GD_MYDRIVE_REL"
         if [ -d "$gd_mydrive" ]; then
+            ensure_symlink "$gd_mydrive/$GD_DOCUMENT_REL" "$WS_DIR/document" || true
             ensure_symlink "$gd_mydrive/$GD_SLIDE_REL" "$WS_DIR/slide" || true
             ensure_symlink "$gd_mydrive/$GD_PAPER_REL" "$WS_DIR/paper" || true
             ensure_symlink "$gd_mydrive/$GD_NOTE_REL"  "$WS_DIR/note" || true
@@ -169,6 +171,7 @@ main() {
     echo ""
     e_header "Workspace structure:"
     echo "  ~/ws/               # Main workspace (entry point)"
+    echo "  ~/ws/document       # Google Drive - documents"
     echo "  ~/ws/slide          # Google Drive - slides"
     echo "  ~/ws/paper          # Google Drive - papers/thesis"
     echo "  ~/ws/note           # Google Drive - notes"
