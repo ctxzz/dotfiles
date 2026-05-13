@@ -93,7 +93,15 @@ unit3() {
             show_output_on_failure "$output"
             ERR=1
         fi
-        
+
+        if [ -d "$test_home/ws/local/assets" ]; then
+            e_success "~/ws/local/assets が作成されました"
+        else
+            e_failure "~/ws/local/assets が作成されていません"
+            show_output_on_failure "$output"
+            ERR=1
+        fi
+
         if [ -d "$test_home/ws/local/work" ]; then
             e_success "~/ws/local/work が作成されました"
         else
@@ -101,7 +109,83 @@ unit3() {
             show_output_on_failure "$output"
             ERR=1
         fi
-        
+
+        if [ -d "$test_home/ws/local/work/hama-med" ]; then
+            e_success "~/ws/local/work/hama-med が作成されました"
+        else
+            e_failure "~/ws/local/work/hama-med が作成されていません"
+            show_output_on_failure "$output"
+            ERR=1
+        fi
+
+        if [ -d "$test_home/ws/local/work/shizuoka" ]; then
+            e_success "~/ws/local/work/shizuoka が作成されました"
+        else
+            e_failure "~/ws/local/work/shizuoka が作成されていません"
+            show_output_on_failure "$output"
+            ERR=1
+        fi
+
+        if [ -L "$test_home/ws/assets" ]; then
+            local target
+            target=$(readlink "$test_home/ws/assets")
+            local expected="$test_home/ws/local/assets"
+            if [ "$target" = "$expected" ]; then
+                e_success "~/ws/assets シンボリックリンクが正しいターゲットを指しています"
+            else
+                e_failure "~/ws/assets のターゲットが不正です: $target (期待値: $expected)"
+                ERR=1
+            fi
+        else
+            e_failure "~/ws/assets シンボリックリンクが作成されていません"
+            ERR=1
+        fi
+
+        if [ -L "$test_home/ws/hama-med" ]; then
+            local target
+            target=$(readlink "$test_home/ws/hama-med")
+            local expected="$test_home/ws/local/work/hama-med"
+            if [ "$target" = "$expected" ]; then
+                e_success "~/ws/hama-med シンボリックリンクが正しいターゲットを指しています"
+            else
+                e_failure "~/ws/hama-med のターゲットが不正です: $target (期待値: $expected)"
+                ERR=1
+            fi
+        else
+            e_failure "~/ws/hama-med シンボリックリンクが作成されていません"
+            ERR=1
+        fi
+
+        if [ -L "$test_home/ws/sandbox" ]; then
+            local target
+            target=$(readlink "$test_home/ws/sandbox")
+            local expected="$test_home/ws/local/sandbox"
+            if [ "$target" = "$expected" ]; then
+                e_success "~/ws/sandbox シンボリックリンクが正しいターゲットを指しています"
+            else
+                e_failure "~/ws/sandbox のターゲットが不正です: $target (期待値: $expected)"
+                ERR=1
+            fi
+        else
+            e_failure "~/ws/sandbox シンボリックリンクが作成されていません"
+            ERR=1
+        fi
+
+        if [ -L "$test_home/ws/shizuoka" ]; then
+            local target
+            target=$(readlink "$test_home/ws/shizuoka")
+            local expected="$test_home/ws/local/work/shizuoka"
+            if [ "$target" = "$expected" ]; then
+                e_success "~/ws/shizuoka シンボリックリンクが正しいターゲットを指しています"
+            else
+                e_failure "~/ws/shizuoka のターゲットが不正です: $target (期待値: $expected)"
+                ERR=1
+            fi
+        else
+            e_failure "~/ws/shizuoka シンボリックリンクが作成されていません"
+            ERR=1
+        fi
+
         if [ -d "$test_home/Cloud" ]; then
             e_success "~/Cloud が作成されました"
         else

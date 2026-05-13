@@ -35,6 +35,13 @@ GD_DOCUMENT_REL="01document"
 GD_SLIDE_REL="03slide"
 GD_PAPER_REL="02thesis"
 GD_NOTE_REL="06note"
+
+LOCAL_DIR="$WS_DIR/local"
+LOCAL_ASSETS_DIR="$LOCAL_DIR/assets"
+LOCAL_SANDBOX_DIR="$LOCAL_DIR/sandbox"
+LOCAL_WORK_DIR="$LOCAL_DIR/work"
+LOCAL_WORK_HAMA_MED_DIR="$LOCAL_WORK_DIR/hama-med"
+LOCAL_WORK_SHIZUOKA_DIR="$LOCAL_WORK_DIR/shizuoka"
 # =================
 
 # Track skipped symlinks for reporting
@@ -114,8 +121,19 @@ main() {
     e_header "Setting up workspace (ws) and cloud directories"
     
     # Create base directories
-    ensure_dir "$WS_DIR/local"
+    ensure_dir "$LOCAL_DIR"
+    ensure_dir "$LOCAL_ASSETS_DIR"
+    ensure_dir "$LOCAL_SANDBOX_DIR"
+    ensure_dir "$LOCAL_WORK_DIR"
+    ensure_dir "$LOCAL_WORK_HAMA_MED_DIR"
+    ensure_dir "$LOCAL_WORK_SHIZUOKA_DIR"
     ensure_dir "$CLOUD_DIR"
+
+    # Setup local workspace links
+    ensure_symlink "$LOCAL_ASSETS_DIR" "$WS_DIR/assets"
+    ensure_symlink "$LOCAL_SANDBOX_DIR" "$WS_DIR/sandbox"
+    ensure_symlink "$LOCAL_WORK_HAMA_MED_DIR" "$WS_DIR/hama-med"
+    ensure_symlink "$LOCAL_WORK_SHIZUOKA_DIR" "$WS_DIR/shizuoka"
     
     # Detect and link Google Drive
     local gd_root=""
@@ -163,10 +181,6 @@ main() {
         e_warning "  2. Re-run: bash ~/.dotfiles/etc/init/ws_setup.sh"
     fi
     
-    # Create local workspace directories
-    ensure_dir "$WS_DIR/local/sandbox"
-    ensure_dir "$WS_DIR/local/work"
-    
     e_success "Workspace setup completed!"
     echo ""
     e_header "Workspace structure:"
@@ -179,6 +193,10 @@ main() {
     echo "  ~/ws/local/         # Local-only (not synced)"
     echo "  ~/ws/local/sandbox  # Experiments and temporary work"
     echo "  ~/ws/local/work     # Local work files"
+    echo "  ~/ws/assets         # -> ~/ws/local/assets"
+    echo "  ~/ws/sandbox        # -> ~/ws/local/sandbox"
+    echo "  ~/ws/hama-med       # -> ~/ws/local/work/hama-med"
+    echo "  ~/ws/shizuoka       # -> ~/ws/local/work/shizuoka"
     
     # Show summary of what needs to be done if cloud services are missing
     if [ -z "${gd_root:-}" ] || [ ! -d "$ICLOUD_ROOT" ] || [ ! -d "$OBSIDIAN_REAL" ] || [ "${#SKIPPED_SYMLINKS[@]}" -gt 0 ]; then
