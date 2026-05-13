@@ -130,10 +130,10 @@ main() {
     ensure_dir "$CLOUD_DIR"
 
     # Setup local workspace links
-    ensure_symlink "$LOCAL_ASSETS_DIR" "$WS_DIR/assets" || true
-    ensure_symlink "$LOCAL_WORK_HAMA_MED_DIR" "$WS_DIR/hama-med" || true
-    ensure_symlink "$LOCAL_SANDBOX_DIR" "$WS_DIR/sandbox" || true
-    ensure_symlink "$LOCAL_WORK_SHIZUOKA_DIR" "$WS_DIR/shizuoka" || true
+    ensure_symlink "$LOCAL_ASSETS_DIR" "$WS_DIR/assets"
+    ensure_symlink "$LOCAL_WORK_HAMA_MED_DIR" "$WS_DIR/hama-med"
+    ensure_symlink "$LOCAL_SANDBOX_DIR" "$WS_DIR/sandbox"
+    ensure_symlink "$LOCAL_WORK_SHIZUOKA_DIR" "$WS_DIR/shizuoka"
     
     # Detect and link Google Drive
     local gd_root=""
