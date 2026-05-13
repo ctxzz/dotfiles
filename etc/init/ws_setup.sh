@@ -195,7 +195,6 @@ main() {
     echo "  ~/ws/hama-med       # -> ~/ws/local/work/hama-med"
     echo "  ~/ws/sandbox        # -> ~/ws/local/sandbox"
     echo "  ~/ws/shizuoka       # -> ~/ws/local/work/shizuoka"
-    echo "  ~/ws/local/assets   # Local assets"
     echo "  ~/ws/local/sandbox  # Experiments and temporary work"
     echo "  ~/ws/local/work     # Local work files"
     

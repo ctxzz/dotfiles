@@ -101,7 +101,7 @@ unit3() {
             show_output_on_failure "$output"
             ERR=1
         fi
-         
+
         if [ -d "$test_home/ws/local/work" ]; then
             e_success "~/ws/local/work が作成されました"
         else
@@ -185,7 +185,7 @@ unit3() {
             e_failure "~/ws/shizuoka シンボリックリンクが作成されていません"
             ERR=1
         fi
-         
+
         if [ -d "$test_home/Cloud" ]; then
             e_success "~/Cloud が作成されました"
         else
