@@ -191,12 +191,12 @@ main() {
     echo "  ~/ws/note           # Google Drive - notes"
     echo "  ~/ws/obsidian       # iCloud - Obsidian vault"
     echo "  ~/ws/local/         # Local-only (not synced)"
+    echo "  ~/ws/local/sandbox  # Experiments and temporary work"
+    echo "  ~/ws/local/work     # Local work files"
     echo "  ~/ws/assets         # -> ~/ws/local/assets"
     echo "  ~/ws/hama-med       # -> ~/ws/local/work/hama-med"
     echo "  ~/ws/sandbox        # -> ~/ws/local/sandbox"
     echo "  ~/ws/shizuoka       # -> ~/ws/local/work/shizuoka"
-    echo "  ~/ws/local/sandbox  # Experiments and temporary work"
-    echo "  ~/ws/local/work     # Local work files"
     
     # Show summary of what needs to be done if cloud services are missing
     if [ -z "${gd_root:-}" ] || [ ! -d "$ICLOUD_ROOT" ] || [ ! -d "$OBSIDIAN_REAL" ] || [ "${#SKIPPED_SYMLINKS[@]}" -gt 0 ]; then
