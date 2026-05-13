@@ -131,8 +131,8 @@ main() {
 
     # Setup local workspace links
     ensure_symlink "$LOCAL_ASSETS_DIR" "$WS_DIR/assets"
-    ensure_symlink "$LOCAL_WORK_HAMA_MED_DIR" "$WS_DIR/hama-med"
     ensure_symlink "$LOCAL_SANDBOX_DIR" "$WS_DIR/sandbox"
+    ensure_symlink "$LOCAL_WORK_HAMA_MED_DIR" "$WS_DIR/hama-med"
     ensure_symlink "$LOCAL_WORK_SHIZUOKA_DIR" "$WS_DIR/shizuoka"
     
     # Detect and link Google Drive
@@ -194,8 +194,8 @@ main() {
     echo "  ~/ws/local/sandbox  # Experiments and temporary work"
     echo "  ~/ws/local/work     # Local work files"
     echo "  ~/ws/assets         # -> ~/ws/local/assets"
-    echo "  ~/ws/hama-med       # -> ~/ws/local/work/hama-med"
     echo "  ~/ws/sandbox        # -> ~/ws/local/sandbox"
+    echo "  ~/ws/hama-med       # -> ~/ws/local/work/hama-med"
     echo "  ~/ws/shizuoka       # -> ~/ws/local/work/shizuoka"
     
     # Show summary of what needs to be done if cloud services are missing
