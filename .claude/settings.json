@@ -16,7 +16,9 @@
         "*.npmjs.org",
         "registry.yarnpkg.com",
         "pypi.org",
-        "files.pythonhosted.org"
+        "files.pythonhosted.org",
+        "generativelanguage.googleapis.com",
+        "openrouter.ai"
       ]
     }
   },
