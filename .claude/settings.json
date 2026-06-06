@@ -18,8 +18,7 @@
         "pypi.org",
         "files.pythonhosted.org",
         "generativelanguage.googleapis.com",
-        "openrouter.ai",
-        "*.1password.com"
+        "openrouter.ai"
       ]
     }
   },
@@ -38,7 +37,7 @@
       "Bash(make:*)",
       "Bash(mkdir:*)",
       "Bash(mv:*)",
-      "Bash(op:*)",
+      "Bash(op run --env-file=.claude/ai.env -- python3 .claude/skills/:*)",
       "Bash(readlink:*)",
       "Bash(shellcheck:*)",
       "Bash(source:*)",
