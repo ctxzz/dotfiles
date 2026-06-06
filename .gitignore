@@ -13,6 +13,7 @@
 
 # Claude Code
 .claude/settings.local.json
+.claude/ai.env
 .claude_code_state/
 .claude/backups/
 .claude/bash-audit.log

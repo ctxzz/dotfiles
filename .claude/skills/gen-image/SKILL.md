@@ -10,19 +10,31 @@ disable-model-invocation: true
 Uses the bundled `gen_image.py` (no dependencies; Python 3 + stdlib).
 
 ## Setup (one-time)
-- Set an API key: `GEMINI_API_KEY` (Gemini) and/or `OPENROUTER_API_KEY` (OpenRouter).
+- Keys live in 1Password; the repo only holds `op://` references. Copy the
+  template and edit the references: `cp .claude/ai.env.example .claude/ai.env`
+  (`.claude/ai.env` is gitignored). See that file for how to find references.
+- Sign in once per session: `op signin` (or use the 1Password desktop app CLI
+  integration for biometric unlock).
 - If sandbox is on, `generativelanguage.googleapis.com` / `openrouter.ai` must be in `settings.json` → `sandbox.network.allowedDomains` (already added).
 
 ## Run
+Prefix the command with `op run` so the key is injected only at runtime (never
+written to disk). The script itself just reads `GEMINI_API_KEY` /
+`OPENROUTER_API_KEY` from the env, so plain `python3 ...` also works if those are
+already exported by other means.
+
 ```bash
 # generate (auto-picks backend from whichever key is set)
-python3 .claude/skills/gen-image/gen_image.py "$ARGUMENTS" -o /tmp/out.png
+op run --env-file=.claude/ai.env -- \
+  python3 .claude/skills/gen-image/gen_image.py "$ARGUMENTS" -o /tmp/out.png
 
 # edit an existing image
-python3 .claude/skills/gen-image/gen_image.py "make the sky purple" -i input.png -o /tmp/out.png
+op run --env-file=.claude/ai.env -- \
+  python3 .claude/skills/gen-image/gen_image.py "make the sky purple" -i input.png -o /tmp/out.png
 
 # force backend / model
-python3 .claude/skills/gen-image/gen_image.py "..." --backend openrouter -m black-forest-labs/flux.2-pro
+op run --env-file=.claude/ai.env -- \
+  python3 .claude/skills/gen-image/gen_image.py "..." --backend openrouter -m black-forest-labs/flux.2-pro
 ```
 
 ## Task

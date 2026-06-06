@@ -17,15 +17,20 @@ Prefer this path unless the user wants a specific external model or a second opi
 Use the bundled `describe_image.py` when the user wants Gemini/OpenRouter to do the analysis.
 
 ```bash
-python3 .claude/skills/review-image/describe_image.py image.png \
+op run --env-file=.claude/ai.env -- \
+  python3 .claude/skills/review-image/describe_image.py image.png \
   -p "Critique this UI's accessibility and visual hierarchy"
 
 # force backend / model
-python3 .claude/skills/review-image/describe_image.py image.png \
+op run --env-file=.claude/ai.env -- \
+  python3 .claude/skills/review-image/describe_image.py image.png \
   --backend openrouter -m anthropic/claude-sonnet-4.5
 ```
 
-- Auth: `GEMINI_API_KEY` and/or `OPENROUTER_API_KEY`. Backend: `--backend`, else `$IMAGE_LLM_BACKEND`, else whichever key is set.
+- Auth: keys come from 1Password via `op run --env-file=.claude/ai.env` (see
+  `.claude/ai.env.example` for one-time setup); the script just reads
+  `GEMINI_API_KEY` / `OPENROUTER_API_KEY` from the env, so plain `python3 ...`
+  also works if they are already exported. Backend: `--backend`, else `$IMAGE_LLM_BACKEND`, else whichever key is set.
 - Defaults: Gemini `gemini-2.5-flash`, OpenRouter `google/gemini-2.5-flash` (override with `-m` or `GEMINI_VISION_MODEL` / `OPENROUTER_VISION_MODEL`).
 - Sandbox: requires `generativelanguage.googleapis.com` / `openrouter.ai` in `allowedDomains` (already added).
 
