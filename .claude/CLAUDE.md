@@ -25,6 +25,10 @@
 - Confirm with user before performing operations that may alter many files (e.g. mass refactor, delete).
 - If you propose modifications: wrap them in code-blocks, provide short rationale.
 
+## Tooling (agents / skills)
+- Prefer Claude Code's built-in agent types (`code-reviewer`, `bug-finder`, `test-writer`, etc.) and bundled skills (`/code-review`, `/security-review`, `/init`) over custom duplicates — they stay current with the CLI.
+- Reserve custom skills in `.claude/skills/` for personal conventions or project-specific workflows not covered by defaults (e.g. `/commit`).
+
 ## Notes
 - Do not include any sensitive information (credentials, API keys, secrets).
 - Keep instructions concise — avoid long narrative descriptions; use bullet lists.

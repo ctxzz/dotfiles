@@ -18,3 +18,7 @@
 .claude/bash-audit.log
 *.claude_code_backup
 CLAUDE.local.md
+
+# Python bytecode cache
+__pycache__/
+*.pyc
