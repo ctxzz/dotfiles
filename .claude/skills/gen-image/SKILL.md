@@ -10,9 +10,9 @@ disable-model-invocation: true
 Uses the bundled `gen_image.py` (no dependencies; Python 3 + stdlib).
 
 ## Setup (one-time)
-- Keys live in 1Password; the repo only holds `op://` references. Copy the
-  template and edit the references: `cp .claude/ai.env.example .claude/ai.env`
-  (`.claude/ai.env` is gitignored). See that file for how to find references.
+- Keys live in 1Password; this repo commits only `op://` references in
+  `.claude/ai.env` (references are not secrets). Edit them to match your
+  vault / item / field — see that file for how to find the exact reference.
 - Sign in once per session: `op signin` (or use the 1Password desktop app CLI
   integration for biometric unlock).
 - If sandbox is on, `generativelanguage.googleapis.com` / `openrouter.ai` must be in `settings.json` → `sandbox.network.allowedDomains` (already added).
