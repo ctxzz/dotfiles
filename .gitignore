@@ -2,6 +2,7 @@
 .gitconfig
 *~
 *.backup
+*.backup.*
 *.old
 .zsh/history/
 .vim/autoload/
