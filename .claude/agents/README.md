@@ -166,23 +166,35 @@ Expert in analyzing and optimizing code performance.
 
 ## How to Use
 
-### Method 1: Via Claude Code Chat (Recommended)
+Each agent is a subagent: a Markdown file with YAML frontmatter (`name`,
+`description`, optional `tools`/`model`) whose body is the system prompt.
+Claude Code discovers any `*.md` file in `.claude/agents/` automatically.
 
-In Claude Code, you can invoke agents in chat:
+### Method 1: Automatic delegation (Recommended)
+
+Claude reads each agent's `description` and delegates matching tasks to it
+on its own. Write clear descriptions so this works well — just describe
+your task naturally:
 
 ```
-@project-manager Break down this feature into tasks
-@research-assistant Compare React vs Vue for this project
-@code-reviewer Review the changes in src/auth.ts
+Review the changes in src/auth.ts
+Break this feature down into tasks
+Compare React vs Vue for this project
 ```
 
-### Method 2: Direct Reference
+### Method 2: Explicit request
 
-Copy the agent content and paste it as a system prompt or context.
+Ask Claude to use a specific agent by name:
+
+```
+Use the code-reviewer agent on the staged diff
+Have the system-design agent draft the architecture
+```
 
 ### Method 3: Project-Specific
 
-Copy agents you need to your project's `.claude/agents/` directory:
+Copy agents you need to a project's `.claude/agents/` directory (project
+agents override user-level ones with the same name):
 
 ```bash
 cp ~/.dotfiles/.claude/agents/project-manager.md ./.claude/agents/
@@ -237,22 +249,21 @@ cp ~/.dotfiles/.claude/agents/project-manager.md ./.claude/agents/
 
 ### Agent Structure
 
+A subagent needs YAML frontmatter. Only `name` and `description` are
+required; `tools` and `model` are optional (tools are inherited if omitted,
+model defaults to `inherit`):
+
 ```markdown
+---
+name: agent-name
+description: Use this agent when ... (this is how Claude decides to delegate)
+tools: Read, Grep, Glob, Bash
+model: sonnet
+---
+
 # Agent Name
 
-Brief description of the agent's role.
-
-## Role
-Define the agent's expertise and focus areas.
-
-## Process
-Step-by-step workflow the agent follows.
-
-## Output Format
-Structured format for agent responses.
-
-## Guidelines
-Best practices and considerations.
+System prompt: define the agent's role, process, output format, and guidelines.
 ```
 
 ### Best Practices
@@ -267,6 +278,13 @@ Best practices and considerations.
 ### Example Custom Agent
 
 ```markdown
+---
+name: security-auditor
+description: Use this agent to audit code for vulnerabilities (OWASP Top 10, auth flaws, data exposure).
+tools: Read, Grep, Glob, Bash
+model: sonnet
+---
+
 # Security Auditor Agent
 
 You are an expert security auditor focused on finding vulnerabilities.
@@ -344,9 +362,9 @@ To add new agents to this collection:
 
 ## Resources
 
-- [Claude Code Documentation](https://docs.anthropic.com/claude/docs)
-- [GitHub Copilot Agents Best Practices](https://github.blog/ai-and-ml/github-copilot/how-to-write-a-great-agents-md-lessons-from-over-2500-repositories/)
-- [Effective Prompting Guide](https://docs.anthropic.com/claude/docs/prompt-engineering)
+- [Claude Code: Subagents](https://code.claude.com/docs/en/sub-agents)
+- [Claude Code: Skills](https://code.claude.com/docs/en/skills)
+- [Claude Code Documentation](https://code.claude.com/docs)
 - [wshobson/agents](https://github.com/wshobson/agents) - Inspiration for this collection
 
 ## License
