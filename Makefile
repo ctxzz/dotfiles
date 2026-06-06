@@ -24,6 +24,8 @@ deploy:
 	@echo '==> Start to deploy dotfiles to home directory.'
 	@echo ''
 	@$(foreach val, $(DOTFILES), ln -sfnv $(abspath $(val)) $(HOME)/$(val);)
+	@echo ''
+	@DOTPATH=$(DOTPATH) bash $(DOTPATH)/etc/deploy/claude.sh
 
 init:
 	@DOTPATH=$(DOTPATH) bash $(DOTPATH)/etc/init/init.sh
@@ -49,4 +51,5 @@ install: update deploy init
 clean:
 	@echo 'Remove dot files in your home directory...'
 	@-$(foreach val, $(DOTFILES), rm -vrf $(HOME)/$(val);)
+	@-DOTPATH=$(DOTPATH) bash $(DOTPATH)/etc/deploy/claude.sh --clean
 	-rm -rf $(DOTPATH)

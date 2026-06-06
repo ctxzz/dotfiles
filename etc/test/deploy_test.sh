@@ -92,12 +92,53 @@ unit3() {
     fi
 }
 
+# .claude のシンボリックリンクチェック
+unit4() {
+    e_header ".claude のシンボリックリンクチェック"
+
+    cd "$DOTPATH" || exit
+    local items=(CLAUDE.md settings.json skills ai.env)
+    local invalid_links=0
+
+    for item in "${items[@]}"; do
+        local target="$HOME/.claude/$item"
+        local source="$DOTPATH/.claude/$item"
+
+        if [ ! -e "$source" ]; then
+            e_warning "ソースファイルが存在しません: $source"
+            invalid_links=$((invalid_links + 1))
+            continue
+        fi
+
+        if [ ! -L "$target" ]; then
+            e_warning "シンボリックリンクではありません: $target"
+            invalid_links=$((invalid_links + 1))
+            continue
+        fi
+
+        local link_target
+        link_target=$(readlink "$target")
+        if [ "$link_target" != "$source" ]; then
+            e_warning "不正なリンク先: $target -> $link_target (期待: $source)"
+            invalid_links=$((invalid_links + 1))
+        fi
+    done
+
+    if [ "$invalid_links" -eq 0 ]; then
+        e_success ".claude のシンボリックリンクが正しく設定されています"
+    else
+        e_failure "$invalid_links 個の不正な .claude リンクが見つかりました"
+        ERR=1
+    fi
+}
+
 # テストの実行
 main() {
     unit1
     unit2
     unit3
-    
+    unit4
+
     if [ "$ERR" -eq 0 ]; then
         e_success "すべてのデプロイテストが成功しました"
     else
