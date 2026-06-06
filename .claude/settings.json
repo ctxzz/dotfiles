@@ -37,7 +37,7 @@
       "Bash(make:*)",
       "Bash(mkdir:*)",
       "Bash(mv:*)",
-      "Bash(op run --env-file=.claude/ai.env -- python3 .claude/skills/:*)",
+      "Bash(op run --env-file=$HOME/.claude/ai.env -- python3 $HOME/.claude/skills/:*)",
       "Bash(readlink:*)",
       "Bash(shellcheck:*)",
       "Bash(source:*)",
