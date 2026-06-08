@@ -3,6 +3,12 @@ CANDIDATES := $(wildcard .??*) bin
 EXCLUSIONS := .DS_Store .git .gitmodules .travis.yml .cursor .config .claude
 DOTFILES   := $(filter-out $(EXCLUSIONS), $(CANDIDATES))
 
+# .claude is linked item-by-item (not as a whole dir) so Claude Code's runtime
+# state under ~/.claude (projects/, history/, settings.local.json, global
+# skills, ...) is preserved. Skills are linked per-directory for the same reason.
+CLAUDE_FILES  := CLAUDE.md settings.json ai.env
+CLAUDE_SKILLS := $(wildcard .claude/skills/*/)
+
 all: install
 
 help:
@@ -25,7 +31,9 @@ deploy:
 	@echo ''
 	@$(foreach val, $(DOTFILES), ln -sfnv $(abspath $(val)) $(HOME)/$(val);)
 	@echo ''
-	@DOTPATH=$(DOTPATH) bash $(DOTPATH)/etc/deploy/claude.sh
+	@mkdir -p $(HOME)/.claude/skills
+	@$(foreach f, $(CLAUDE_FILES), ln -sfnv $(abspath .claude/$(f)) $(HOME)/.claude/$(f);)
+	@$(foreach d, $(CLAUDE_SKILLS), ln -sfnv $(abspath $(d)) $(HOME)/.claude/skills/$(notdir $(patsubst %/,%,$(d)));)
 
 init:
 	@DOTPATH=$(DOTPATH) bash $(DOTPATH)/etc/init/init.sh
@@ -51,5 +59,6 @@ install: update deploy init
 clean:
 	@echo 'Remove dot files in your home directory...'
 	@-$(foreach val, $(DOTFILES), rm -vrf $(HOME)/$(val);)
-	@-DOTPATH=$(DOTPATH) bash $(DOTPATH)/etc/deploy/claude.sh --clean
+	@-$(foreach f, $(CLAUDE_FILES), rm -vf $(HOME)/.claude/$(f);)
+	@-$(foreach d, $(CLAUDE_SKILLS), rm -vf $(HOME)/.claude/skills/$(notdir $(patsubst %/,%,$(d)));)
 	-rm -rf $(DOTPATH)

@@ -55,13 +55,6 @@ etc/init/
     └── windows_settings.ps1
 ```
 
-### etc/deploy/ - デプロイ補助スクリプト
-
-```
-etc/deploy/
-└── claude.sh               # ~/.claude へ設定を個別シンボリンク（ランタイム状態は保全）
-```
-
 ### etc/test/ - テストスクリプト
 
 ```
@@ -104,19 +97,20 @@ etc/lib/
 `.DS_Store`, `.git`, `.gitmodules`, `.travis.yml`, `.cursor`, `.config`, `.claude`
 
 `.config` はシンボリンクせず手動管理。`.claude` は除外リストにあるが、`make deploy`
-が `etc/deploy/claude.sh` を呼び出して**個別に**シンボリンクする（下記参照）。
+が Makefile 内で**個別に**シンボリンクする（下記参照）。
 
 ### .claude/ のデプロイ
 
 `~/.claude` には Claude Code のランタイム状態（`projects/`, `todos/`, `history/`,
 `shell-snapshots/`, `settings.local.json` 等）が同居するため、ディレクトリごと
-シンボリンクはしない。`etc/deploy/claude.sh` が本体と同じ `ln -sfnv` で次のように貼る：
+シンボリンクはしない。`make deploy` が本体と同じ `ln -sfnv` で（`Makefile` の
+`CLAUDE_FILES` / `CLAUDE_SKILLS` を用いて）次のように貼る：
 
 - `CLAUDE.md` / `settings.json` / `ai.env` … `~/.claude/` 直下に個別リンク
 - `skills/` … 実ディレクトリのまま、リポジトリの各スキルを `~/.claude/skills/<name>`
   に個別リンク（`session-start-hook` 等のランタイム/グローバルスキルと共存）
 
-`bash etc/deploy/claude.sh --clean` でリポジトリ由来のリンクのみ除去できる。
+`make clean` でこれらのリンク（と他の dotfile・リポジトリ本体）が除去される。
 
 #### 画像スキルの秘密管理（ai.env / 1Password）
 

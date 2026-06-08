@@ -40,7 +40,7 @@ make install
 
 ## Claude Code config
 
-`make deploy` also symlinks `.claude/` into `~/.claude` via `etc/deploy/claude.sh`,
+`make deploy` also symlinks `.claude/` into `~/.claude` directly from the Makefile,
 using the same `ln -sfnv` convention as the rest. Config files (`CLAUDE.md`,
 `settings.json`, `ai.env`) and each skill under `skills/` are linked individually,
 so Claude Code's runtime state (`projects/`, `history/`, `settings.local.json`,
