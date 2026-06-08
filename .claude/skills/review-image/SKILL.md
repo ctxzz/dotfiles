@@ -17,17 +17,17 @@ Prefer this path unless the user wants a specific external model or a second opi
 Use the bundled `describe_image.py` when the user wants Gemini/OpenRouter to do the analysis.
 
 ```bash
-op run --env-file=.claude/ai.env -- \
-  python3 .claude/skills/review-image/describe_image.py image.png \
+op run --env-file=$HOME/.claude/ai.env -- \
+  python3 $HOME/.claude/skills/review-image/describe_image.py image.png \
   -p "Critique this UI's accessibility and visual hierarchy"
 
 # force backend / model
-op run --env-file=.claude/ai.env -- \
-  python3 .claude/skills/review-image/describe_image.py image.png \
+op run --env-file=$HOME/.claude/ai.env -- \
+  python3 $HOME/.claude/skills/review-image/describe_image.py image.png \
   --backend openrouter -m anthropic/claude-sonnet-4.5
 ```
 
-- Auth: keys come from 1Password via `op run --env-file=.claude/ai.env` (the
+- Auth: keys come from 1Password via `op run --env-file=$HOME/.claude/ai.env` (the
   committed `.claude/ai.env` holds only `op://` references — edit it to match
   your vault/item/field); the script just reads `GEMINI_API_KEY` /
   `OPENROUTER_API_KEY` from the env, so plain `python3 ...` also works if they

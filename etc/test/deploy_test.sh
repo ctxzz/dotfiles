@@ -92,12 +92,63 @@ unit3() {
     fi
 }
 
+# .claude のシンボリックリンクチェック
+unit4() {
+    e_header ".claude のシンボリックリンクチェック"
+
+    cd "$DOTPATH" || exit
+    local invalid_links=0
+
+    check_link() {
+        local target="$1" source="$2"
+        if [ ! -e "$source" ]; then
+            e_warning "ソースファイルが存在しません: $source"
+            invalid_links=$((invalid_links + 1)); return
+        fi
+        if [ ! -L "$target" ]; then
+            e_warning "シンボリックリンクではありません: $target"
+            invalid_links=$((invalid_links + 1)); return
+        fi
+        local link_target
+        link_target=$(readlink "$target")
+        if [ "$link_target" != "$source" ]; then
+            e_warning "不正なリンク先: $target -> $link_target (期待: $source)"
+            invalid_links=$((invalid_links + 1))
+        fi
+    }
+
+    # 単一ファイルは ~/.claude 直下にリンク
+    for f in CLAUDE.md settings.json ai.env; do
+        check_link "$HOME/.claude/$f" "$DOTPATH/.claude/$f"
+    done
+
+    # skills/ は実ディレクトリのまま、リポジトリの各 skill を個別にリンク
+    # （ランタイム/グローバル skill との共存を保つ）
+    if [ -L "$HOME/.claude/skills" ]; then
+        e_warning "~/.claude/skills は実ディレクトリであるべきです（symlink になっています）"
+        invalid_links=$((invalid_links + 1))
+    fi
+    for d in "$DOTPATH"/.claude/skills/*/; do
+        local name
+        name=$(basename "$d")
+        check_link "$HOME/.claude/skills/$name" "${d%/}"
+    done
+
+    if [ "$invalid_links" -eq 0 ]; then
+        e_success ".claude のシンボリックリンクが正しく設定されています"
+    else
+        e_failure "$invalid_links 個の不正な .claude リンクが見つかりました"
+        ERR=1
+    fi
+}
+
 # テストの実行
 main() {
     unit1
     unit2
     unit3
-    
+    unit4
+
     if [ "$ERR" -eq 0 ]; then
         e_success "すべてのデプロイテストが成功しました"
     else

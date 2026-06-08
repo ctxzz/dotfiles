@@ -8,6 +8,11 @@
 .
 ├── .bash_profile       # Bash起動時に読み込まれる設定
 ├── .bashrc            # Bash設定（エイリアス、関数など）
+├── .claude/           # Claude Code設定（専用スクリプトで個別シンボリンク）
+│   ├── CLAUDE.md     # プロジェクト共通の指示
+│   ├── settings.json # 権限・フック等の設定
+│   ├── ai.env        # 画像スキル用の1Password秘密参照（op run で解決）
+│   └── skills/       # カスタムスキル群（commit, gen-image 等）
 ├── .config/           # アプリケーション設定ディレクトリ（シンボリンク対象外）
 │   └── mise/         # mise設定とドキュメント
 ├── .gitignore         # Git除外設定
@@ -56,6 +61,8 @@ etc/init/
 etc/test/
 ├── test.sh                 # メインテストランナー
 ├── deploy_test.sh          # デプロイ（シンボリンク）テスト
+├── skills_image_test.sh    # 画像スキルのスモークテスト（skills_image_check.py を実行）
+├── skills_image_check.py   # gen-image / review-image のネットワーク不要テスト
 ├── redirect_test.sh        # dot.omata.meリダイレクトテスト
 ├── shellcheck_test.sh      # シェルスクリプト静的解析
 ├── linux/                  # Linux固有のテスト
@@ -86,8 +93,30 @@ etc/lib/
 - `make test` - テストを実行
 - `make install` - update, deploy, initを一括実行
 
-**除外リスト:**
+**除外リスト（`EXCLUSIONS`）:**
 `.DS_Store`, `.git`, `.gitmodules`, `.travis.yml`, `.cursor`, `.config`, `.claude`
+
+`.config` はシンボリンクせず手動管理。`.claude` は除外リストにあるが、`make deploy`
+が Makefile 内で**個別に**シンボリンクする（下記参照）。
+
+### .claude/ のデプロイ
+
+`~/.claude` には Claude Code のランタイム状態（`projects/`, `todos/`, `history/`,
+`shell-snapshots/`, `settings.local.json` 等）が同居するため、ディレクトリごと
+シンボリンクはしない。`make deploy` が本体と同じ `ln -sfnv` で（`Makefile` の
+`CLAUDE_FILES` / `CLAUDE_SKILLS` を用いて）次のように貼る：
+
+- `CLAUDE.md` / `settings.json` / `ai.env` … `~/.claude/` 直下に個別リンク
+- `skills/` … 実ディレクトリのまま、リポジトリの各スキルを `~/.claude/skills/<name>`
+  に個別リンク（`session-start-hook` 等のランタイム/グローバルスキルと共存）
+
+`make clean` でこれらのリンク（と他の dotfile・リポジトリ本体）が除去される。
+
+#### 画像スキルの秘密管理（ai.env / 1Password）
+
+`gen-image` / `review-image` は API キーを `.claude/ai.env` の **1Password 参照**
+（`op://...`）で持ち、実行時に `op run --env-file=$HOME/.claude/ai.env -- ...` で
+解決する。鍵そのものはリポジトリに含めない。利用前に `op signin` が必要。
 
 ### .zshenv vs .zshrc
 
@@ -112,7 +141,7 @@ mise（バージョン管理ツール）の設定ディレクトリ。
 
 `make test` を実行すると：
 
-1. 共通テストを実行（deploy, redirect, shellcheck）
+1. 共通テストを実行（deploy, skills_image, redirect, shellcheck）
 2. OS固有のテストを実行（osx/ または linux/）
 3. テスト結果を集計して表示
 

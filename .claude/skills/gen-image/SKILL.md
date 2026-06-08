@@ -13,6 +13,8 @@ Uses the bundled `gen_image.py` (no dependencies; Python 3 + stdlib).
 - Keys live in 1Password; this repo commits only `op://` references in
   `.claude/ai.env` (references are not secrets). Edit them to match your
   vault / item / field — see that file for how to find the exact reference.
+- `make deploy` symlinks it to `~/.claude/ai.env`; the commands below use that
+  absolute path so they work from any directory.
 - Sign in once per session: `op signin` (or use the 1Password desktop app CLI
   integration for biometric unlock).
 - If sandbox is on, `generativelanguage.googleapis.com` / `openrouter.ai` must be in `settings.json` → `sandbox.network.allowedDomains` (already added).
@@ -25,16 +27,16 @@ already exported by other means.
 
 ```bash
 # generate (auto-picks backend from whichever key is set)
-op run --env-file=.claude/ai.env -- \
-  python3 .claude/skills/gen-image/gen_image.py "$ARGUMENTS" -o /tmp/out.png
+op run --env-file=$HOME/.claude/ai.env -- \
+  python3 $HOME/.claude/skills/gen-image/gen_image.py "$ARGUMENTS" -o /tmp/out.png
 
 # edit an existing image
-op run --env-file=.claude/ai.env -- \
-  python3 .claude/skills/gen-image/gen_image.py "make the sky purple" -i input.png -o /tmp/out.png
+op run --env-file=$HOME/.claude/ai.env -- \
+  python3 $HOME/.claude/skills/gen-image/gen_image.py "make the sky purple" -i input.png -o /tmp/out.png
 
 # force backend / model
-op run --env-file=.claude/ai.env -- \
-  python3 .claude/skills/gen-image/gen_image.py "..." --backend openrouter -m black-forest-labs/flux.2-pro
+op run --env-file=$HOME/.claude/ai.env -- \
+  python3 $HOME/.claude/skills/gen-image/gen_image.py "..." --backend openrouter -m black-forest-labs/flux.2-pro
 ```
 
 ## Task
