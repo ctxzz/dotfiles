@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 #
-# Deploy ~/.claude from this repo WITHOUT clobbering Claude Code's runtime state
-# (projects/, todos/, history/, shell-snapshots/, ...). Only selected config
-# items are symlinked; everything else under ~/.claude is left untouched.
+# Symlink selected ~/.claude config from this repo, using the same `ln -sfnv`
+# convention as `make deploy`. Claude Code's runtime state under ~/.claude
+# (projects/, todos/, history/, shell-snapshots/, settings.local.json, ...) is
+# left untouched: config files are linked individually, and skills are linked
+# per-directory so runtime/global skills already in ~/.claude/skills (e.g.
+# session-start-hook) are preserved alongside the repo's skills.
 #
 # Usage:
 #   DOTPATH=/path/to/dotfiles bash etc/deploy/claude.sh           # deploy
@@ -14,48 +17,35 @@ set -euo pipefail
 
 CLAUDE_SRC="$DOTPATH/.claude"
 CLAUDE_DST="$HOME/.claude"
-BACKUP_DIR="${DOTFILES_BACKUP_DIR:-$HOME/.dotfiles-backup}/claude-$(date +%Y%m%d%H%M%S)"
 
-# Items to symlink into ~/.claude. settings.local.json / backups / logs and the
-# runtime dirs are intentionally NOT listed so they stay local.
-ITEMS=(CLAUDE.md settings.json skills ai.env)
+# Single-file config linked directly into ~/.claude. *.local.json is omitted so
+# it stays machine-local.
+FILES=(CLAUDE.md settings.json ai.env)
+SKILLS_SRC="$CLAUDE_SRC/skills"
+SKILLS_DST="$CLAUDE_DST/skills"
 
 if [ "${1:-}" = "--clean" ]; then
-  for item in "${ITEMS[@]}"; do
-    dst="$CLAUDE_DST/$item"
-    if [ -L "$dst" ]; then
-      rm -f "$dst"
-      echo "remove: $dst"
-    fi
+  for f in "${FILES[@]}"; do
+    [ -L "$CLAUDE_DST/$f" ] && rm -vf "$CLAUDE_DST/$f"
   done
+  if [ -d "$SKILLS_SRC" ]; then
+    for d in "$SKILLS_SRC"/*/; do
+      [ -L "$SKILLS_DST/$(basename "$d")" ] && rm -vf "$SKILLS_DST/$(basename "$d")"
+    done
+  fi
   exit 0
 fi
 
-echo "==> Deploy .claude config to $CLAUDE_DST (runtime state preserved)."
 mkdir -p "$CLAUDE_DST"
-
-for item in "${ITEMS[@]}"; do
-  src="$CLAUDE_SRC/$item"
-  dst="$CLAUDE_DST/$item"
-
-  if [ ! -e "$src" ]; then
-    echo "skip (missing in repo): $item"
-    continue
-  fi
-
-  # Already the correct symlink: nothing to do.
-  if [ -L "$dst" ] && [ "$(readlink "$dst")" = "$src" ]; then
-    echo "ok:   $dst -> $src"
-    continue
-  fi
-
-  # Back up an existing real file/dir before replacing it.
-  if [ -e "$dst" ] && [ ! -L "$dst" ]; then
-    mkdir -p "$BACKUP_DIR"
-    mv "$dst" "$BACKUP_DIR/"
-    echo "backup: $dst -> $BACKUP_DIR/$item"
-  fi
-
-  ln -sfn "$src" "$dst"
-  echo "link: $dst -> $src"
+for f in "${FILES[@]}"; do
+  src="$CLAUDE_SRC/$f"
+  [ -e "$src" ] || { echo "skip (missing in repo): $f"; continue; }
+  ln -sfnv "$src" "$CLAUDE_DST/$f"
 done
+
+if [ -d "$SKILLS_SRC" ]; then
+  mkdir -p "$SKILLS_DST"
+  for d in "$SKILLS_SRC"/*/; do
+    ln -sfnv "${d%/}" "$SKILLS_DST/$(basename "$d")"
+  done
+fi

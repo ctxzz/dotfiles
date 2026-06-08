@@ -19,7 +19,7 @@ This repo manages dotfiles through its Makefile (symlink-based deploy).
 
 ## Task
 1. Confirm what the user wants: a new file deployed (`make deploy`), full setup (`make install`), or a test run.
-2. Note that `.claude` and `.config` are in `EXCLUSIONS` and are NOT symlinked by `make deploy` — they are managed separately.
+2. Note that `make deploy` also symlinks selected `.claude` config (`CLAUDE.md`, `settings.json`, `skills`, `ai.env`) via `etc/deploy/claude.sh`, using the same `ln -sfnv` convention; Claude Code's runtime state under `~/.claude` is left untouched. `.config` is not symlinked.
 3. Prefer `make deploy` for day-to-day changes; reserve `make install` for new machines (it also runs `init` and pulls).
 4. Run the chosen target and report the symlinks created / output.
 
