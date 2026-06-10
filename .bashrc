@@ -18,7 +18,12 @@ export HISTSIZE=50000
 export HISTFILESIZE=50000
 
 # Basic aliases
-alias ls='ls -G'
+# GNU ls は --color、BSD/macOS ls は -G（Linuxの-Gは「グループ非表示」で別物）
+if ls --color=auto >/dev/null 2>&1; then
+    alias ls='ls --color=auto'
+else
+    alias ls='ls -G'
+fi
 alias ll='ls -l'
 alias la='ls -A'
 alias lla='ls -lA'
