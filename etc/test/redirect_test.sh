@@ -11,6 +11,12 @@ export ERR
 #
 # -- END
 
+# 外部ネットワークに出られない環境（オフラインCI・コンテナ）ではスキップ可能
+if [ "${SKIP_NETWORK_TESTS:-0}" = 1 ]; then
+    e_warning "SKIP_NETWORK_TESTS=1 のためリダイレクトテストをスキップします"
+    exit 0
+fi
+
 # リダイレクトテスト
 unit1() {
     e_header "リダイレクトテストの実行"
