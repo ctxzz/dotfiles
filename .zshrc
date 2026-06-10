@@ -25,6 +25,7 @@ if [[ -f ~/.zshrc.local ]]; then
 fi
 
 # zsh設定ファイルの読み込み
+# （brew / mise / direnv などの初期化は .zsh/00_base.zsh に集約）
 if [[ -d ~/.zsh ]]; then
     for f in ~/.zsh/[0-9]*.(sh|zsh)
     do
@@ -38,25 +39,18 @@ if [[ -d ~/.zsh ]]; then
     printf "$fg_bold[cyan] - DISPLAY on $fg_bold[red]$DISPLAY$reset_color\n\n"
 fi
 
+# 補完システムの初期化（プラグイン読み込み後に一度だけ）
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+    compinit
+else
+    compinit -C
+fi
+
 # z（ディレクトリジャンプ）の設定
 if [ -f "/usr/local/etc/profile.d/z.sh" ]; then
     . "/usr/local/etc/profile.d/z.sh"
 fi
 
-# Homebrewの設定
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
 # fzfの設定
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# miseの初期化（推奨: nvm, bun, nodebrewなどを統一管理）
-if command -v mise >/dev/null 2>&1; then
-    eval "$(mise activate zsh)"
-fi
-
-# Bunの補完（miseで管理する場合は不要になります）
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-# NVMの読み込み（miseで管理する場合は不要になります）
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"

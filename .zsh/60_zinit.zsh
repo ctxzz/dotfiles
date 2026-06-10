@@ -25,9 +25,9 @@ zinit light "zsh-users/zsh-history-substring-search"
 # 自動提案
 zinit light "zsh-users/zsh-autosuggestions"
 
-# fzf
+# fzf（fzf-binはアーカイブ済み。本体のGitHub Releasesからバイナリを取得）
 zinit ice from"gh-r" as"program"
-zinit light "junegunn/fzf-bin"
+zinit light "junegunn/fzf"
 zinit ice as"program" pick"bin/fzf-tmux"
 zinit light "junegunn/fzf"
 
@@ -38,13 +38,5 @@ zinit light "b4b4r07/enhancd"
 zinit ice pick"async.zsh" src"pure.zsh"
 zinit light "sindresorhus/pure"
 
-# ローカルの設定ファイル
-for config_file in ~/.zsh/*.zsh; do
-    if [[ $config_file != ~/.zsh/60_zinit.zsh ]]; then
-        source "$config_file"
-    fi
-done
-
-# 補完の再生成
-autoload -Uz compinit
-compinit 
+# 各設定ファイルは .zshrc が読み込む（ここで再読込すると全設定が二重になる）
+# compinit も .zshrc 側で一度だけ実行する

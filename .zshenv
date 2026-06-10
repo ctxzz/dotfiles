@@ -36,15 +36,10 @@ fpath=( \
 autoload -Uz run-help
 autoload -Uz add-zsh-hook
 autoload -Uz colors && colors
-autoload -Uz compinit
 autoload -Uz is-at-least
 
-# 補完システムの初期化
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
-    compinit
-else
-    compinit -C
-fi
+# compinit は .zshrc で一度だけ実行する（.zshenv は全zshプロセスで
+# 読み込まれるため、ここで実行すると非対話シェルまで遅くなる）
 
 # 言語設定
 export LANGUAGE="en_US.UTF-8"
@@ -58,10 +53,7 @@ export CVSEDITOR="${EDITOR}"
 export SVN_EDITOR="${EDITOR}"
 export GIT_EDITOR="${EDITOR}"
 
-# direnvの初期化
-if (( $+commands[direnv] )); then
-    eval "$(direnv hook zsh)"
-fi
+# direnv の初期化は .zsh/00_base.zsh で行う（対話シェルのみで十分）
 
 # ページャー設定
 export PAGER=less

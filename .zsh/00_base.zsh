@@ -54,13 +54,17 @@ fi
 # fzfの設定
 export FZF_DEFAULT_OPTS="--extended --ansi --multi"
 
+# Homebrewの設定（mise / direnv より先にPATHを通す）
+if [[ -x /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 # direnv設定
-eval "$(direnv hook zsh)"
+if command -v direnv &> /dev/null; then
+    eval "$(direnv hook zsh)"
+fi
 
 # mise設定
 if command -v mise &> /dev/null; then
     eval "$(mise activate zsh)"
 fi
-
-# Homebrewの設定
-eval "$(/opt/homebrew/bin/brew shellenv)" 
