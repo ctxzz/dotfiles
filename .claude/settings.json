@@ -5,7 +5,11 @@
     "filesystem": {
       "denyRead": [
         "~/.aws/credentials",
-        "~/.ssh"
+        "~/.ssh",
+        "~/.gnupg",
+        "~/.netrc",
+        "~/.kube/config",
+        "~/.config/op"
       ]
     },
     "network": {
@@ -43,8 +47,10 @@
       "Bash(source:*)",
       "Bash(test:*)",
       "Bash(which:*)",
-      "Bash(zsh:*)",
-      "Bash(bash:*)",
+      "Bash(zsh -n:*)",
+      "Bash(bash -n:*)",
+      "Bash(bash etc/:*)",
+      "Bash(bash $DOTPATH/etc/:*)",
       "Read",
       "Write",
       "Edit",
@@ -56,14 +62,11 @@
     ],
     "deny": [
       "Bash(sudo:*)",
-      "Bash(rm:-rf /*)",
-      "Bash(rm:-rf ~/*)",
-      "Bash(rm:-rf $HOME/*)",
-      "Bash(rm:-rf *)",
+      "Bash(rm -rf:*)",
       "Bash(curl:*)",
       "Bash(wget:*)",
-      "Bash(git:push *)",
-      "Bash(chmod:777 *)",
+      "Bash(git push:*)",
+      "Bash(chmod 777:*)",
       "Read(./.env)",
       "Read(./.env.*)",
       "Read(.env*)",
@@ -87,15 +90,15 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"$CLAUDE_HOOK_INPUT\" | jq -r '.tool_input.file_path | select(endswith(\".sh\") or endswith(\".zsh\") or endswith(\".bash\"))' | grep . | xargs -I {} sh -c 'command -v shellcheck > /dev/null && shellcheck {} || true'"
+            "command": "jq -r '.tool_input.file_path | select(endswith(\".sh\") or endswith(\".zsh\") or endswith(\".bash\"))' | grep . | xargs -I {} sh -c 'command -v shellcheck > /dev/null && shellcheck {} || true'"
           },
           {
             "type": "command",
-            "command": "echo \"$CLAUDE_HOOK_INPUT\" | jq -r '.tool_input.file_path | select(endswith(\".zsh\"))' | grep . | xargs -I {} sh -c 'zsh -n {} 2>&1 || true'"
+            "command": "jq -r '.tool_input.file_path | select(endswith(\".zsh\"))' | grep . | xargs -I {} sh -c 'zsh -n {} 2>&1 || true'"
           },
           {
             "type": "command",
-            "command": "echo \"$CLAUDE_HOOK_INPUT\" | jq -r '.tool_input.file_path | select(endswith(\".sh\") or endswith(\".bash\"))' | grep . | xargs -I {} sh -c 'bash -n {} 2>&1 || true'"
+            "command": "jq -r '.tool_input.file_path | select(endswith(\".sh\") or endswith(\".bash\"))' | grep . | xargs -I {} sh -c 'bash -n {} 2>&1 || true'"
           }
         ]
       }
