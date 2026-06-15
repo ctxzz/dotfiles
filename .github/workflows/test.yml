@@ -19,4 +19,7 @@ jobs:
           sudo apt-get install -y -q shellcheck zsh tmux
 
       - name: Run test suite
-        run: make test
+        # GitHub Actions ランナーからは dot.omata.me に到達できないため、
+        # ネットワーク依存テスト（redirect_test.sh）はCIではスキップする。
+        # 到達可能なローカルでは `make test`（フラグ無し）で実行する。
+        run: SKIP_NETWORK_TESTS=1 make test
