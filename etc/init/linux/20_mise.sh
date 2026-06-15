@@ -25,7 +25,7 @@ e_header "mise セットアップを開始します"
 # Install mise if not present
 if ! has "mise"; then
     e_header "mise をインストールしています..."
-    curl https://mise.run | sh
+    curl -fsSL --proto '=https' --tlsv1.2 https://mise.run | sh
 
     # Add mise to PATH for this session
     export PATH="$HOME/.local/bin:$PATH"
