@@ -383,7 +383,12 @@ _ob_new() {
   mkdir -p "$folder"
 
   slug="$(_obsidian_slug "$title")"
-  note_path="$folder/${date_str}_${slug}.md"
+  # 10_Memo配下とInboxは日付プレフィックス付き、それ以外は日付なし
+  if [[ "$rel" == 10_Memo/* || "$rel" == "10_Memo" || "$rel" == "00_Inbox" ]]; then
+    note_path="$folder/${date_str}_${slug}.md"
+  else
+    note_path="$folder/${slug}.md"
+  fi
 
   if [[ -f "$note_path" ]]; then
     ${EDITOR:-vim} "$note_path"
