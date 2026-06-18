@@ -129,10 +129,6 @@ run = 'move-node-to-workspace O'
 if.app-id = 'company.thebrowser.dia'
 run = 'move-node-to-workspace P'
 
-[[on-window-detected]]
-if.app-id = 'notion.id'
-run = 'move-node-to-workspace P'
-
 # Read
 [[on-window-detected]]
 if.app-id = 'com.goodnotesapp.x'
@@ -149,7 +145,7 @@ run = 'move-node-to-workspace R'
 # Write
 [[on-window-detected]]
 if.app-id = 'md.obsidian'
-run = 'move-node-to-workspace W'
+run = 'move-node-to-workspace R'
 
 [[on-window-detected]]
 if.app-id = 'com.microsoft.Word'
@@ -158,11 +154,7 @@ run = 'move-node-to-workspace W'
 # Execute
 [[on-window-detected]]
 if.app-id = 'com.microsoft.VSCode'
-run = 'move-node-to-workspace E'
-
-[[on-window-detected]]
-if.app-id = 'com.todesktop.230313mzl4w4u92' # Cursor
-run = 'move-node-to-workspace E'
+run = 'move-node-to-workspace W'
 
 [[on-window-detected]]
 if.app-id = 'dev.warp.Warp-Stable'
@@ -170,11 +162,19 @@ run = 'move-node-to-workspace E'
 
 [[on-window-detected]]
 if.app-id = 'com.google.antigravity'
-run = 'move-node-to-workspace E'
+run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
 if.app-id = 'com.openai.codex'
-run = 'move-node-to-workspace E'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'com.anthropic.claudefordesktop'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'com.google.antigravity-ide'
+run = 'move-node-to-workspace W'
 
 # Floating on launch
 [[on-window-detected]]
