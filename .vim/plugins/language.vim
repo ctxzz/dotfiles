@@ -7,6 +7,7 @@ endif
 let g:polyglot_disabled = ['autoindent']
 let g:jsx_ext_required = 0
 let g:vim_json_syntax_conceal = 0
+let g:vim_markdown_new_list_item_indent = 2  " Indent markdown list items by 2 spaces
 
 " Language help
 set helplang& helplang=ja
@@ -30,4 +31,4 @@ augroup language_settings
     autocmd FileType javascript,typescript setlocal expandtab shiftwidth=2 tabstop=2
     autocmd FileType go setlocal noexpandtab shiftwidth=4 tabstop=4
     autocmd FileType rust setlocal expandtab shiftwidth=4 tabstop=4
-augroup END 
+augroup END

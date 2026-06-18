@@ -27,9 +27,9 @@ if !isdirectory(expand('~/.vim/undo'))
 endif
 
 " Indentation settings
-set tabstop=4           " Tab width
-set shiftwidth=4        " Indent width
-set softtabstop=4       " Soft tab width
+set tabstop=2           " Tab width
+set shiftwidth=2        " Indent width
+set softtabstop=2       " Soft tab width
 set expandtab           " Use spaces instead of tabs
 set smarttab            " Smart tab behavior
 set autoindent          " Auto indent new lines
@@ -210,7 +210,7 @@ function! s:ls(path, bang)
         let filelist .= "\n".glob(path . "/.*[^.]")
     endif
     let &wildignore = save_ignore
-    let filelist = substitute(filelist, '', '^M', 'g')
+    let filelist = substitute(filelist, '\r', '^M', 'g')
 
     if empty(filelist)
         return s:error("no file")

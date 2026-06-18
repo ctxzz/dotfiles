@@ -264,7 +264,7 @@ ob() {
     inbox)    _ob_new inbox "$@" ;;
     *)
       print -u2 "usage: ob <subcommand> [args]"
-      print -u2 "  ob new [inbox|meeting|event|lecture] [title]"
+      print -u2 "  ob new [notebook|alias] [title]"
       print -u2 "  ob search <query>"
       print -u2 "  ob grep <pattern>"
       print -u2 "  ob recent [n]"
@@ -274,8 +274,45 @@ ob() {
   esac
 }
 
+# Obsidian vault内のノートブック(リーフ=最下層フォルダ)を列挙
+# System配下と、サブフォルダを持つ中間フォルダは除外する
+_ob_notebooks() {
+  local vault="$(_obsidian_vault)"
+  local dir
+  find "$vault" -type d \
+    -not -path "$vault" \
+    -not -path "$vault/System" \
+    -not -path "$vault/System/*" \
+    2>/dev/null | while IFS= read -r dir; do
+      # サブフォルダを持たない(=ノートを置く)フォルダだけ採用
+      if [[ -z "$(find "$dir" -mindepth 1 -maxdepth 1 -type d -print -quit 2>/dev/null)" ]]; then
+        print -r -- "${dir#$vault/}"
+      fi
+    done | sort
+}
+
+# ノートブックのテンプレートを規約ベースで解決
+# System/Templates/<番号接頭辞を除いた名前>.md → Quick.md → なし(空ファイル)
+_ob_template() {
+  emulate -L zsh
+  setopt extendedglob
+  local vault="$1" rel="$2"
+  local base="${rel:t}"
+  local name="${base#<->_}"
+  local t
+  for t in "$vault/System/Templates/$name.md" "$vault/System/Templates/Quick.md"; do
+    if [[ -f "$t" ]]; then
+      print -r -- "$t"
+      return 0
+    fi
+  done
+  return 1
+}
+
 # ob new: ノートを作成して開く
 _ob_new() {
+  emulate -L zsh
+  setopt extendedglob
   local vault="$(_obsidian_vault)"
   local kind="${1:-}"
   if (( $# > 0 )); then
@@ -283,13 +320,45 @@ _ob_new() {
   fi
   local title="${*:-}"
 
-  # kindが未指定の場合はfzfで選択
-  if [[ -z "$kind" ]]; then
-    if command -v fzf >/dev/null 2>&1; then
-      kind=$(printf '%s\n' inbox meeting event lecture | fzf --prompt="kind> " --height=~10)
-      [[ -z "$kind" ]] && return 1
+  # 頻出ノートブックのエイリアス
+  local -A aliases=(
+    inbox    00_Inbox
+    meeting  10_Memo/11_Meetings
+    event    10_Memo/12_Events
+    lecture  10_Memo/13_Lectures
+  )
+
+  # kindをノートブック(vault相対パス)に解決
+  local rel=""
+  if [[ -n "$kind" ]]; then
+    if [[ -n "${aliases[$kind]}" ]]; then
+      rel="${aliases[$kind]}"
+    elif [[ -d "$vault/$kind" ]]; then
+      rel="$kind"
     else
-      print -u2 "usage: ob new <inbox|meeting|event|lecture> [title]"
+      # フルパス / basename / 番号接頭辞を除いた名前(大小無視)で一致を探す
+      local nb b n
+      for nb in ${(f)"$(_ob_notebooks)"}; do
+        b="${nb:t}"
+        n="${b#<->_}"
+        if [[ "$nb" == "$kind" || "$b" == "$kind" || "${n:l}" == "${kind:l}" ]]; then
+          rel="$nb"
+          break
+        fi
+      done
+    fi
+  fi
+
+  # 未指定 or 未解決の場合はfzfで選択
+  if [[ -z "$rel" ]]; then
+    if command -v fzf >/dev/null 2>&1; then
+      rel=$(_ob_notebooks | fzf --prompt="notebook> " --height=~15)
+      [[ -z "$rel" ]] && return 1
+    else
+      print -u2 "usage: ob new <notebook|alias> [title]"
+      print -u2 "  aliases: inbox meeting event lecture"
+      print -u2 "  notebooks:"
+      _ob_notebooks | sed 's/^/    /' >&2
       return 1
     fi
   fi
@@ -308,40 +377,25 @@ _ob_new() {
   local date_str="$(date +%Y%m%d)"
   local folder template note_path slug
 
-  case "$kind" in
-    inbox)
-      folder="$vault/00_Inbox"
-      template="$vault/System/Templates/Quick.md"
-      ;;
-    meeting)
-      folder="$vault/10_Memo/11_Meetings"
-      template="$vault/System/Templates/Meetings.md"
-      ;;
-    event)
-      folder="$vault/10_Memo/12_Events"
-      template="$vault/System/Templates/Events.md"
-      ;;
-    lecture)
-      folder="$vault/10_Memo/13_Lectures"
-      template="$vault/System/Templates/Lectures.md"
-      ;;
-    *)
-      folder="$vault/00_Inbox"
-      template="$vault/System/Templates/Quick.md"
-      ;;
-  esac
+  folder="$vault/$rel"
+  template="$(_ob_template "$vault" "$rel")" || template=""
 
   mkdir -p "$folder"
 
   slug="$(_obsidian_slug "$title")"
-  note_path="$folder/${date_str}_${slug}.md"
+  # 10_Memo配下とInboxは日付プレフィックス付き、それ以外は日付なし
+  if [[ "$rel" == 10_Memo/* || "$rel" == "10_Memo" || "$rel" == "00_Inbox" ]]; then
+    note_path="$folder/${date_str}_${slug}.md"
+  else
+    note_path="$folder/${slug}.md"
+  fi
 
   if [[ -f "$note_path" ]]; then
     ${EDITOR:-vim} "$note_path"
     return
   fi
 
-  if [[ -f "$template" ]]; then
+  if [[ -n "$template" && -f "$template" ]]; then
     cp "$template" "$note_path"
   else
     : > "$note_path"
