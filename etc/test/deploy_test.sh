@@ -131,6 +131,12 @@ unit4() {
     for d in "$DOTPATH"/.claude/skills/*/; do
         local name
         name=$(basename "$d")
+        # 同名の skill がグローバル(バンドル)版として実ディレクトリで既に存在する
+        # 場合は、deploy 側でも symlink を張らず共存させるためスキップする。
+        if [ -e "$HOME/.claude/skills/$name" ] && [ ! -L "$HOME/.claude/skills/$name" ]; then
+            printf "  - スキップ（グローバル skill と共存）: %s\n" "$name"
+            continue
+        fi
         check_link "$HOME/.claude/skills/$name" "${d%/}"
     done
 

@@ -33,7 +33,13 @@ deploy:
 	@echo ''
 	@mkdir -p $(HOME)/.claude/skills
 	@$(foreach f, $(CLAUDE_FILES), ln -sfnv $(abspath .claude/$(f)) $(HOME)/.claude/$(f);)
-	@$(foreach d, $(CLAUDE_SKILLS), ln -sfnv $(abspath $(d)) $(HOME)/.claude/skills/$(notdir $(patsubst %/,%,$(d)));)
+	@$(foreach d, $(CLAUDE_SKILLS), \
+		name=$(notdir $(patsubst %/,%,$(d))); \
+		if [ -e "$(HOME)/.claude/skills/$$name" ] && [ ! -L "$(HOME)/.claude/skills/$$name" ]; then \
+			echo "skip (coexists with global skill): $$name"; \
+		else \
+			ln -sfnv $(abspath $(d)) $(HOME)/.claude/skills/$$name; \
+		fi;)
 
 init:
 	@DOTPATH=$(DOTPATH) bash $(DOTPATH)/etc/init/init.sh
