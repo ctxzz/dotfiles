@@ -2,6 +2,7 @@
 tap "felixkratz/formulae"
 tap "muesli/tap"
 tap "nikitabobko/tap"
+tap "typewhisper/tap"
 
 # Base dependencies
 brew "openssl@3"
@@ -80,6 +81,7 @@ cask "podman-desktop"
 cask "rescuetime"
 cask "stats"
 cask "raycast"
+cask "typewhisper"  # AI voice-to-text dictation
 cask "visual-studio-code"
 cask "vlc"
 cask "warp"
