@@ -50,4 +50,14 @@ Plug 'preservim/vim-markdown'
 
 
 " Initialize plugin system
-call plug#end() 
+call plug#end()
+
+" Load plugin-specific configuration (this directory's other *.vim files).
+" plug#end() の後に source することで g:plugs が埋まり、各ファイル冒頭の
+" g:plug.is_loaded() ガードが正しく機能する。
+for s:cfg in split(glob('~/.vim/plugins/*.vim'), '\n')
+    if s:cfg !~# '/init\.vim$'
+        execute 'source' fnameescape(s:cfg)
+    endif
+endfor
+unlet! s:cfg
