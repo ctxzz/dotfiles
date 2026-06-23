@@ -42,9 +42,7 @@ Plug 'junegunn/fzf.vim'
 " Language support
 Plug 'sheerun/vim-polyglot'
 
-Plug 'catppuccin/vim', { 'as': 'catppuccin' }
-Plug 'airblade/vim-gitgutter'
-
+" Markdown
 Plug 'godlygeek/tabular'
 Plug 'preservim/vim-markdown'
 
