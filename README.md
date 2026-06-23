@@ -8,7 +8,7 @@ Personal dotfiles for macOS, Linux, and Windows. Includes configurations for zsh
 - **Version management**: mise for unified tool version management (Node.js, Python, Ruby, etc.)
 - **Package manager unification**: ni for working with npm/yarn/pnpm/bun seamlessly
 - **Terminal multiplexer**: tmux with custom configurations
-- **Editor**: Neovim (Lua + lazy.nvim, see [`nvim/`](nvim/)); legacy Vim config kept under `.vim/`
+- **Editor**: Neovim (Lua + lazy.nvim, see [`nvim/`](nvim/))
 - **Workspace management**: Unified workspace system for cloud-synced and local directories (see [WORKSPACE.md](WORKSPACE.md))
 - **Claude Code config**: `.claude/` (CLAUDE.md, settings, custom skills) deployed into `~/.claude` without touching runtime state
 - **Automatic deployment**: Makefile-based symlink management

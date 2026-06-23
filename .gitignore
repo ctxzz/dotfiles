@@ -4,11 +4,6 @@
 *.backup.*
 *.old
 .zsh/history/
-# vim-plug本体（plug.vim）はベンダリングして追跡、それ以外の生成物は無視
-.vim/autoload/*
-!.vim/autoload/plug.vim
-.vim/pack/
-.vim/undo/
 .viminfo
 .tmux/plugins/
 .env
