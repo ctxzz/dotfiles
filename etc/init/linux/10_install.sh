@@ -75,6 +75,8 @@ e_header "Installing shell and terminal utilities..."
 for pkg in zsh tmux fzf ripgrep; do
     install_pkg "$pkg"
 done
+# mosh: ローミング対応のリモートシェル。既定リポジトリに無い環境もあるため optional 扱い
+install_pkg_optional "mosh"
 
 # Better CLI tools
 e_header "Installing modern CLI tools..."
