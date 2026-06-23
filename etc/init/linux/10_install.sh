@@ -71,12 +71,19 @@ for pkg in git curl wget; do
 done
 
 # Shell and terminal utilities
+# ripgrep は telescope の live_grep に必須（nvim/ 設定）
 e_header "Installing shell and terminal utilities..."
 for pkg in zsh tmux fzf ripgrep; do
     install_pkg "$pkg"
 done
 # mosh: ローミング対応のリモートシェル。既定リポジトリに無い環境もあるため optional 扱い
 install_pkg_optional "mosh"
+
+# Neovim: メインエディタ（nvim/ = Lua + lazy.nvim）。
+# NOTE: ディストリ標準パッケージは古いことがある（nvim/ は 0.10+ が必要、
+# 動作確認は 0.12）。apt の neovim が 0.10 未満なら、unstable PPA / 公式
+# AppImage / mise(`mise use -g neovim@latest`) で新しい版を入れること。
+install_pkg_optional "neovim"
 
 # Better CLI tools
 e_header "Installing modern CLI tools..."

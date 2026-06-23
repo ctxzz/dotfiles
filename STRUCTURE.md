@@ -20,8 +20,9 @@
 ├── .tmp.gitconfig     # Git設定テンプレート
 ├── .tmux/             # tmuxプラグインディレクトリ
 ├── .tmux.conf         # tmux設定
-├── .vim/              # Vim設定とプラグイン
-├── .vimrc             # Vim設定
+├── .vim/              # Vim設定（レガシー。Neovimへ移行済み）
+├── .vimrc             # Vim設定（レガシー）
+├── nvim/              # Neovim設定（Lua + lazy.nvim、~/.config/nvim）
 ├── .zsh/              # zsh設定ファイル群
 ├── .zshenv            # zsh環境変数（常に読み込まれる）
 ├── .zshrc             # zsh設定（インタラクティブシェル用）
@@ -99,6 +100,13 @@ etc/lib/
 `.config` はシンボリンクせず手動管理。`.claude` は除外リストにあるが、`make deploy`
 が Makefile 内で**個別に**シンボリンクする（下記参照）。
 
+`nvim/` はドット始まりでも `bin` でもないため `make deploy` の対象外。Neovim 設定は
+手動で `~/.config/nvim` へリンクする（手順は [`nvim/README.md`](nvim/README.md) 参照）:
+
+```bash
+ln -sfn $(pwd)/nvim ~/.config/nvim
+```
+
 ### .claude/ のデプロイ
 
 `~/.claude` には Claude Code のランタイム状態（`projects/`, `todos/`, `history/`,
@@ -156,7 +164,8 @@ mise（バージョン管理ツール）の設定ディレクトリ。
 - **bash**: 互換性用
 
 ### エディタ・ターミナル
-- **vim**: テキストエディタ
+- **neovim**: メインエディタ（Lua + lazy.nvim、`nvim/` = `~/.config/nvim`）
+- **vim**: レガシー設定（`.vim/` + `.vimrc`、Neovimへ移行済み）
 - **tmux**: ターミナルマルチプレクサ
 
 ### 開発ツール

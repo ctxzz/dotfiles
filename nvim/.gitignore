@@ -1,0 +1,6 @@
+# Neovim generated artifacts.
+# Runtime data (installed plugins, undo history, shada) lives under
+# stdpath('data') == ~/.local/share/nvim, NOT here, so nothing from there
+# needs ignoring. lazy-lock.json IS committed on purpose (reproducible plugins).
+*~
+.DS_Store
