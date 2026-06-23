@@ -5,7 +5,12 @@
 [ -n "$VIMRUNTIME" ] && return
 
 # Basic settings
-export EDITOR=vim
+# エディタは nvim があれば優先、無ければ vim にフォールバック
+if command -v nvim >/dev/null 2>&1; then
+    export EDITOR=nvim
+else
+    export EDITOR=vim
+fi
 export LANG=en_US.UTF-8
 export PAGER=less
 export LESS='-i -N -w -z-4 -g -e -M -X -F -R -P%t?f%f :stdin .?pb%pb\%:?lbLine %lb:?bbByte %bb:-...'
@@ -37,7 +42,13 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias diff='diff -u'
-alias vi='vim'
+# vim/vi は nvim があれば nvim、無ければ vim にフォールバック
+if command -v nvim >/dev/null 2>&1; then
+    alias vim='nvim'
+    alias vi='nvim'
+else
+    alias vi='vim'
+fi
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
