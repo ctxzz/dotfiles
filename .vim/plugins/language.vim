@@ -28,6 +28,7 @@ set smarttab
 " File type specific settings
 augroup language_settings
     autocmd!
+    autocmd FileType markdown setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
     autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=4
     autocmd FileType javascript,typescript setlocal expandtab shiftwidth=2 tabstop=2
     autocmd FileType go setlocal noexpandtab shiftwidth=4 tabstop=4
