@@ -21,6 +21,11 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 " Specify a directory for plugins
+" NOTE: vim-polyglot のインデント自動検出(vim-sleuth相当)を無効化する。
+" これを切らないとファイル内容から推測した値(例:4)で tabstop/shiftwidth が
+" 上書きされ、base.vim の 2 スペース設定が効かなくなる。
+" g:polyglot_disabled は polyglot 読み込み(plug#end)より前に設定する必要がある。
+let g:polyglot_disabled = ['autoindent']
 call plug#begin('~/.vim/plugged')
 
 " Color scheme
