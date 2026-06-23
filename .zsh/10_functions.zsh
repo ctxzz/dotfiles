@@ -279,15 +279,15 @@ ob() {
 _ob_notebooks() {
   local vault="$(_obsidian_vault)"
   local dir
+  # System を除く全フォルダ(中間階層・最下層の両方)を列挙する。
+  # 中間フォルダも対象にすることで 20_Note/24_Book のような階層の
+  # 直下にもノートを作成できる(fzf 選択・名前解決の両方に効く)。
   find "$vault" -type d \
     -not -path "$vault" \
     -not -path "$vault/System" \
     -not -path "$vault/System/*" \
     2>/dev/null | while IFS= read -r dir; do
-      # サブフォルダを持たない(=ノートを置く)フォルダだけ採用
-      if [[ -z "$(find "$dir" -mindepth 1 -maxdepth 1 -type d -print -quit 2>/dev/null)" ]]; then
-        print -r -- "${dir#$vault/}"
-      fi
+      print -r -- "${dir#$vault/}"
     done | sort
 }
 

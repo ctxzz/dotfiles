@@ -137,16 +137,16 @@ unit4() {
     teardown_vault
 }
 
-# _ob_notebooks はリーフのみ列挙し、System と中間フォルダを除外する
+# _ob_notebooks は System を除く全フォルダ(中間階層・最下層の両方)を列挙する
 unit5() {
-    e_header "_ob_notebooks: リーフフォルダ列挙"
+    e_header "_ob_notebooks: 全フォルダ(中間階層含む)を列挙"
     setup_vault
     local out
     out="$(ob_notebooks)"
     if contains "$out" "10_Memo/11_Meetings" && contains "$out" "20_Note/22_Research" && contains "$out" "00_Inbox"; then
-        e_success "リーフのノートブックが列挙される"
+        e_success "最下層のノートブックが列挙される"
     else
-        e_failure "リーフのノートブックが列挙されない"
+        e_failure "最下層のノートブックが列挙されない"
         ERR=1
     fi
     if contains "$out" "System"; then
@@ -155,13 +155,24 @@ unit5() {
     else
         e_success "System 配下は除外される"
     fi
-    # 中間フォルダ(サブフォルダを持つ)は含めない
-    if printf '%s\n' "$out" | grep -qx "10_Memo"; then
-        e_failure "中間フォルダ 10_Memo が除外されていない"
-        ERR=1
+    # 中間フォルダ(サブフォルダを持つ)も、その直下にノートを作れるよう列挙する
+    if printf '%s\n' "$out" | grep -qx "10_Memo" && printf '%s\n' "$out" | grep -qx "20_Note"; then
+        e_success "中間フォルダ(10_Memo, 20_Note)も列挙される"
     else
-        e_success "中間フォルダ(10_Memo)は除外される"
+        e_failure "中間フォルダが列挙されていない"
+        ERR=1
     fi
+    teardown_vault
+}
+
+# 中間フォルダも名前解決の対象になり、その直下にノートを作成できる(ユーザ要望)
+unit6() {
+    e_header "中間フォルダ直下へのノート作成"
+    setup_vault
+    # "note" は 20_Note(中間フォルダ)に番号接頭辞を除いた名前で解決される。
+    # 中間フォルダが _ob_notebooks に含まれて初めて成立する。
+    ob_new note "中間メモ"
+    assert_file "$VAULT/20_Note/中間メモ.md" "中間フォルダ 20_Note(note) 直下に作成できる"
     teardown_vault
 }
 
@@ -172,6 +183,7 @@ main() {
     unit3
     unit4
     unit5
+    unit6
 
     if [ "$ERR" -eq 0 ]; then
         e_success "すべての ob テストが成功しました"
