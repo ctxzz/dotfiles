@@ -477,4 +477,30 @@ mise-quick-install() {
 
     local tool="${1:?Please specify a tool (e.g., node@20, python@3.11)}"
     mise install "$tool" && mise use --global "$tool"
-} 
+}
+
+# 与えられたコマンド名が mosh セッション(mosh-server)を示すか判定する。
+# ps の出力(フルパス/basename どちらも)を引数で受け取りテストしやすくしている。
+_is_mosh_proc() {
+    case "$1" in
+        *mosh-server*) return 0 ;;
+        *)             return 1 ;;
+    esac
+}
+
+# mosh で接続したとき「だけ」tmux に自動アタッチする。
+# 親プロセスが mosh-server の場合のみ発動するため、ローカルターミナル・
+# VS Code 統合ターミナル・通常の SSH には影響しない。
+#   - 非対話シェル / すでに tmux 内 / tmux 未インストール の場合は何もしない
+#   - 発動時は exec で tmux に置き換え、抜けたらそのままログアウトする
+_mosh_tmux_autoattach() {
+    [[ -o interactive ]] || return 0
+    [[ -z $TMUX ]]       || return 0
+    has tmux             || return 0
+
+    local parent
+    parent="$(ps -o comm= -p "$PPID" 2>/dev/null)"
+    if _is_mosh_proc "$parent"; then
+        exec tmux new-session -A -s main
+    fi
+}
