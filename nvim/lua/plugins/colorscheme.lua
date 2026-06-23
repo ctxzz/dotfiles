@@ -15,9 +15,9 @@ return {
     config = function(_, opts)
       require("catppuccin").setup(opts)
       vim.cmd.colorscheme("catppuccin-mocha")
-      -- Re-assert the manual transparency tweaks from core/autocmds.lua.
-      if _G.apply_transparent_bg then
-        _G.apply_transparent_bg()
+      -- Re-assert the Vim-like statusline style from core/autocmds.lua.
+      if _G.apply_style then
+        _G.apply_style()
       end
     end,
   },
