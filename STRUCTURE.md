@@ -20,8 +20,6 @@
 ├── .tmp.gitconfig     # Git設定テンプレート
 ├── .tmux/             # tmuxプラグインディレクトリ
 ├── .tmux.conf         # tmux設定
-├── .vim/              # Vim設定（レガシー。Neovimへ移行済み）
-├── .vimrc             # Vim設定（レガシー）
 ├── nvim/              # Neovim設定（Lua + lazy.nvim、~/.config/nvim）
 ├── .zsh/              # zsh設定ファイル群
 ├── .zshenv            # zsh環境変数（常に読み込まれる）
@@ -165,7 +163,6 @@ mise（バージョン管理ツール）の設定ディレクトリ。
 
 ### エディタ・ターミナル
 - **neovim**: メインエディタ（Lua + lazy.nvim、`nvim/` = `~/.config/nvim`）
-- **vim**: レガシー設定（`.vim/` + `.vimrc`、Neovimへ移行済み）
 - **tmux**: ターミナルマルチプレクサ
 
 ### 開発ツール
