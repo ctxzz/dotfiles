@@ -20,10 +20,20 @@ return {
         "lua", "vim", "vimdoc", "bash",
         "python", "javascript", "typescript", "tsx",
         "go", "rust", "json", "yaml", "toml",
-        "markdown", "markdown_inline", "html", "css",
+        "html", "css",
       },
       auto_install = true,
-      highlight = { enable = true },
+      -- Markdown is highlighted by vim-markdown (the Vim-era look), not
+      -- treesitter, so never let nvim-treesitter install/start the markdown
+      -- parsers. Neovim core also auto-starts treesitter for markdown via its
+      -- ftplugin; that is turned off in after/ftplugin/markdown.lua.
+      ignore_install = { "markdown", "markdown_inline" },
+      highlight = {
+        enable = true,
+        -- Don't let nvim-treesitter attach to markdown (Neovim core ships a
+        -- markdown parser, so it could still attach despite ignore_install).
+        disable = { "markdown", "markdown_inline" },
+      },
       indent = { enable = false }, -- keep the old explicit indent behaviour
     },
   },
