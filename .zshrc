@@ -14,10 +14,8 @@ if [[ -n $VIMRUNTIME ]]; then
     return 0
 fi
 
-# tmuxの自動アタッチ（無効化）
-# if [[ -x ~/bin/tmuxx ]]; then
-#     ~/bin/tmuxx
-# fi
+# tmuxの自動アタッチは mosh 接続時のみ発動する（_mosh_tmux_autoattach）。
+# 関数は .zsh/10_functions.zsh で定義され、下の .zsh 読み込み後に呼び出す。
 
 # ローカル設定の読み込み
 if [[ -f ~/.zshrc.local ]]; then
@@ -37,6 +35,12 @@ if [[ -d ~/.zsh ]]; then
     printf "\n"
     printf "$fg_bold[cyan] This is ZSH $fg_bold[red]$ZSH_VERSION"
     printf "$fg_bold[cyan] - DISPLAY on $fg_bold[red]$DISPLAY$reset_color\n\n"
+fi
+
+# mosh 接続時のみ tmux に自動アタッチ（関数は .zsh/10_functions.zsh で定義）。
+# 発動時は exec で tmux に置き換わるため、以降の初期化は新しいシェル側で実行される。
+if (( $+functions[_mosh_tmux_autoattach] )); then
+    _mosh_tmux_autoattach
 fi
 
 # 補完システムの初期化（プラグイン読み込み後に一度だけ）

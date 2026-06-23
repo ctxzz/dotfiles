@@ -55,6 +55,7 @@ brew "jpeg"
 brew "arp-scan"
 brew "httpie"
 brew "nmap"
+brew "mosh"  # Roaming-friendly remote shell (iPad/モバイルからの接続維持に)
 
 # Container and virtualization
 brew "podman"

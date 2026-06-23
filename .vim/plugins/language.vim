@@ -4,7 +4,8 @@ if !g:plug.is_loaded('vim-polyglot')
 endif
 
 " Basic language settings
-let g:polyglot_disabled = ['autoindent']
+" NOTE: g:polyglot_disabled は polyglot 読み込み前に設定する必要があるため
+" plugins/init.vim 側(plug#begin より前)で設定している。ここでは設定しない。
 let g:jsx_ext_required = 0
 let g:vim_json_syntax_conceal = 0
 let g:vim_markdown_new_list_item_indent = 2  " Indent markdown list items by 2 spaces
