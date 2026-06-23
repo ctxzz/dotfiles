@@ -107,8 +107,15 @@ alias path='echo -e ${PATH//:/\\n}'
 alias now='date +"%T"'
 alias nowtime=now
 alias nowdate='date +"%d-%m-%Y"'
-alias vi='vim'
-alias v='vim'
+# vim/vi/v は nvim があれば nvim、無ければ vim にフォールバック
+if (( $+commands[nvim] )); then
+    alias vim='nvim'
+    alias vi='nvim'
+    alias v='nvim'
+else
+    alias vi='vim'
+    alias v='vim'
+fi
 alias s='source'
 alias zshrc='vim ~/.zshrc'
 alias reload='source ~/.zshrc'
