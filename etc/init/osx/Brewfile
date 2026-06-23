@@ -16,6 +16,7 @@ brew "zsh-async"
 brew "zsh-completions"
 brew "tmux"
 brew "reattach-to-user-namespace"  # Required for tmux copy-paste
+brew "neovim"  # Main editor (config in nvim/, Lua + lazy.nvim)
 brew "direnv"
 brew "mise"  # Version manager for node, python, ruby, etc. (replaces asdf, nvm, etc.)
 brew "fzf"

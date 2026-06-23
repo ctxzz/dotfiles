@@ -62,6 +62,7 @@ Write-Host "`n==> Shell and terminal utilities" -ForegroundColor Blue
 Install-Pkg "Microsoft.PowerShell"           ""
 Install-Pkg "Microsoft.WindowsTerminal"      ""
 Install-Pkg "Starship.Starship"              ""
+Install-Pkg "Neovim.Neovim"                  "neovim"
 Install-Pkg "junegunn.fzf"                   "fzf"
 Install-Pkg "BurntSushi.ripgrep.MSVC"        "ripgrep"
 Install-Pkg "sharkdp.bat"                    "bat"
