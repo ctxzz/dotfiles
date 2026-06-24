@@ -40,6 +40,11 @@ deploy:
 		else \
 			ln -sfnv $(abspath $(d)) $(HOME)/.claude/skills/$$name; \
 		fi;)
+	@echo ''
+	@# nvim config lives under ~/.config, which is excluded from DOTFILES
+	@# (manual management). Link it explicitly so ~/.config/nvim -> repo nvim/.
+	@mkdir -p $(HOME)/.config
+	@ln -sfnv $(abspath nvim) $(HOME)/.config/nvim
 
 init:
 	@DOTPATH=$(DOTPATH) bash $(DOTPATH)/etc/init/init.sh
@@ -67,4 +72,5 @@ clean:
 	@-$(foreach val, $(DOTFILES), rm -vrf $(HOME)/$(val);)
 	@-$(foreach f, $(CLAUDE_FILES), rm -vf $(HOME)/.claude/$(f);)
 	@-$(foreach d, $(CLAUDE_SKILLS), rm -vf $(HOME)/.claude/skills/$(notdir $(patsubst %/,%,$(d)));)
+	@-rm -vf $(HOME)/.config/nvim
 	-rm -rf $(DOTPATH)
