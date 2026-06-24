@@ -46,15 +46,16 @@ nvim/                       # = ~/.config/nvim/
 
 ## 導入手順
 
-`.config` 配下は dotfiles の Makefile では symlink 対象外（手動管理）なので、
-リポジトリ直下の `nvim/` を `~/.config/nvim` へ手動でリンクします。
+`make deploy` が `~/.config/nvim` → リポジトリの `nvim/` を自動でシンボリンクします
+（`.config` 配下は `DOTFILES` の自動リンク対象外なので、`.claude` と同様に Makefile が
+個別にリンクする）。手動で張る場合は:
 
 ```bash
 ln -sfn ~/.dotfiles/nvim ~/.config/nvim   # ~/.dotfiles は clone 先に合わせる
 ```
 
-> 既存の `~/.config/nvim` がある場合は**上書きされません**（リンクが衝突します）。
-> 中身を確認のうえ退避してから上記を実行してください。
+> 既存の `~/.config/nvim` が**実ディレクトリ**だと `ln`/`make deploy` がその中に
+> リンクを作ってしまうので、先に退避してから実行してください（symlink なら上書きされます）。
 
 リンク後、`nvim` を起動すると lazy.nvim が自動でブートストラップされ、
 プラグインが取得・インストールされます。

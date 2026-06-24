@@ -98,8 +98,9 @@ etc/lib/
 `.config` はシンボリンクせず手動管理。`.claude` は除外リストにあるが、`make deploy`
 が Makefile 内で**個別に**シンボリンクする（下記参照）。
 
-`nvim/` はドット始まりでも `bin` でもないため `make deploy` の対象外。Neovim 設定は
-手動で `~/.config/nvim` へリンクする（手順は [`nvim/README.md`](nvim/README.md) 参照）:
+`nvim/` はドット始まりでも `bin` でもないため `DOTFILES` の自動シンボリンク対象外。
+そこで `.claude` と同様、`make deploy` が Makefile 内で**個別に** `~/.config/nvim`
+→ リポジトリの `nvim/` をシンボリンクする（`make clean` で除去）。手動で張る場合は:
 
 ```bash
 ln -sfn $(pwd)/nvim ~/.config/nvim

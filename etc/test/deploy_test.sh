@@ -148,12 +148,41 @@ unit4() {
     fi
 }
 
+# nvim (~/.config/nvim) のシンボリックリンクチェック
+unit5() {
+    e_header "nvim のシンボリックリンクチェック"
+
+    cd "$DOTPATH" || exit
+    local target="$HOME/.config/nvim"
+    local source="$DOTPATH/nvim"
+
+    if [ ! -d "$source" ]; then
+        e_warning "ソースディレクトリが存在しません: $source"
+        ERR=1
+        return
+    fi
+    if [ ! -L "$target" ]; then
+        e_failure "シンボリックリンクではありません: $target"
+        ERR=1
+        return
+    fi
+    local link_target
+    link_target=$(readlink "$target")
+    if [ "$link_target" != "$source" ]; then
+        e_failure "不正なリンク先: $target -> $link_target (期待: $source)"
+        ERR=1
+        return
+    fi
+    e_success "~/.config/nvim が正しくリンクされています"
+}
+
 # テストの実行
 main() {
     unit1
     unit2
     unit3
     unit4
+    unit5
 
     if [ "$ERR" -eq 0 ]; then
         e_success "すべてのデプロイテストが成功しました"
