@@ -37,8 +37,8 @@ def clear_keys():
     os.environ.pop(k, None)
 
 
-gi = load(f"{ROOT}/.claude/skills/gen-image/gen_image.py", "gen_image")
-di = load(f"{ROOT}/.claude/skills/review-image/describe_image.py", "describe_image")
+gi = load(f"{ROOT}/claude/skills/gen-image/gen_image.py", "gen_image")
+di = load(f"{ROOT}/claude/skills/review-image/describe_image.py", "describe_image")
 
 # --- gen_image: response parsing saves decoded bytes ---
 clear_keys()

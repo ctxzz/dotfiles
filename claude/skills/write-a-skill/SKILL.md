@@ -7,6 +7,8 @@ argument-hint: "[skill-name]"
 # Write a skill
 
 Create `.claude/skills/<name>/SKILL.md` for the requested workflow ($ARGUMENTS).
+(Personal/global skills live in the dotfiles repo under `claude/skills/` — dot-less
+on purpose — and get deployed to `~/.claude/skills` by `make deploy`.)
 
 ## Frontmatter rules
 - `name`: lowercase-with-hyphens, matches the directory.

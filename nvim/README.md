@@ -48,7 +48,7 @@ nvim/                       # = ~/.config/nvim/
 ## 導入手順
 
 `make deploy` が `~/.config/nvim` → リポジトリの `nvim/` を自動でシンボリンクします
-（`.config` 配下は `DOTFILES` の自動リンク対象外なので、`.claude` と同様に Makefile が
+（`.config` 配下は `DOTFILES` の自動リンク対象外なので、`claude/` と同様に Makefile が
 個別にリンクする）。手動で張る場合は:
 
 ```bash

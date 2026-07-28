@@ -10,7 +10,7 @@ Personal dotfiles for macOS, Linux, and Windows. Includes configurations for zsh
 - **Terminal multiplexer**: tmux with custom configurations
 - **Editor**: Neovim (Lua + lazy.nvim, see [`nvim/`](nvim/))
 - **Workspace management**: Unified workspace system for cloud-synced and local directories (see [WORKSPACE.md](WORKSPACE.md))
-- **Claude Code config**: `.claude/` (CLAUDE.md, settings, custom skills) deployed into `~/.claude` without touching runtime state
+- **Claude Code config**: `claude/` (CLAUDE.md, settings, custom skills) deployed into `~/.claude` without touching runtime state
 - **Automatic deployment**: Makefile-based symlink management
 
 ## Installation
@@ -40,14 +40,16 @@ make install
 
 ## Claude Code config
 
-`make deploy` also symlinks `.claude/` into `~/.claude` directly from the Makefile,
+`make deploy` also symlinks `claude/` into `~/.claude` directly from the Makefile,
 using the same `ln -sfnv` convention as the rest. Config files (`CLAUDE.md`,
 `settings.json`, `ai.env`) and each skill under `skills/` are linked individually,
 so Claude Code's runtime state (`projects/`, `history/`, `settings.local.json`,
-global skills, …) is left untouched.
+global skills, …) is left untouched. The source directory is deliberately
+dot-less so Claude Code does not pick it up as project config while you are
+editing the dotfiles repo itself.
 
 The `gen-image` / `review-image` skills resolve their API keys at run time from
-1Password references in `.claude/ai.env` (no secrets in the repo):
+1Password references in `claude/ai.env` (no secrets in the repo):
 
 ```bash
 op signin                       # once per session
