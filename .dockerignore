@@ -10,9 +10,10 @@
 .netrc
 
 # Claude Code
-.claude/settings.local.json
-.claude/backups/
-.claude/bash-audit.log
+.claude/
+claude/settings.local.json
+claude/backups/
+claude/bash-audit.log
 .claude_code_state/
 CLAUDE.local.md
 

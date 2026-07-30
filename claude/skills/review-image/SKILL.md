@@ -28,7 +28,7 @@ op run --env-file=$HOME/.claude/ai.env -- \
 ```
 
 - Auth: keys come from 1Password via `op run --env-file=$HOME/.claude/ai.env` (the
-  committed `.claude/ai.env` holds only `op://` references — edit it to match
+  committed `claude/ai.env` (in the dotfiles repo) holds only `op://` references — edit it to match
   your vault/item/field); the script just reads `GEMINI_API_KEY` /
   `OPENROUTER_API_KEY` from the env, so plain `python3 ...` also works if they
   are already exported. Backend: `--backend`, else `$IMAGE_LLM_BACKEND`, else whichever key is set.

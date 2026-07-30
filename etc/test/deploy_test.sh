@@ -117,9 +117,9 @@ unit4() {
         fi
     }
 
-    # 単一ファイルは ~/.claude 直下にリンク
+    # 単一ファイルは ~/.claude 直下にリンク（リンク元はドットなしの claude/）
     for f in CLAUDE.md settings.json ai.env; do
-        check_link "$HOME/.claude/$f" "$DOTPATH/.claude/$f"
+        check_link "$HOME/.claude/$f" "$DOTPATH/claude/$f"
     done
 
     # skills/ は実ディレクトリのまま、リポジトリの各 skill を個別にリンク
@@ -128,7 +128,7 @@ unit4() {
         e_warning "~/.claude/skills は実ディレクトリであるべきです（symlink になっています）"
         invalid_links=$((invalid_links + 1))
     fi
-    for d in "$DOTPATH"/.claude/skills/*/; do
+    for d in "$DOTPATH"/claude/skills/*/; do
         local name
         name=$(basename "$d")
         # 同名の skill がグローバル(バンドル)版として実ディレクトリで既に存在する

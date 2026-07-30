@@ -1,13 +1,14 @@
 DOTPATH    := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
 CANDIDATES := $(wildcard .??*) bin
-EXCLUSIONS := .DS_Store .git .gitmodules .travis.yml .cursor .config .claude
+EXCLUSIONS := .DS_Store .git .gitmodules .travis.yml .cursor .config
 DOTFILES   := $(filter-out $(EXCLUSIONS), $(CANDIDATES))
 
-# .claude is linked item-by-item (not as a whole dir) so Claude Code's runtime
-# state under ~/.claude (projects/, history/, settings.local.json, global
-# skills, ...) is preserved. Skills are linked per-directory for the same reason.
+# claude/ (dot-less so Claude Code ignores it while editing this repo) is
+# linked item-by-item into ~/.claude so Claude Code's runtime state there
+# (projects/, history/, settings.local.json, global skills, ...) is preserved.
+# Skills are linked per-directory for the same reason.
 CLAUDE_FILES  := CLAUDE.md settings.json ai.env
-CLAUDE_SKILLS := $(wildcard .claude/skills/*/)
+CLAUDE_SKILLS := $(wildcard claude/skills/*/)
 
 all: install
 
@@ -32,7 +33,7 @@ deploy:
 	@$(foreach val, $(DOTFILES), ln -sfnv $(abspath $(val)) $(HOME)/$(val);)
 	@echo ''
 	@mkdir -p $(HOME)/.claude/skills
-	@$(foreach f, $(CLAUDE_FILES), ln -sfnv $(abspath .claude/$(f)) $(HOME)/.claude/$(f);)
+	@$(foreach f, $(CLAUDE_FILES), ln -sfnv $(abspath claude/$(f)) $(HOME)/.claude/$(f);)
 	@$(foreach d, $(CLAUDE_SKILLS), \
 		name=$(notdir $(patsubst %/,%,$(d))); \
 		if [ -e "$(HOME)/.claude/skills/$$name" ] && [ ! -L "$(HOME)/.claude/skills/$$name" ]; then \

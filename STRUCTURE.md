@@ -8,7 +8,7 @@
 .
 ├── .bash_profile       # Bash起動時に読み込まれる設定
 ├── .bashrc            # Bash設定（エイリアス、関数など）
-├── .claude/           # Claude Code設定（専用スクリプトで個別シンボリンク）
+├── claude/            # Claude Code設定のデプロイ元（~/.claude へ個別シンボリンク）
 │   ├── CLAUDE.md     # プロジェクト共通の指示
 │   ├── settings.json # 権限・フック等の設定
 │   ├── ai.env        # 画像スキル用の1Password秘密参照（op run で解決）
@@ -93,20 +93,25 @@ etc/lib/
 - `make install` - update, deploy, initを一括実行
 
 **除外リスト（`EXCLUSIONS`）:**
-`.DS_Store`, `.git`, `.gitmodules`, `.travis.yml`, `.cursor`, `.config`, `.claude`
+`.DS_Store`, `.git`, `.gitmodules`, `.travis.yml`, `.cursor`, `.config`
 
-`.config` はシンボリンクせず手動管理。`.claude` は除外リストにあるが、`make deploy`
-が Makefile 内で**個別に**シンボリンクする（下記参照）。
+`.config` はシンボリンクせず手動管理。Claude Code 設定はドットなしの `claude/` に
+置いてあるため自動リンク対象外だが、`make deploy` が Makefile 内で**個別に**
+`~/.claude` へシンボリンクする（下記参照）。
 
 `nvim/` はドット始まりでも `bin` でもないため `DOTFILES` の自動シンボリンク対象外。
-そこで `.claude` と同様、`make deploy` が Makefile 内で**個別に** `~/.config/nvim`
+そこで `claude/` と同様、`make deploy` が Makefile 内で**個別に** `~/.config/nvim`
 → リポジトリの `nvim/` をシンボリンクする（`make clean` で除去）。手動で張る場合は:
 
 ```bash
 ln -sfn $(pwd)/nvim ~/.config/nvim
 ```
 
-### .claude/ のデプロイ
+### claude/ のデプロイ
+
+リポジトリ側はドットなしの `claude/` に置く。ドット付きだと Claude Code が
+「このリポジトリのプロジェクト設定」として読み込んでしまい、dotfiles 自体を
+編集するセッションに開発中の CLAUDE.md やスキルが効いてしまうため。
 
 `~/.claude` には Claude Code のランタイム状態（`projects/`, `todos/`, `history/`,
 `shell-snapshots/`, `settings.local.json` 等）が同居するため、ディレクトリごと
@@ -121,7 +126,7 @@ ln -sfn $(pwd)/nvim ~/.config/nvim
 
 #### 画像スキルの秘密管理（ai.env / 1Password）
 
-`gen-image` / `review-image` は API キーを `.claude/ai.env` の **1Password 参照**
+`gen-image` / `review-image` は API キーを `claude/ai.env` の **1Password 参照**
 （`op://...`）で持ち、実行時に `op run --env-file=$HOME/.claude/ai.env -- ...` で
 解決する。鍵そのものはリポジトリに含めない。利用前に `op signin` が必要。
 

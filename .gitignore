@@ -9,10 +9,12 @@
 .env
 
 # Claude Code
-.claude/settings.local.json
+# .claude/ is untracked now (source lives in claude/); anything there is runtime state
+.claude/
 .claude_code_state/
-.claude/backups/
-.claude/bash-audit.log
+claude/settings.local.json
+claude/backups/
+claude/bash-audit.log
 *.claude_code_backup
 CLAUDE.local.md
 

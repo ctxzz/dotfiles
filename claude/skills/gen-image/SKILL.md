@@ -10,8 +10,8 @@ disable-model-invocation: true
 Uses the bundled `gen_image.py` (no dependencies; Python 3 + stdlib).
 
 ## Setup (one-time)
-- Keys live in 1Password; this repo commits only `op://` references in
-  `.claude/ai.env` (references are not secrets). Edit them to match your
+- Keys live in 1Password; the dotfiles repo commits only `op://` references in
+  `claude/ai.env` (references are not secrets). Edit them to match your
   vault / item / field — see that file for how to find the exact reference.
 - `make deploy` symlinks it to `~/.claude/ai.env`; the commands below use that
   absolute path so they work from any directory.
