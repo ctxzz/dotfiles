@@ -176,6 +176,58 @@ unit5() {
     e_success "~/.config/nvim が正しくリンクされています"
 }
 
+# 既存ファイルのバックアップと clean の安全性チェック（一時 HOME で実行）
+unit6() {
+    e_header "deploy のバックアップ / clean の安全性チェック"
+
+    cd "$DOTPATH" || exit
+    local tmp_home
+    tmp_home=$(mktemp -d)
+    local ng=0
+
+    # 既存の実ファイル・実ディレクトリと、無関係なシンボリックリンクを用意
+    echo "original" > "$tmp_home/.gitconfig"
+    mkdir -p "$tmp_home/.zsh"
+    echo "keep" > "$tmp_home/.zsh/local.zsh"
+
+    HOME="$tmp_home" make deploy >/dev/null
+
+    local bak
+    bak=$(find "$tmp_home" -maxdepth 1 -name '.gitconfig.bak.*' | head -n 1)
+    if [ -L "$tmp_home/.gitconfig" ] && [ -n "$bak" ] && [ "$(cat "$bak")" = "original" ]; then
+        e_success "既存ファイルはバックアップしてからリンクされます"
+    else
+        e_failure "既存ファイルのバックアップに失敗しました"
+        ng=1
+    fi
+    if [ -L "$tmp_home/.zsh" ] && [ ! -e "$DOTPATH/.zsh/.zsh" ] \
+        && find "$tmp_home" -maxdepth 2 -path '*/.zsh.bak.*/local.zsh' | grep -q .; then
+        e_success "既存ディレクトリはバックアップしてからリンクされます"
+    else
+        e_failure "既存ディレクトリの扱いが不正です"
+        ng=1
+    fi
+
+    # clean 前に、無関係なリンクに差し替えておく
+    rm "$tmp_home/.tmux.conf"
+    ln -s /dev/null "$tmp_home/.tmux.conf"
+
+    HOME="$tmp_home" make clean >/dev/null
+
+    if [ -L "$tmp_home/.zshrc" ] || [ -L "$tmp_home/.config/nvim" ]; then
+        e_failure "clean 後もリポジトリへのリンクが残っています"
+        ng=1
+    elif [ ! -L "$tmp_home/.tmux.conf" ] || [ -z "$bak" ] || [ ! -f "$bak" ] || [ ! -d "$DOTPATH" ]; then
+        e_failure "clean が無関係なファイル・リンク・リポジトリを削除しました"
+        ng=1
+    else
+        e_success "clean はリポジトリへのリンクだけを削除します"
+    fi
+
+    rm -rf "$tmp_home"
+    [ "$ng" -eq 0 ] || ERR=1
+}
+
 # テストの実行
 main() {
     unit1
@@ -183,6 +235,7 @@ main() {
     unit3
     unit4
     unit5
+    unit6
 
     if [ "$ERR" -eq 0 ]; then
         e_success "すべてのデプロイテストが成功しました"

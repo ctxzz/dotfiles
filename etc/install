@@ -47,7 +47,7 @@ is_at_least() {
         return $?
     fi
 
-    atleast="$(echo $1 | sed -e 's/\.//g')"
+    atleast="${1//./}"
     version="$(echo ${BASH_VERSION:-0.0.0} | sed -e 's/^\([0-9]\{1,\}\.[0-9]\{1,\}\.[0-9]\{1,\}\).*/\1/' | sed -e 's/\.//g')"
 
     # zero padding
@@ -186,8 +186,10 @@ e_failure() {
     printf "${RED}✗${NC} %s\n" "$1"
 }
 
+# 色名の local 変数は関数内の eval で間接参照する
+# shellcheck disable=SC2034
 ink() {
-    if [ "$#" -eq 0 -o "$#" -gt 2 ]; then
+    if [ "$#" -eq 0 ] || [ "$#" -gt 2 ]; then
         echo "Usage: ink <color> <text>"
         echo "Colors:"
         echo "  black, white, red, green, yellow, blue, purple, cyan, gray"
@@ -218,11 +220,11 @@ ink() {
         esac
     fi
 
-    printf "${open}${color}${text}${close}"
+    printf '%b' "${open}${color}${text}${close}"
 }
 
 logging() {
-    if [ "$#" -eq 0 -o "$#" -gt 2 ]; then
+    if [ "$#" -eq 0 ] || [ "$#" -gt 2 ]; then
         echo "Usage: ink <fmt> <msg>"
         echo "Formatting Options:"
         echo "  TITLE, ERROR, WARN, INFO, SUCCESS"
@@ -348,11 +350,6 @@ is_number() {
     else
         echo "$1"
     fi | grep -E '^[0-9]+$' >/dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        return 0
-    else
-        return 1
-    fi
 }
 alias is_int=is_number
 alias is_num=is_number
@@ -378,7 +375,7 @@ lower() {
     if [ $# -eq 0 ]; then
         cat <&0
     elif [ $# -eq 1 ]; then
-        if [ -f "$1" -a -r "$1" ]; then
+        if [ -f "$1" ] && [ -r "$1" ]; then
             cat "$1"
         else
             echo "$1"
@@ -394,7 +391,7 @@ upper() {
     if [ $# -eq 0 ]; then
         cat <&0
     elif [ $# -eq 1 ]; then
-        if [ -f "$1" -a -r "$1" ]; then
+        if [ -f "$1" ] && [ -r "$1" ]; then
             cat "$1"
         else
             echo "$1"
@@ -410,7 +407,7 @@ upper() {
 contains() {
     string="$1"
     substring="$2"
-    if [ "${string#*$substring}" != "$string" ]; then
+    if [ "${string#*"$substring"}" != "$string" ]; then
         return 0    # $substring is in $string
     else
         return 1    # $substring is not in $string
@@ -432,11 +429,6 @@ is_empty() {
     else
         echo "$1"
     fi | grep -E "^[$_BLANK_]*$" >/dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        return 0
-    else
-        return 1
-    fi
 }
 
 # path_remove returns new $PATH trailing $1 in $PATH removed
@@ -538,7 +530,7 @@ dotfiles_deploy() {
         exit 1
     fi
 
-    cd "$DOTPATH"
+    cd "$DOTPATH" || exit 1
 
     if is_debug; then
         :
