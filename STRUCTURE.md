@@ -63,7 +63,9 @@ etc/test/
 ├── skills_image_test.sh    # 画像スキルのスモークテスト（skills_image_check.py を実行）
 ├── skills_image_check.py   # gen-image / review-image のネットワーク不要テスト
 ├── redirect_test.sh        # dot.omata.meリダイレクトテスト
-├── shellcheck_test.sh      # シェルスクリプト静的解析
+├── shellcheck_test.sh      # シェルスクリプト静的解析（ShellCheck + zsh -n、読み取り専用）
+├── shellcheck_targets.sh   # 上記のチェック対象定義
+├── shellcheck_fix.sh       # ShellCheck 自動修正（make lint-fix）
 ├── linux/                  # Linux固有のテスト
 │   ├── linux_install_test.sh
 │   └── linux_settings_test.sh
@@ -91,6 +93,12 @@ etc/lib/
 - `make init` - 初期化スクリプトを実行
 - `make test` - テストを実行
 - `make install` - update, deploy, initを一括実行
+- `make lint-fix` - ShellCheck の自動修正を適用（ファイルを書き換える。`make test` は読み取り専用）
+- `make clean` - リポジトリを指すシンボリンクだけを削除（実ファイルや他のリンクは残す）
+- `make uninstall` - `make clean` の後にリポジトリ自体を削除
+
+`make deploy` はリンク先に実ファイル/実ディレクトリがある場合、上書きせず
+`<path>.bak.<timestamp>` に退避してからリンクする。
 
 **除外リスト（`EXCLUSIONS`）:**
 `.DS_Store`, `.git`, `.gitmodules`, `.travis.yml`, `.cursor`, `.config`
@@ -122,7 +130,7 @@ ln -sfn $(pwd)/nvim ~/.config/nvim
 - `skills/` … 実ディレクトリのまま、リポジトリの各スキルを `~/.claude/skills/<name>`
   に個別リンク（`session-start-hook` 等のランタイム/グローバルスキルと共存）
 
-`make clean` でこれらのリンク（と他の dotfile・リポジトリ本体）が除去される。
+`make clean` でこれらのリンク（と他の dotfile のリンク）が除去される。リポジトリ本体の削除は `make uninstall`。
 
 #### 画像スキルの秘密管理（ai.env / 1Password）
 

@@ -10,6 +10,27 @@ DOTFILES   := $(filter-out $(EXCLUSIONS), $(CANDIDATES))
 CLAUDE_FILES  := CLAUDE.md settings.json ai.env
 CLAUDE_SKILLS := $(wildcard claude/skills/*/)
 
+# link SRC DST: replace DST with a symlink to SRC. A real file/dir already at DST
+# is moved aside to DST.bak.<timestamp> instead of being overwritten or, for a
+# directory, having the link created inside it.
+LINK = link() { \
+	if [ -e "$$2" ] && [ ! -L "$$2" ]; then \
+		mv -v "$$2" "$$2.bak.$$(date +%Y%m%d%H%M%S)"; \
+	fi; \
+	ln -sfnv "$$1" "$$2"; \
+}
+
+# unlink DST: remove DST only if it is a symlink pointing into this repo, so
+# clean never touches real files or links owned by something else.
+UNLINK = unlink_own() { \
+	if [ -L "$$1" ]; then \
+		case "$$(readlink "$$1")" in \
+			$(DOTPATH)/*) rm -v "$$1" ;; \
+			*) echo "skip (not linked to $(DOTPATH)): $$1" ;; \
+		esac; \
+	fi; \
+}
+
 all: install
 
 help:
@@ -22,7 +43,9 @@ help:
 	@echo "make test-container-full OS=... #=> Same + make init (package install)"
 	@echo "make update			#=> Fetch changes for this repo"
 	@echo "make install			#=> Run make update, deploy, init"
-	@echo "make clean			#=> Remove the dot files and this repo"
+	@echo "make lint-fix			#=> Apply shellcheck auto-fixes to scripts (modifies files)"
+	@echo "make clean			#=> Remove symlinks created by deploy (only those pointing into this repo)"
+	@echo "make uninstall			#=> make clean, then delete this repo"
 
 list:
 	@$(foreach val, $(DOTFILES), /bin/ls -dF $(val);)
@@ -30,10 +53,10 @@ list:
 deploy:
 	@echo '==> Start to deploy dotfiles to home directory.'
 	@echo ''
-	@$(foreach val, $(DOTFILES), ln -sfnv $(abspath $(val)) $(HOME)/$(val);)
+	@$(LINK); $(foreach val, $(DOTFILES), link $(abspath $(val)) $(HOME)/$(val);)
 	@echo ''
 	@mkdir -p $(HOME)/.claude/skills
-	@$(foreach f, $(CLAUDE_FILES), ln -sfnv $(abspath claude/$(f)) $(HOME)/.claude/$(f);)
+	@$(LINK); $(foreach f, $(CLAUDE_FILES), link $(abspath claude/$(f)) $(HOME)/.claude/$(f);)
 	@$(foreach d, $(CLAUDE_SKILLS), \
 		name=$(notdir $(patsubst %/,%,$(d))); \
 		if [ -e "$(HOME)/.claude/skills/$$name" ] && [ ! -L "$(HOME)/.claude/skills/$$name" ]; then \
@@ -45,13 +68,16 @@ deploy:
 	@# nvim config lives under ~/.config, which is excluded from DOTFILES
 	@# (manual management). Link it explicitly so ~/.config/nvim -> repo nvim/.
 	@mkdir -p $(HOME)/.config
-	@ln -sfnv $(abspath nvim) $(HOME)/.config/nvim
+	@$(LINK); link $(abspath nvim) $(HOME)/.config/nvim
 
 init:
 	@DOTPATH=$(DOTPATH) bash $(DOTPATH)/etc/init/init.sh
 
 test:
 	@DOTPATH=$(DOTPATH) bash $(DOTPATH)/etc/test/test.sh
+
+lint-fix:
+	@DOTPATH=$(DOTPATH) bash $(DOTPATH)/etc/test/shellcheck_fix.sh
 
 test-container:
 	@bash $(DOTPATH)/etc/test/run_container.sh $(OS)
@@ -69,9 +95,11 @@ install: update deploy init
 	@exec $$SHELL
 
 clean:
-	@echo 'Remove dot files in your home directory...'
-	@-$(foreach val, $(DOTFILES), rm -vrf $(HOME)/$(val);)
-	@-$(foreach f, $(CLAUDE_FILES), rm -vf $(HOME)/.claude/$(f);)
-	@-$(foreach d, $(CLAUDE_SKILLS), rm -vf $(HOME)/.claude/skills/$(notdir $(patsubst %/,%,$(d)));)
-	@-rm -vf $(HOME)/.config/nvim
-	-rm -rf $(DOTPATH)
+	@echo 'Remove symlinks created by deploy from your home directory...'
+	@$(UNLINK); $(foreach val, $(DOTFILES), unlink_own $(HOME)/$(val);)
+	@$(UNLINK); $(foreach f, $(CLAUDE_FILES), unlink_own $(HOME)/.claude/$(f);)
+	@$(UNLINK); $(foreach d, $(CLAUDE_SKILLS), unlink_own $(HOME)/.claude/skills/$(notdir $(patsubst %/,%,$(d)));)
+	@$(UNLINK); unlink_own $(HOME)/.config/nvim
+
+uninstall: clean
+	rm -rf $(DOTPATH)

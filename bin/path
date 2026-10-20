@@ -26,7 +26,7 @@ get_path() {
                 opt_r=1
                 shift
                 ;;
-            -*|--*)
+            -*)
                 echo "$arg: unknown option" 1>&2
                 return 1
                 ;;

@@ -18,8 +18,20 @@ Personal dotfiles for macOS, Linux, and Windows. Includes configurations for zsh
 ### Quick installation
 To quickly install:
 ```console
-curl -sL dot.omata.me | sh
+curl -sL dot.omata.me | bash
 ```
+
+The installer is a bash script ([`etc/install`](etc/install)); piping it to `sh`
+(dash on Debian/Ubuntu) does not work. To review it before running:
+
+```console
+curl -sL dot.omata.me -o /tmp/dotfiles-install
+less /tmp/dotfiles-install
+bash /tmp/dotfiles-install
+```
+
+It clones this repo to `~/.dotfiles` and runs `make deploy`. Append `-s init`
+(`curl -sL dot.omata.me | bash -s init`) to also run `make init`.
 
 ### Manual installation
 
@@ -37,6 +49,24 @@ make init
 # Or do everything at once
 make install
 ```
+
+`make install` runs `update` (git pull + submodules) → `deploy` → `init`.
+On macOS, `init` runs `brew update` / `brew upgrade` and installs the Brewfile.
+
+### Deploy / uninstall
+
+- `make deploy` symlinks dotfiles into `$HOME`. If a real (non-symlink) file or
+  directory already exists at a target path, it is moved to
+  `<path>.bak.<timestamp>` before linking — nothing is overwritten.
+- `make clean` removes only symlinks that point into this repo; real files,
+  backups and links owned by anything else are left alone.
+- `make uninstall` runs `make clean` and then deletes the repo itself.
+
+### Tests
+
+- `make test` is read-only: ShellCheck (bash/sh scripts incl. `etc/install`,
+  `etc/lib`, `bin/`), `zsh -n` (`.zshrc`, `.zshenv`, `.zsh/`), and deploy tests.
+- `make lint-fix` applies ShellCheck's auto-fixes (modifies files).
 
 ## Claude Code config
 

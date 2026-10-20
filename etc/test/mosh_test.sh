@@ -27,7 +27,7 @@ FUNCS="$DOTPATH/.zsh/10_functions.zsh"
 
 # bash から zsh 関数 _is_mosh_proc を実行し、終了コードを返す
 # （assert_true/assert_false に "$@" 経由で渡すため shellcheck からは間接呼び出し）
-# shellcheck disable=SC2317
+# shellcheck disable=SC2317,SC2329
 is_mosh_proc() {
     zsh -c 'source "$1"; _is_mosh_proc "$2"' _ "$FUNCS" "$1"
 }
