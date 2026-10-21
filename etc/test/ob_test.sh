@@ -63,6 +63,25 @@ ob_notebooks() {
     OBSIDIAN_VAULT="$VAULT" zsh -c 'source "$1"; _ob_notebooks' _ "$FUNCS"
 }
 
+# bash から _ob_cd を実行し、移動後の pwd を出力（fzf は無効化）
+ob_cd() {
+    OBSIDIAN_VAULT="$VAULT" PATH="/usr/bin:/bin" zsh -c '
+        source "$1"
+        shift
+        _ob_cd "$@" && pwd
+    ' _ "$FUNCS" "$@"
+}
+
+assert_eq() {
+    local actual="$1" expected="$2" desc="$3"
+    if [ "$actual" = "$expected" ]; then
+        e_success "$desc"
+    else
+        e_failure "$desc: 期待値 '$expected' / 実際 '$actual'"
+        ERR=1
+    fi
+}
+
 assert_file() {
     local path="$1" desc="$2"
     if [ -f "$path" ]; then
@@ -176,6 +195,25 @@ unit6() {
     teardown_vault
 }
 
+# ob cd: エイリアス / パス / 名前解決でフォルダへ移動する
+unit7() {
+    e_header "ob cd: ノートブックへの移動"
+    setup_vault
+    local root
+    root="$(cd "$VAULT" && pwd)"
+    assert_eq "$(ob_cd)" "$root" "引数なしは vault ルートへ移動"
+    assert_eq "$(ob_cd meeting)" "$root/10_Memo/11_Meetings" "エイリアス meeting で移動"
+    assert_eq "$(ob_cd 20_Note/22_Research)" "$root/20_Note/22_Research" "vault 相対パスで移動"
+    assert_eq "$(ob_cd Projects)" "$root/20_Note/21_Projects" "番号接頭辞を除いた名前(大小無視)で移動"
+    if ob_cd no_such_notebook >/dev/null 2>&1; then
+        e_failure "存在しないノートブックでエラーにならない"
+        ERR=1
+    else
+        e_success "存在しないノートブックはエラーになる"
+    fi
+    teardown_vault
+}
+
 # メイン処理
 main() {
     unit1
@@ -184,6 +222,7 @@ main() {
     unit4
     unit5
     unit6
+    unit7
 
     if [ "$ERR" -eq 0 ]; then
         e_success "すべての ob テストが成功しました"

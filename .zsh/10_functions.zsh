@@ -258,6 +258,7 @@ ob() {
 
   case "$subcommand" in
     new)      _ob_new "$@" ;;
+    cd)       _ob_cd "$@" ;;
     search)   _ob_search "$@" ;;
     grep)     _ob_grep "$@" ;;
     recent)   _ob_recent "$@" ;;
@@ -265,6 +266,7 @@ ob() {
     *)
       print -u2 "usage: ob <subcommand> [args]"
       print -u2 "  ob new [notebook|alias] [title]"
+      print -u2 "  ob cd [notebook|alias|query]"
       print -u2 "  ob search <query>"
       print -u2 "  ob grep <pattern>"
       print -u2 "  ob recent [n]"
@@ -309,6 +311,79 @@ _ob_template() {
   return 1
 }
 
+# ノートブック指定(エイリアス / vault相対パス / basename / 番号接頭辞を除いた名前)を
+# vault相対パスに解決する。解決できなければ何も出力せず 1 を返す
+_ob_resolve() {
+  emulate -L zsh
+  setopt extendedglob
+  local vault="$(_obsidian_vault)"
+  local kind="$1"
+  [[ -z "$kind" ]] && return 1
+
+  # 頻出ノートブックのエイリアス
+  local -A aliases=(
+    inbox    00_Inbox
+    meeting  10_Memo/11_Meetings
+    event    10_Memo/12_Events
+    lecture  10_Memo/13_Lectures
+  )
+
+  if [[ -n "${aliases[$kind]}" ]]; then
+    print -r -- "${aliases[$kind]}"
+    return 0
+  fi
+  if [[ -d "$vault/$kind" ]]; then
+    print -r -- "$kind"
+    return 0
+  fi
+
+  # フルパス / basename / 番号接頭辞を除いた名前(大小無視)で一致を探す
+  local nb b n
+  for nb in ${(f)"$(_ob_notebooks)"}; do
+    b="${nb:t}"
+    n="${b#<->_}"
+    if [[ "$nb" == "$kind" || "$b" == "$kind" || "${n:l}" == "${kind:l}" ]]; then
+      print -r -- "$nb"
+      return 0
+    fi
+  done
+  return 1
+}
+
+# ob cd: ノートブック(フォルダ)へ移動する
+# 引数なしは vault ルート。解決できない場合は query を初期値にfzfで選択
+_ob_cd() {
+  emulate -L zsh
+  local vault="$(_obsidian_vault)"
+  local query="${*:-}"
+  local rel=""
+
+  if [[ ! -d "$vault" ]]; then
+    print -u2 "vault not found: $vault"
+    return 1
+  fi
+
+  if [[ -z "$query" ]]; then
+    cd "$vault"
+    return
+  fi
+
+  rel="$(_ob_resolve "$query")"
+  if [[ -z "$rel" ]]; then
+    if ! command -v fzf >/dev/null 2>&1; then
+      print -u2 "notebook not found: $query"
+      return 1
+    fi
+    rel=$(_ob_notebooks | fzf --prompt="cd> " --height=~15 --query="$query" --select-1 --exit-0)
+    if [[ -z "$rel" ]]; then
+      print -u2 "notebook not found: $query"
+      return 1
+    fi
+  fi
+
+  cd "$vault/$rel"
+}
+
 # ob new: ノートを作成して開く
 _ob_new() {
   emulate -L zsh
@@ -320,33 +395,10 @@ _ob_new() {
   fi
   local title="${*:-}"
 
-  # 頻出ノートブックのエイリアス
-  local -A aliases=(
-    inbox    00_Inbox
-    meeting  10_Memo/11_Meetings
-    event    10_Memo/12_Events
-    lecture  10_Memo/13_Lectures
-  )
-
   # kindをノートブック(vault相対パス)に解決
   local rel=""
   if [[ -n "$kind" ]]; then
-    if [[ -n "${aliases[$kind]}" ]]; then
-      rel="${aliases[$kind]}"
-    elif [[ -d "$vault/$kind" ]]; then
-      rel="$kind"
-    else
-      # フルパス / basename / 番号接頭辞を除いた名前(大小無視)で一致を探す
-      local nb b n
-      for nb in ${(f)"$(_ob_notebooks)"}; do
-        b="${nb:t}"
-        n="${b#<->_}"
-        if [[ "$nb" == "$kind" || "$b" == "$kind" || "${n:l}" == "${kind:l}" ]]; then
-          rel="$nb"
-          break
-        fi
-      done
-    fi
+    rel="$(_ob_resolve "$kind")"
   fi
 
   # 未指定 or 未解決の場合はfzfで選択
