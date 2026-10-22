@@ -258,6 +258,7 @@ ob() {
 
   case "$subcommand" in
     new)      _ob_new "$@" ;;
+    cd)       _ob_cd "$@" ;;
     search)   _ob_search "$@" ;;
     grep)     _ob_grep "$@" ;;
     recent)   _ob_recent "$@" ;;
@@ -265,6 +266,7 @@ ob() {
     *)
       print -u2 "usage: ob <subcommand> [args]"
       print -u2 "  ob new [notebook|alias] [title]"
+      print -u2 "  ob cd [query]"
       print -u2 "  ob search <query>"
       print -u2 "  ob grep <pattern>"
       print -u2 "  ob recent [n]"
@@ -422,6 +424,45 @@ _ob_search() {
   if [[ -n "$selection" ]]; then
     ${EDITOR:-vim} "$selection"
   fi
+}
+
+# vault内のフォルダ(隠しフォルダ除く)のうち、vault相対パスにqueryを含むもの(大小無視)を列挙
+# vaultルート自体は "." として含める
+_ob_dirs() {
+  local vault="$(_obsidian_vault)"
+  local query="${1:-}"
+  local dir
+  {
+    print -r -- "."
+    find "$vault" -mindepth 1 -name '.*' -prune -o -type d -print 2>/dev/null | \
+      while IFS= read -r dir; do
+        print -r -- "${dir#$vault/}"
+      done | sort
+  } | grep -i -F -e "$query"
+}
+
+# ob cd: vault内のフォルダを検索し、fzfで選択して移動する(候補が1件なら即移動)
+_ob_cd() {
+  local vault="$(_obsidian_vault)"
+  local query="${*:-}"
+  local selection
+
+  if [[ ! -d "$vault" ]]; then
+    print -u2 "vault not found: $vault"
+    return 1
+  fi
+
+  selection=$(_ob_dirs "$query" | \
+    fzf-tmux --reverse --select-1 --exit-0 \
+    --preview "ls -A ${(q)vault}/{}" \
+    --preview-window=right:60%)
+
+  if [[ -z "$selection" ]]; then
+    [[ -n "$query" ]] && print -u2 "no folder matches: $query"
+    return 1
+  fi
+
+  cd "$vault/$selection"
 }
 
 # ob grep: ripgrepでvault全文検索してfzfで選択して開く

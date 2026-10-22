@@ -63,6 +63,11 @@ ob_notebooks() {
     OBSIDIAN_VAULT="$VAULT" zsh -c 'source "$1"; _ob_notebooks' _ "$FUNCS"
 }
 
+# bash から _ob_dirs を実行
+ob_dirs() {
+    OBSIDIAN_VAULT="$VAULT" zsh -c 'source "$1"; _ob_dirs "$2"' _ "$FUNCS" "$1"
+}
+
 assert_file() {
     local path="$1" desc="$2"
     if [ -f "$path" ]; then
@@ -176,6 +181,48 @@ unit6() {
     teardown_vault
 }
 
+# ob cd の候補: vault ルートから部分一致(大小無視)で検索、隠しフォルダは除外
+unit7() {
+    e_header "ob cd: vault 内フォルダの検索"
+    setup_vault
+    mkdir -p "$VAULT/.obsidian/plugins"
+    local out
+    out="$(ob_dirs research)"
+    if [ "$out" = "20_Note/22_Research" ]; then
+        e_success "部分一致(大小無視)でフォルダが見つかる"
+    else
+        e_failure "research の検索結果が想定外: '$out'"
+        ERR=1
+    fi
+    out="$(ob_dirs memo)"
+    if printf '%s\n' "$out" | grep -qx "10_Memo" && printf '%s\n' "$out" | grep -qx "10_Memo/11_Meetings"; then
+        e_success "中間フォルダ・配下フォルダの両方がヒットする"
+    else
+        e_failure "memo の検索結果が想定外: '$out'"
+        ERR=1
+    fi
+    out="$(ob_dirs)"
+    if printf '%s\n' "$out" | grep -qx "." && printf '%s\n' "$out" | grep -qx "System/Templates"; then
+        e_success "query なしは vault ルートを含む全フォルダが候補"
+    else
+        e_failure "query なしの候補が想定外"
+        ERR=1
+    fi
+    if contains "$out" "obsidian"; then
+        e_failure "隠しフォルダ(.obsidian)が除外されていない"
+        ERR=1
+    else
+        e_success "隠しフォルダ(.obsidian)は除外される"
+    fi
+    if [ -z "$(ob_dirs no_such_folder)" ]; then
+        e_success "一致なしは候補が空"
+    else
+        e_failure "一致なしで候補が出ている"
+        ERR=1
+    fi
+    teardown_vault
+}
+
 # メイン処理
 main() {
     unit1
@@ -184,6 +231,7 @@ main() {
     unit4
     unit5
     unit6
+    unit7
 
     if [ "$ERR" -eq 0 ]; then
         e_success "すべての ob テストが成功しました"
