@@ -26,7 +26,7 @@ The configuration uses a semantic workspace system:
 
 #### High-level Contexts
 - **I** (Inbox) - New items, triage
-- **O** (Office) - Work browser (Arc)
+- **O** (Office) - Work browser (Firefox)
 - **P** (Private) - Personal browser (Dia)
 
 #### Role-based Workspaces
@@ -79,7 +79,7 @@ Windows are automatically routed to workspaces:
 
 - Obsidian, GoodNotes, Preview, Acrobat → **R** (Resource)
 - Google Chrome → **W** (Web)
-- Arc Browser → **O** (Office)
+- Firefox → **O** (Office)
 - Dia Browser → **P** (Private)
 - Notion → **P** (Private)
 - VSCode, Cursor → **E** (Editor)
