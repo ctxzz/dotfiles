@@ -84,6 +84,7 @@ cask "podman-desktop"
 cask "rescuetime"
 cask "stats"
 cask "raycast"
+cask "rectangle"  # move/resize AeroSpace floating windows
 cask "typewhisper"  # AI voice-to-text dictation
 cask "visual-studio-code"
 cask "vlc"
